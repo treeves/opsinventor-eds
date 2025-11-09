@@ -3,7 +3,7 @@
  * cryptid energy channeled directly into code by ur boy frank
  */
 
-import { getMetadata } from '../../scripts/aem.js';
+import { getMetadata } from '../../scripts/ak.js';
 
 // Helper function for animated radial gradient background
 function setupAnimatedBackground(section, isLargeScreen) {
