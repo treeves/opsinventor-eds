@@ -7,8 +7,16 @@ function decorate(el) {
 }
 
 export default function init(a) {
-  if (!a || !a.href || !a.href.includes('open.spotify.com')) {
-    console.error('Invalid Spotify URL:', a?.href);
+  // Debug the incoming anchor element
+  console.debug('Spotify init called with:', {
+    element: a,
+    href: a?.href,
+    pathname: a?.pathname,
+    search: a?.search
+  });
+
+  if (!a?.href?.includes('spotify.com')) {
+    console.debug('Skipping non-Spotify URL:', a?.href);
     return;
   }
 
