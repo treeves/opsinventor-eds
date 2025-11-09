@@ -78,6 +78,10 @@ function cleanupContent($) {
   // Remove unwanted elements
   $('script, style, iframe, .wp-block-embed, .sharedaddy, .jp-relatedposts').remove();
 
+  // Remove screen reader text
+  $('a:contains("Skip to the content")').remove();
+  $('[class*="screen-reader"]').remove();  // Also remove any elements with screen-reader in their class
+
   // Convert WordPress blocks to simple HTML
   $('.wp-block-quote').each((_, quote) => {
     $(quote).replaceWith(`<blockquote>${$(quote).html()}</blockquote>`);
