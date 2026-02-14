@@ -1,0 +1,19 @@
+{
+  "templates": [
+    {
+      "name": "blog-post",
+      "urls": [
+        "https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/"
+      ],
+      "description": "WordPress blog post template from OpsInventor. Features a hero area with featured image, title, date, and author, followed by article body content with headings, paragraphs, code blocks, ordered lists, and images.",
+      "blocks": [
+        {
+          "name": "blog-post-hero",
+          "instances": [
+            "article.col-md-8 > div[class*='post-']"
+          ]
+        }
+      ]
+    }
+  ]
+}
