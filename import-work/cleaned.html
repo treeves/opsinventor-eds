@@ -1,0 +1,911 @@
+<body id="blog" class="wp-singular post-template-default single single-post postid-1934 single-format-standard wp-custom-logo wp-theme-envo-magazine">
+  <a class="skip-link screen-reader-text" href="#site-content">Skip to the content</a>        <div class="site-header container-fluid">
+    <img src="./images/fd88b105ed3f7313bf7bb5e31b5ec2b2.jpg">
+      <div class="container">
+        <div class="row">
+          <div class="site-heading ">
+            <div class="site-branding-logo">
+              <a href="https://www.opsinventor.com/" class="custom-logo-link">
+                <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2022/10/opsinventor-logo-v1d_150dpi.png?fit=439%2C122&amp;ssl=1" class="custom-logo" alt="OpsInventor">
+                </a>                </div>
+                <div class="site-branding-text">
+                  <p class="site-title">
+                    <a href="https://www.opsinventor.com/">OpsInventor</a>
+                  </p>
+                  <p class="site-description">
+                    Adobe Experience Manager Consulting &amp; Knowhow                        </p>
+                  </div>
+                  <!-- .site-branding-text -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="main-menu">
+              <nav id="site-navigation" class="navbar navbar-default shrink">
+                <div class="container">
+                  <div class="navbar-header">
+                    <button id="main-menu-panel" class="open-panel visible-xs">
+                      <span>
+                      </span>
+                      <span>
+                      </span>
+                      <span>
+                      </span>
+                    </button>
+                  </div>
+                  <ul class="nav navbar-nav search-icon navbar-left hidden-xs">
+                    <li class="home-icon">
+                      <a href="https://www.opsinventor.com/" title="OpsInventor">
+                        <i class="fa fa-home">
+                        </i>
+                      </a>
+                    </li>
+                  </ul>
+                  <div class="menu-container">
+                    <ul id="menu-menu-1" class="nav navbar-nav navbar-left">
+                      <li id="menu-item-713" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-713">
+                        <a title="Home" href="http://www.jetteroheller.com/">Home</a>
+                      </li>
+                      <li id="menu-item-1094" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1094">
+                        <a title="About" href="https://www.opsinventor.com/about-me/">About</a>
+                      </li>
+                      <li id="menu-item-1060" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1060">
+                        <a title="AEM / CQ" href="https://www.opsinventor.com/category/aem-cq/">AEM / CQ</a>
+                      </li>
+                    </ul>
+                  </div>            <ul class="nav navbar-nav search-icon navbar-right hidden-xs">
+                  <li class="top-search-icon">
+                    <a href="#">
+                      <i class="fa fa-search">
+                      </i>
+                    </a>
+                  </li>
+                  <div class="top-search-box">
+                    <form id="searchform" class="searchform">
+                      <div>
+                        <label class="screen-reader-text">Search for:</label>
+                        <input id="s">
+                          <input id="searchsubmit">
+                          </div>
+                        </form>                </div>
+                      </ul>
+                    </div>
+                  </nav>
+                </div>
+                <div id="site-content" class="container main-container">
+                  <div class="page-area">
+                    <!-- start content container -->
+                      <!-- start content container -->
+                        <div class="row">
+                          <article class="col-md-8">
+                            <div class="post-1934 post type-post status-publish format-standard has-post-thumbnail hentry category-technology">
+                              <div class="news-thumb ">
+                                <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/04/image-1.png?resize=1140%2C641&amp;ssl=1" title="Replacing an SSL Certificate on AEM 6.5" alt="Replacing an SSL Certificate on AEM 6.5">
+                                </div>
+                                <!-- .news-thumb -->
+                                  <h1 class="single-title">Replacing an SSL Certificate on AEM 6.5</h1>						<span class="posted-date">
+                                    April 12, 2023	</span>
+                                    <span class="comments-meta">
+                                      <a href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/#comments" title="Comment on Replacing an SSL Certificate on AEM 6.5">
+                                        1				</a>
+                                        <i class="fa fa-comments-o">
+                                        </i>
+                                      </span>
+                                      <span class="author-meta">
+                                        <span class="author-meta-by">By</span>
+                                        <a href="https://www.opsinventor.com/author/jetteroheller/">
+                                          Tad Reeves			</a>
+                                        </span>
+                                        <div class="single-content">
+                                          <div class="single-entry-summary">
+                                            <p>As you may have read in my other post on <a href="https://www.opsinventor.com/setting-up-ssl-on-aem-6-3-and-6-4-video-walkthrough/">configuring SSL on AEM</a>, there are some gotchas and eccentricities on configuring SSL on AEM 6.5. Note, this post does <strong>not</strong> apply to AEM as a Cloud Service.  On <a href="https://experienceleague.adobe.com/docs/experience-manager-cloud-service/content/implementing/using-cloud-manager/manage-ssl-certificates/add-ssl-certificate.html%3Flang%3Den">AEM as a Cloud Service, SSL certs are managed in the Cloud Manager UI</a> – and I’ll <a href="https://experienceleague.adobe.com/docs/experience-manager-cloud-service/content/implementing/using-cloud-manager/manage-ssl-certificates/add-ssl-certificate.html%3Flang%3Den">link the docs here </a>for that.  This is for a self-managed AEM 6.5 installation. </p>
+                                            <p>For background, prior to AEM 6.3, doing SSL on AEM meant you were configuring the Felix/Jetty HTTPS service to use an SSL certificate that was stored on-disk in a Java keystore (JKS) file.  And while it still is technically possible to do that on AEM 6.5 (I have one customer like that) it’s generally preferred to use the SSL config built in to AEM, which stores the SSL certificate in the JCR.  </p>
+                                            <p>So if you’re configuring SSL for the first time, you can <a href="https://www.opsinventor.com/setting-up-ssl-on-aem-6-3-and-6-4-video-walkthrough/">use this how-to</a>.  </p>
+                                            <div id="ez-toc-container" class="ez-toc-v2_0_66_1 counter-hierarchy ez-toc-counter ez-toc-grey ez-toc-container-direction">
+                                              <p class="ez-toc-title">Table of Contents</p>
+                                              <label class="ez-toc-cssicon-toggle-label">
+                                                <span class="">
+                                                  <span class="eztoc-hide">Toggle</span>
+                                                  <span class="ez-toc-icon-toggle-span">
+                                                    <img src="data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iZmlsbDogIzk5OTtjb2xvcjojOTk5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGNsYXNzPSJsaXN0LTM3NzQwOCIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMjBweCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj48cGF0aCBkPSJNNiA2SDR2MmgyVjZ6bTE0IDBIOHYyaDEyVjZ6TTQgMTFoMnYySDR2LTJ6bTE2IDBIOHYyaDEydi0yek00IDE2aDJ2Mkg0di0yem0xNiAwSDh2MmgxMnYtMnoiIGZpbGw9ImN1cnJlbnRDb2xvciI+PC9wYXRoPjwvc3ZnPg==">
+                                                      <img src="data:image/svg+xml;base64,PHN2ZyBzdHlsZT0iZmlsbDogIzk5OTtjb2xvcjojOTk5IiBjbGFzcz0iYXJyb3ctdW5zb3J0ZWQtMzY4MDEzIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMHB4IiBoZWlnaHQ9IjEwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgdmVyc2lvbj0iMS4yIiBiYXNlUHJvZmlsZT0idGlueSI+PHBhdGggZD0iTTE4LjIgOS4zbC02LjItNi4zLTYuMiA2LjNjLS4yLjItLjMuNC0uMy43cy4xLjUuMy43Yy4yLjIuNC4zLjcuM2gxMWMuMyAwIC41LS4xLjctLjMuMi0uMi4zLS41LjMtLjdzLS4xLS41LS4zLS43ek01LjggMTQuN2w2LjIgNi4zIDYuMi02LjNjLjItLjIuMy0uNS4zLS43cy0uMS0uNS0uMy0uN2MtLjItLjItLjQtLjMtLjctLjNoLTExYy0uMyAwLS41LjEtLjcuMy0uMi4yLS4zLjUtLjMuN3MuMS41LjMuN3oiPjwvcGF0aD48L3N2Zz4=">
+                                                      </span>
+                                                    </span>
+                                                  </label>
+                                                  <input id="ez-toc-cssicon-toggle-item-699094cda2a9a">
+                                                    <nav>
+                                                      <ul class="ez-toc-list ez-toc-list-level-1 ">
+                                                        <li class="ez-toc-page-1 ez-toc-heading-level-3">
+                                                          <a class="ez-toc-link ez-toc-heading-1" href="#Replacing_an_SSL_Cert" title="Replacing an SSL Cert ">Replacing an SSL Cert </a>
+                                                          <ul class="ez-toc-list-level-4">
+                                                            <li class="ez-toc-heading-level-4">
+                                                              <a class="ez-toc-link ez-toc-heading-2" href="#Extract_back_up_the_current_certificate_out_of_AEM" title="Extract &amp; back up the current certificate out of AEM">Extract &amp; back up the current certificate out of AEM</a>
+                                                            </li>
+                                                            <li class="ez-toc-page-1 ez-toc-heading-level-4">
+                                                              <a class="ez-toc-link ez-toc-heading-3" href="#You_May_Need_Your_Original_Private_Key" title="You May Need Your Original Private Key">You May Need Your Original Private Key</a>
+                                                            </li>
+                                                          </ul>
+                                                        </li>
+                                                        <li class="ez-toc-page-1 ez-toc-heading-level-3">
+                                                          <a class="ez-toc-link ez-toc-heading-4" href="#What_if_I_forgot_my_AEM_Keystore_Password" title="What if I forgot my AEM Keystore Password?">What if I forgot my AEM Keystore Password?</a>
+                                                        </li>
+                                                        <li class="ez-toc-page-1 ez-toc-heading-level-3">
+                                                          <a class="ez-toc-link ez-toc-heading-5" href="#Make_Sure_to_Use_the_SSL_Config_on_your_HTTP_Port" title="Make Sure to Use the SSL Config on your HTTP Port">Make Sure to Use the SSL Config on your HTTP Port</a>
+                                                        </li>
+                                                        <li class="ez-toc-page-1 ez-toc-heading-level-3">
+                                                          <a class="ez-toc-link ez-toc-heading-6" href="#Notes" title="Notes">Notes</a>
+                                                        </li>
+                                                      </ul>
+                                                    </nav>
+                                                  </div>
+                                                  <h3 class="wp-block-heading">
+                                                    <span class="ez-toc-section" id="Replacing_an_SSL_Cert">
+                                                    </span>Replacing an SSL Cert <span class="ez-toc-section-end">
+                                                  </span>
+                                                </h3>
+                                                <p>Most of the time, replacing an existing SSL cert should be as simple as: </p>
+                                                <ol class="wp-block-list">
+                                                  <li>Back up the current SSL cert in the repo, so you have a backout plan in your production change</li>
+                                                  <li>Upload the new certificate in the UI</li>
+                                                  <li>Rinse &amp; repeat for all Publishers &amp; Authors</li>
+                                                </ol>
+                                                <p>This means that, like other SSL certs, you should have your PEM-encoded certificate, as well as a DER-encoded private key.  <a href="https://www.opsinventor.com/implementing-ssl-on-aem/">See this post if you need help with that</a>.  </p>
+                                                <p>Steps there are: </p>
+                                                <h4 class="wp-block-heading">
+                                                  <span class="ez-toc-section" id="Extract_back_up_the_current_certificate_out_of_AEM">
+                                                  </span>Extract &amp; back up the current certificate out of AEM<span class="ez-toc-section-end">
+                                                </span>
+                                              </h4>
+                                              <p>Go to package manager and create package for</p>
+                                              <pre class="wp-block-code">
+                                                <code class="">/home/users/system/security/ssl-service/keystore/store.p12</code>
+                                              </pre>
+                                              <figure class="wp-block-image size-large">
+                                                <a href="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image-2.png?ssl=1">
+                                                  <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image-2.png?resize=750%2C498&amp;ssl=1" alt="" class="wp-image-1936">
+                                                  </a>
+                                                </figure>
+                                                <p> Once you’ve downloaded that package, unzip it and you’ll see a “store.p12” file in there which is a PKCS12 keystore.</p>
+                                                <h4 class="wp-block-heading">
+                                                  <span class="ez-toc-section" id="You_May_Need_Your_Original_Private_Key">
+                                                  </span>You May Need Your Original Private Key<span class="ez-toc-section-end">
+                                                </span>
+                                              </h4>
+                                              <p>In the case you need your original private key in order to actuate your CSR process for the new cert (and you don’t have access to the files from when you did it before) here’s how you extract the private key out of the certificate you got out of AEM above: </p>
+                                              <p>Run the following command: </p>
+                                              <pre class="wp-block-code">
+                                                <code class="">openssl pkcs12 -info -in&nbsp;-nodes store.p12&nbsp; &gt;&nbsp;store.pem</code>
+                                              </pre>
+                                              <p>This will give you a PEM-encoded certificate (ASCII and not binary) where you can go and copy/paste out the private key and certificate.  Save out the private key as a separate file so you can use it as input for your cert-signing request (CSR).  </p>
+                                              <h3 class="wp-block-heading">
+                                                <span class="ez-toc-section" id="What_if_I_forgot_my_AEM_Keystore_Password">
+                                                </span>What if I forgot my AEM Keystore Password?<span class="ez-toc-section-end">
+                                              </span>
+                                            </h3>
+                                            <p>In AEM when you go to the SSL Config page (/libs/granite/security/content/sslConfig.html) it will prompt you for the password for your AEM keystore and truststore.  But what if you’ve forgotten what your password is there, or have misplaced it somehow?  </p>
+                                            <p>The SSL Config page won’t let you configure &amp; upload a new SSL cert unless you have the previous password – but if you’re just uploading a brand-new cert and private key that your certificate authority has just provided to you, you can just take a backup of this node</p>
+                                            <pre class="wp-block-code">
+                                              <code class="">/home/users/system/security/ssl-service/keystore/store.p12</code>
+                                            </pre>
+                                            <p>Then, go into CRX DE and <strong>delete</strong> the whole folder of “/home/users/system/security/ssl-service/keystore/” (as the keystore password is a property in that folder).  </p>
+                                            <p>Then, once you go through the SSL config on /libs/granite/security/content/sslConfig.html it will generate a new keystore and you’ll be golden. </p>
+                                            <h3 class="wp-block-heading">
+                                              <span class="ez-toc-section" id="Make_Sure_to_Use_the_SSL_Config_on_your_HTTP_Port">
+                                              </span>Make Sure to Use the SSL Config on your HTTP Port<span class="ez-toc-section-end">
+                                            </span>
+                                          </h3>
+                                          <p>Just remember, when you are using the SSL Config page, run this using your non-SSL port (i.e. 4502/4503) on AEM, and NOT on the SSL port.  If you’re in the midst of configuring SSL, and SSL breaks or errors for any reason, you’ll find yourself not able to access the system.  So make sure you’re doing this on non-SSL!</p>
+                                          <h3 class="wp-block-heading">
+                                            <span class="ez-toc-section" id="Notes">
+                                            </span>Notes<span class="ez-toc-section-end">
+                                          </span>
+                                        </h3>
+                                        <p>And yes, in case you were wondering, I wrote this blog post mainly so I could document this for myself so that I don’t shoot myself in the foot the next time I have to switch out certs on a 6.5 machine.  </p>
+                                        <p>Featured image on this post generated by <a href="https://firefly.adobe.com/">Adobe Firefly</a> using the prompt: “<em>wise hyper_realistic steampunk bloodhound with goggles holding an official certificate, with a rack of servers in a cast-iron cage behind him, cinematic light, dramatic</em>“</p>
+                                        <div class="sharedaddy sd-sharing-enabled">
+                                          <div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing">
+                                            <h3 class="sd-title">Share me:</h3>
+                                            <div class="sd-content">
+                                              <ul>
+                                                <li class="share-linkedin">
+                                                  <a class="share-linkedin sd-button share-icon" href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/?share=linkedin&amp;nb=1" title="Click to share on LinkedIn">
+                                                    <span>LinkedIn</span>
+                                                  </a>
+                                                </li>
+                                                <li class="share-facebook">
+                                                  <a class="share-facebook sd-button share-icon" href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/?share=facebook&amp;nb=1" title="Click to share on Facebook">
+                                                    <span>Facebook</span>
+                                                  </a>
+                                                </li>
+                                                <li class="share-twitter">
+                                                  <a class="share-twitter sd-button share-icon" href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/?share=twitter&amp;nb=1" title="Click to share on Twitter">
+                                                    <span>Twitter</span>
+                                                  </a>
+                                                </li>
+                                                <li class="share-reddit">
+                                                  <a class="share-reddit sd-button share-icon" href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/?share=reddit&amp;nb=1" title="Click to share on Reddit">
+                                                    <span>Reddit</span>
+                                                  </a>
+                                                </li>
+                                                <li>
+                                                  <a href="#" class="sharing-anchor sd-button share-more">
+                                                    <span>More</span>
+                                                  </a>
+                                                </li>
+                                                <li class="share-end">
+                                                </li>
+                                              </ul>
+                                              <div class="sharing-hidden">
+                                                <div class="inner">
+                                                  <ul>
+                                                    <li class="share-pinterest">
+                                                      <a class="share-pinterest sd-button share-icon" href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/?share=pinterest&amp;nb=1" title="Click to share on Pinterest">
+                                                        <span>Pinterest</span>
+                                                      </a>
+                                                    </li>
+                                                    <li class="share-end">
+                                                    </li>
+                                                  </ul>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded" id="like-post-wrapper-71673077-1934-699094cda0d4a">
+                                          <h3 class="sd-title">Like this:</h3>
+                                          <div class="likes-widget-placeholder post-likes-widget-placeholder">
+                                            <span class="button">
+                                              <span>Like</span>
+                                            </span> <span class="loading">Loading...</span>
+                                          </div>
+                                          <span class="sd-text-color">
+                                          </span>
+                                          <a class="sd-link-color">
+                                          </a>
+                                        </div>
+                                        <div id="jp-relatedposts" class="jp-relatedposts">
+                                          <h3 class="jp-relatedposts-headline">
+                                            <em>Related</em>
+                                          </h3>
+                                        </div>
+                                      </div>
+                                      <!-- .single-entry-summary -->
+                                        <div class="entry-footer">
+                                          <div class="cat-links">
+                                            <span class="space-right">Category</span>
+                                            <a href="https://www.opsinventor.com/category/technology/">technology</a>
+                                          </div>
+                                        </div>                        <div class="entry-footer">
+                                      </div>					</div>
+                                      <div class="prev-next-links">
+                                        <div class="arrowLeft">
+                                          <a href="https://www.opsinventor.com/podcast-how-to-choose-a-digital-experience-platform/">
+                                            <i class="fa fa-angle-double-left fa-2x">
+                                            </i>
+                                          </a>				<div class="prev-next-links-thumb">
+                                          <a href="https://www.opsinventor.com/podcast-how-to-choose-a-digital-experience-platform/">
+                                            <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image.png?resize=160%2C120&amp;ssl=1" class="attachment-envo-magazine-thumbnail size-envo-magazine-thumbnail wp-post-image" alt="">
+                                            </a>				</div>
+                                            <div class="prev-next-links-title">
+                                              <a href="https://www.opsinventor.com/podcast-how-to-choose-a-digital-experience-platform/">Podcast: How to Choose a Digital Experience Platform</a>				</div>
+                                            </div>
+                                          </div>
+                                          <div class="single-footer row">
+                                            <div class="col-md-4">
+                                              <div class="postauthor-container">
+                                                <div class="postauthor-title">
+                                                  <h4 class="about">
+                                                    About The Author		</h4>
+                                                    <div class="">
+                                                      <span class="fn">
+                                                        <a href="https://www.opsinventor.com/author/jetteroheller/" title="Posts by Tad Reeves">Tad Reeves</a>			</span>
+                                                      </div>
+                                                    </div>
+                                                    <div class="postauthor-content">
+                                                      <p>
+                                                        AEM Engineer, cyclist, daddy of 3, and transit/train enthusiast.		</p>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div class="col-md-8">
+                                                    <div id="comments" class="comments-template">
+                                                      <h4 id="comments">
+                                                        1 Comment			</h4>
+                                                        <ul class="commentlist list-unstyled">
+                                                          <li class="comment even thread-even depth-1" id="comment-9422">
+                                                            <div id="div-comment-9422" class="comment-body">
+                                                              <div class="comment-author vcard">
+                                                                <img alt="" src="https://secure.gravatar.com/avatar/c2112a511cb97407026d3f68db42b5f0c74e1950f834eee9096eee8ead4d0e0f?s=32&amp;d=mm&amp;r=g" class="avatar avatar-32 photo wp-hovercard-attachment grav-hashed grav-hijack">			<cite class="fn">Special Monkey</cite> <span class="says">says:</span>		</div>
+                                                                <div class="comment-meta commentmetadata">
+                                                                  <a href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/#comment-9422">February 10, 2025 at 5:08 pm</a>		</div>
+                                                                  <p>This is very helpful, thank you! </p>
+                                                                  <p>Is there a similar procedure to export SAML/SSO config and certificates?</p>
+                                                                  <p>I found the openssl command did not work for me, I used ones found here instead: </p>
+                                                                  <p>
+                                                                    <a href="https://stackoverflow.com/questions/15144046/converting-pkcs12-certificate-into-pem-using-openssl">https://stackoverflow.com/questions/15144046/converting-pkcs12-certificate-into-pem-using-openssl</a>
+                                                                  </p>
+                                                                  <p>Try:</p>
+                                                                  <p>openssl pkcs12 -in path.p12 -out newfile.crt.pem -clcerts -nokeys<br>
+                                                                    openssl pkcs12 -in path.p12 -out newfile.key.pem -nocerts -nodes</p>
+                                                                    <p>After that you have:</p>
+                                                                    <p>    certificate in newfile.crt.pem<br>
+                                                                      private key in newfile.key.pem</p>
+                                                                      <p>To put the certificate and key in the same file without a password, use the following, as an empty password will cause the key to not be exported:</p>
+                                                                      <p>openssl pkcs12 -in path.p12 -out newfile.pem -nodes</p>
+                                                                      <p>Or, if you want to provide a password for the private key, omit -nodes and input a password:</p>
+                                                                      <p>openssl pkcs12 -in path.p12 -out newfile.pem</p>
+                                                                      <p>If you need to input the PKCS#12 password directly from the command line (e.g. a script), just add -passin pass:${PASSWORD}:</p>
+                                                                      <p>openssl pkcs12 -in path.p12 -out newfile.crt.pem -clcerts -nokeys -passin ‘pass:P@s5w0rD’</p>
+                                                                      <div class="jetpack-comment-likes-widget-wrapper jetpack-likes-widget-unloaded" id="like-comment-wrapper-71673077-9422-699094cda5a5c">
+                                                                        <div class="likes-widget-placeholder comment-likes-widget-placeholder comment-likes">
+                                                                          <span class="loading">Loading...</span>
+                                                                        </div>
+                                                                        <div class="comment-likes-widget jetpack-likes-widget comment-likes">
+                                                                          <span class="comment-like-feedback">
+                                                                          </span>
+                                                                          <span class="sd-text-color">
+                                                                          </span>
+                                                                          <a class="sd-link-color">
+                                                                          </a>
+                                                                        </div>
+                                                                      </div>
+                                                                      <div class="reply">
+                                                                        <a class="comment-reply-link" href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/?replytocom=9422#respond">Reply</a>
+                                                                      </div>
+                                                                    </div>
+                                                                  </li>
+                                                                  <!-- #comment-## -->
+                                                                  </ul>
+                                                                  <div id="respond" class="comment-respond">
+                                                                    <h3 id="reply-title" class="comment-reply-title">Leave a Reply<small>
+                                                                      <a id="cancel-comment-reply-link" href="/replacing-an-ssl-certificate-on-aem-6-5/#respond">Cancel reply</a>
+                                                                    </small>
+                                                                  </h3>			<form id="commentform" class="comment-form">
+                                                                  <iframe title="Comment Form" src="https://jetpack.wordpress.com/jetpack-comment/?blogid=71673077&amp;postid=1934&amp;comment_registration=0&amp;require_name_email=1&amp;stc_enabled=1&amp;stb_enabled=1&amp;show_avatars=1&amp;avatar_default=mystery&amp;greeting=Leave+a+Reply&amp;jetpack_comments_nonce=1ed8f7a793&amp;greeting_reply=Leave+a+Reply+to+%25s&amp;color_scheme=dark&amp;lang=en_US&amp;jetpack_version=13.4.4&amp;show_cookie_consent=10&amp;has_cookie_consent=0&amp;is_current_user_subscribed=0&amp;token_key=%3Bnormal%3B&amp;sig=1fb2428021c7c5976e2fb78d4ff34808be909dc4#parent=https%3A%2F%2Fwww.opsinventor.com%2Freplacing-an-ssl-certificate-on-aem-6-5%2F" class="jetpack_remote_comment" id="jetpack_remote_comment">
+                                                                  </iframe>
+                                                                  <!--[if !IE]>
+                                                                    <!-->
+                                                                      <!--<![endif]-->
+                                                                      </form>
+                                                                    </div>
+                                                                    <input id="comment_parent">
+                                                                      <p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/">Learn how your comment data is processed</a>.</p>	</div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                              </article>
+                                                              <aside id="sidebar" class="col-md-4">
+                                                                <div id="top-posts-7" class="widget widget_top-posts">
+                                                                  <div class="widget-title">
+                                                                    <h3>Top Posts &amp; Pages</h3>
+                                                                  </div>
+                                                                  <ul>
+                                                                    <li>
+                                                                      <a href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/" class="bump-view">Replacing an SSL Certificate on AEM 6.5</a>
+                                                                    </li>
+                                                                    <li>
+                                                                      <a href="https://www.opsinventor.com/dispelling-the-myths-of-adhd-msn-is-in-the-pocket-of-drug-companies/" class="bump-view">Dispelling the Myths of ADHD?  MSN is in the Pocket of Drug Companies!!</a>
+                                                                    </li>
+                                                                    <li>
+                                                                      <a href="https://www.opsinventor.com/every-bike-rental-bikeshare-ive-used/" class="bump-view">Comparing Bikeshare &amp; Bike Rental in USA vs Europe vs China</a>
+                                                                    </li>
+                                                                    <li>
+                                                                      <a href="https://www.opsinventor.com/setting-up-aem-author-workflow-offloading/" class="bump-view">Setting up AEM Author Workflow Offloading</a>
+                                                                    </li>
+                                                                    <li>
+                                                                      <a href="https://www.opsinventor.com/connected-remote-assets-on-aem-6-5-setup-caveats/" class="bump-view">Connected Remote Assets on AEM 6.5 - Setup &amp; Caveats</a>
+                                                                    </li>
+                                                                  </ul>
+                                                                </div>
+                                                                <div id="twitter_timeline-5" class="widget widget_twitter_timeline">
+                                                                  <a class="twitter-timeline" href="https://twitter.com/">My Tweets</a>
+                                                                </div>
+                                                                <div id="recent-comments-6" class="widget widget_recent_comments">
+                                                                  <div class="widget-title">
+                                                                    <h3>Recent Comments</h3>
+                                                                  </div>
+                                                                  <ul id="recentcomments">
+                                                                    <li class="recentcomments">
+                                                                      <span class="comment-author-link">Special Monkey</span> on <a href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/#comment-9422">Replacing an SSL Certificate on AEM 6.5</a>
+                                                                    </li>
+                                                                    <li class="recentcomments">
+                                                                      <span class="comment-author-link">
+                                                                        <a href="https://www.opsinventor.com/aem-as-a-cloud-service-new-features-announcements-from-adobe-summit/" class="url">AEM as a Cloud Service – New Features &amp; Announcements from Adobe Summit – OpsInventor</a>
+                                                                      </span> on <a href="https://www.opsinventor.com/speeding-up-aem-cloud-service-deployment-the-dispatcher-only-pipeline/#comment-9419">Speeding up AEM Cloud Service Deployment: The Dispatcher-Only Pipeline</a>
+                                                                    </li>
+                                                                    <li class="recentcomments">
+                                                                      <span class="comment-author-link">garima chopra</span> on <a href="https://www.opsinventor.com/review-of-best-social-bookmarking-social-news-services/#comment-9417">Review of Best Social Bookmarking &amp; Social News Services</a>
+                                                                    </li>
+                                                                    <li class="recentcomments">
+                                                                      <span class="comment-author-link">
+                                                                        <a href="https://www.gspann.com/resources/case-studies/simplify-b2b-e-commerce-messaging-using-adobe-experience-manager/" class="url">AEM cloud service</a>
+                                                                      </span> on <a href="https://www.opsinventor.com/introducing-aem-as-a-cloud-service/#comment-9416">Introducing AEM as a Cloud Service – Diagrams &amp; Explainer</a>
+                                                                    </li>
+                                                                    <li class="recentcomments">
+                                                                      <span class="comment-author-link">
+                                                                        <a href="https://www.opsinventor.com/" class="url">Tad Reeves</a>
+                                                                      </span> on <a href="https://www.opsinventor.com/aem-as-a-cloud-service-a-year-later-update-on-features-limitations/#comment-9409">AEM as a Cloud Service a Year Later – Update on Features &amp; Limitations</a>
+                                                                    </li>
+                                                                  </ul>
+                                                                </div>	</aside>
+                                                              </div>
+                                                              <!-- end content container -->
+                                                                <!-- end content container -->
+                                                                </div>
+                                                                <!-- end main-container -->
+                                                                </div>
+                                                                <!-- end page-area -->
+                                                                  <div id="content-footer-section" class="container-fluid clearfix">
+                                                                    <div class="container">
+                                                                      <div id="archives-2" class="widget widget_archive col-md-3">
+                                                                        <div class="widget-title">
+                                                                          <h3>Archives</h3>
+                                                                        </div>
+                                                                        <ul>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2023/04/">April 2023</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2023/02/">February 2023</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2022/05/">May 2022</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2022/03/">March 2022</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2022/02/">February 2022</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/08/">August 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/07/">July 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/06/">June 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/05/">May 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/03/">March 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/02/">February 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2021/01/">January 2021</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/11/">November 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/09/">September 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/07/">July 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/06/">June 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/05/">May 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/03/">March 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2020/01/">January 2020</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2019/12/">December 2019</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2019/08/">August 2019</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2019/07/">July 2019</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2019/06/">June 2019</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2019/04/">April 2019</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2019/03/">March 2019</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2018/11/">November 2018</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2018/09/">September 2018</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2018/08/">August 2018</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2018/07/">July 2018</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2018/06/">June 2018</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2018/05/">May 2018</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2017/06/">June 2017</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2017/05/">May 2017</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2016/09/">September 2016</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2016/08/">August 2016</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2015/03/">March 2015</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/12/">December 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/11/">November 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/09/">September 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/08/">August 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/07/">July 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/06/">June 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/04/">April 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/03/">March 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2014/02/">February 2014</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2013/11/">November 2013</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2013/10/">October 2013</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2013/09/">September 2013</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2013/08/">August 2013</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2013/06/">June 2013</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2013/03/">March 2013</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/12/">December 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/11/">November 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/10/">October 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/06/">June 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/05/">May 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/04/">April 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2012/02/">February 2012</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2011/12/">December 2011</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2011/10/">October 2011</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2011/06/">June 2011</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2011/05/">May 2011</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2011/04/">April 2011</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2009/04/">April 2009</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2008/10/">October 2008</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2008/09/">September 2008</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2008/04/">April 2008</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/12/">December 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/11/">November 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/10/">October 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/09/">September 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/08/">August 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/07/">July 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/06/">June 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/05/">May 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/04/">April 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/03/">March 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/02/">February 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2007/01/">January 2007</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2006/12/">December 2006</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2006/11/">November 2006</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2006/10/">October 2006</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2006/09/">September 2006</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/2006/08/">August 2006</a>
+                                                                          </li>
+                                                                        </ul>
+                                                                      </div>
+                                                                      <div id="top-posts-5" class="widget widget_top-posts col-md-3">
+                                                                        <div class="widget-title">
+                                                                          <h3>Top Posts &amp; Pages</h3>
+                                                                        </div>
+                                                                        <ul>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/" class="bump-view">Replacing an SSL Certificate on AEM 6.5</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/dispelling-the-myths-of-adhd-msn-is-in-the-pocket-of-drug-companies/" class="bump-view">Dispelling the Myths of ADHD?  MSN is in the Pocket of Drug Companies!!</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/every-bike-rental-bikeshare-ive-used/" class="bump-view">Comparing Bikeshare &amp; Bike Rental in USA vs Europe vs China</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/setting-up-aem-author-workflow-offloading/" class="bump-view">Setting up AEM Author Workflow Offloading</a>
+                                                                          </li>
+                                                                          <li>
+                                                                            <a href="https://www.opsinventor.com/connected-remote-assets-on-aem-6-5-setup-caveats/" class="bump-view">Connected Remote Assets on AEM 6.5 - Setup &amp; Caveats</a>
+                                                                          </li>
+                                                                        </ul>
+                                                                      </div>
+                                                                      <div id="pages-2" class="widget widget_pages col-md-3">
+                                                                        <div class="widget-title">
+                                                                          <h3>Pages</h3>
+                                                                        </div>
+                                                                        <ul>
+                                                                          <li class="page_item page-item-421">
+                                                                            <a href="https://www.opsinventor.com/about/">About this Site</a>
+                                                                          </li>
+                                                                          <li class="page_item page-item-649">
+                                                                            <a href="https://www.opsinventor.com/rental-car-review-gas-mileage-comparison/">Rental Car Review:  Gas Mileage Comparison</a>
+                                                                          </li>
+                                                                          <li class="page_item page-item-1091">
+                                                                            <a href="https://www.opsinventor.com/about-me/">Tad Reeves | About</a>
+                                                                          </li>
+                                                                        </ul>
+                                                                      </div>
+                                                                      <div id="flickr-7" class="widget widget_flickr col-md-3">
+                                                                        <div class="widget-title">
+                                                                          <h3>Flickr Photos</h3>
+                                                                        </div>
+                                                                        <!-- Start of Flickr Widget -->
+                                                                          <div class="flickr-wrapper flickr-size-thumbnail">
+                                                                            <div class="flickr-images">
+                                                                              <a href="https://www.flickr.com/photos/tadnkat/54981106449/">
+                                                                                <img src="https://i0.wp.com/live.staticflickr.com/65535/54981106449_8a8a8e7b83_s.jpg?w=750&amp;ssl=1" alt="20251212_191702" title="20251212_191702">
+                                                                                </a>
+                                                                                <a href="https://www.flickr.com/photos/tadnkat/54981106389/">
+                                                                                  <img src="https://i0.wp.com/live.staticflickr.com/65535/54981106389_b5b429a74a_s.jpg?w=750&amp;ssl=1" alt="Sunrise" title="Sunrise">
+                                                                                  </a>
+                                                                                  <a href="https://www.flickr.com/photos/tadnkat/54981043763/">
+                                                                                    <img src="https://i0.wp.com/live.staticflickr.com/65535/54981043763_ab4b2d08db_s.jpg?w=750&amp;ssl=1" alt="Doggo @ Sunrise" title="Doggo @ Sunrise">
+                                                                                    </a>
+                                                                                    <a href="https://www.flickr.com/photos/tadnkat/54803146857/">
+                                                                                      <img src="https://i0.wp.com/live.staticflickr.com/65535/54803146857_a2b962682b_s.jpg?w=750&amp;ssl=1" alt="20250921_090226" title="20250921_090226">
+                                                                                      </a>
+                                                                                      <a href="https://www.flickr.com/photos/tadnkat/54804330980/">
+                                                                                        <img src="https://i0.wp.com/live.staticflickr.com/65535/54804330980_97de4970cf_s.jpg?w=750&amp;ssl=1" alt="20250920_181645" title="20250920_181645">
+                                                                                        </a>
+                                                                                        <a href="https://www.flickr.com/photos/tadnkat/54803992346/">
+                                                                                          <img src="https://i0.wp.com/live.staticflickr.com/65535/54803992346_153371ccfe_s.jpg?w=750&amp;ssl=1" alt="20250920_150946" title="20250920_150946">
+                                                                                          </a>	</div>
+                                                                                          <a class="flickr-more" href="https://www.flickr.com/photos/tadnkat/">
+                                                                                            More Photos		</a>
+                                                                                          </div>
+                                                                                          <!-- End of Flickr Widget -->
+                                                                                          </div>		</div>
+                                                                                        </div>
+                                                                                        <footer id="colophon" class="footer-credits container-fluid">
+                                                                                          <div class="container">
+                                                                                            <div class="footer-credits-text text-center">
+                                                                                              Proudly powered by <a href="https://wordpress.org/">WordPress</a>			<span class="sep"> | </span>
+                                                                                              Theme: <a href="https://envothemes.com/">Envo Magazine</a>		</div>
+                                                                                            </div>
+                                                                                          </footer>
+                                                                                          <!-- GTM Container placement set to footer -->
+                                                                                            <!-- Google Tag Manager (noscript) -->
+                                                                                              <!-- End Google Tag Manager (noscript) -->	<div>
+                                                                                                <div class="grofile-hash-map-7e3b3aa13d929e06a65ef51f53f0d259">
+                                                                                                </div>
+                                                                                              </div>
+                                                                                              <div id="jp-carousel-loading-overlay">
+                                                                                                <div id="jp-carousel-loading-wrapper">
+                                                                                                  <span id="jp-carousel-library-loading">&nbsp;</span>
+                                                                                                </div>
+                                                                                              </div>
+                                                                                              <div class="jp-carousel-overlay">
+                                                                                                <div class="jp-carousel-container">
+                                                                                                  <!-- The Carousel Swiper -->
+                                                                                                    <div class="jp-carousel-wrap swiper-container jp-carousel-swiper-container jp-carousel-transitions">
+                                                                                                      <div class="jp-carousel swiper-wrapper">
+                                                                                                      </div>
+                                                                                                      <div class="jp-swiper-button-prev swiper-button-prev">
+                                                                                                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNSAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCQkJCQkJPG1hc2sgaWQ9Im1hc2tQcmV2IiBtYXNrLXR5cGU9ImFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSI4IiB5PSI2IiB3aWR0aD0iOSIgaGVpZ2h0PSIxMiI+CgkJCQkJCQk8cGF0aCBkPSJNMTYuMjA3MiAxNi41OUwxMS42NDk2IDEyTDE2LjIwNzIgNy40MUwxNC44MDQxIDZMOC44MzM1IDEyTDE0LjgwNDEgMThMMTYuMjA3MiAxNi41OVoiIGZpbGw9IndoaXRlIj48L3BhdGg+CgkJCQkJCTwvbWFzaz4KCQkJCQkJPGcgbWFzaz0idXJsKCNtYXNrUHJldikiPgoJCQkJCQkJPHJlY3QgeD0iMC41NzkxMDIiIHdpZHRoPSIyMy44ODIzIiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZGRkZGIj48L3JlY3Q+CgkJCQkJCTwvZz4KCQkJCQk8L3N2Zz4=">
+                                                                                                        </div>
+                                                                                                        <div class="jp-swiper-button-next swiper-button-next">
+                                                                                                          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNSAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCQkJCQkJPG1hc2sgaWQ9Im1hc2tOZXh0IiBtYXNrLXR5cGU9ImFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSI4IiB5PSI2IiB3aWR0aD0iOCIgaGVpZ2h0PSIxMiI+CgkJCQkJCQk8cGF0aCBkPSJNOC41OTgxNCAxNi41OUwxMy4xNTU3IDEyTDguNTk4MTQgNy40MUwxMC4wMDEyIDZMMTUuOTcxOCAxMkwxMC4wMDEyIDE4TDguNTk4MTQgMTYuNTlaIiBmaWxsPSJ3aGl0ZSI+PC9wYXRoPgoJCQkJCQk8L21hc2s+CgkJCQkJCTxnIG1hc2s9InVybCgjbWFza05leHQpIj4KCQkJCQkJCTxyZWN0IHg9IjAuMzQzNzUiIHdpZHRoPSIyMy44ODIyIiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZGRkZGIj48L3JlY3Q+CgkJCQkJCTwvZz4KCQkJCQk8L3N2Zz4=">
+                                                                                                          </div>
+                                                                                                        </div>
+                                                                                                        <!-- The main close buton -->
+                                                                                                          <div class="jp-carousel-close-hint">
+                                                                                                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNSAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCQkJCQk8bWFzayBpZD0ibWFza0Nsb3NlIiBtYXNrLXR5cGU9ImFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSI1IiB5PSI1IiB3aWR0aD0iMTUiIGhlaWdodD0iMTQiPgoJCQkJCQk8cGF0aCBkPSJNMTkuMzE2NiA2LjQxTDE3LjkxMzUgNUwxMi4zNTA5IDEwLjU5TDYuNzg4MzQgNUw1LjM4NTI1IDYuNDFMMTAuOTQ3OCAxMkw1LjM4NTI1IDE3LjU5TDYuNzg4MzQgMTlMMTIuMzUwOSAxMy40MUwxNy45MTM1IDE5TDE5LjMxNjYgMTcuNTlMMTMuNzU0IDEyTDE5LjMxNjYgNi40MVoiIGZpbGw9IndoaXRlIj48L3BhdGg+CgkJCQkJPC9tYXNrPgoJCQkJCTxnIG1hc2s9InVybCgjbWFza0Nsb3NlKSI+CgkJCQkJCTxyZWN0IHg9IjAuNDA5NjY4IiB3aWR0aD0iMjMuODgyMyIgaGVpZ2h0PSIyNCIgZmlsbD0iI0ZGRkZGRiI+PC9yZWN0PgoJCQkJCTwvZz4KCQkJCTwvc3ZnPg==">
+                                                                                                            </div>
+                                                                                                            <!-- Image info, comments and meta -->
+                                                                                                              <div class="jp-carousel-info">
+                                                                                                                <div class="jp-carousel-info-footer">
+                                                                                                                  <div class="jp-carousel-pagination-container">
+                                                                                                                    <div class="jp-swiper-pagination swiper-pagination">
+                                                                                                                    </div>
+                                                                                                                    <div class="jp-carousel-pagination">
+                                                                                                                    </div>
+                                                                                                                  </div>
+                                                                                                                  <div class="jp-carousel-photo-title-container">
+                                                                                                                    <h2 class="jp-carousel-photo-caption">
+                                                                                                                    </h2>
+                                                                                                                  </div>
+                                                                                                                  <div class="jp-carousel-photo-icons-container">
+                                                                                                                    <a href="#" class="jp-carousel-icon-btn jp-carousel-icon-info">
+                                                                                                                      <span class="jp-carousel-icon">
+                                                                                                                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNSAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCQkJCQkJCQkJPG1hc2sgaWQ9Im1hc2tJbmZvIiBtYXNrLXR5cGU9ImFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSIyIiB5PSIyIiB3aWR0aD0iMjEiIGhlaWdodD0iMjAiPgoJCQkJCQkJCQkJPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMi43NTM3IDJDNy4yNjA3NiAyIDIuODAyNzMgNi40OCAyLjgwMjczIDEyQzIuODAyNzMgMTcuNTIgNy4yNjA3NiAyMiAxMi43NTM3IDIyQzE4LjI0NjYgMjIgMjIuNzA0NiAxNy41MiAyMi43MDQ2IDEyQzIyLjcwNDYgNi40OCAxOC4yNDY2IDIgMTIuNzUzNyAyWk0xMS43NTg2IDdWOUgxMy43NDg4VjdIMTEuNzU4NlpNMTEuNzU4NiAxMVYxN0gxMy43NDg4VjExSDExLjc1ODZaTTQuNzkyOTIgMTJDNC43OTI5MiAxNi40MSA4LjM2NTMxIDIwIDEyLjc1MzcgMjBDMTcuMTQyIDIwIDIwLjcxNDQgMTYuNDEgMjAuNzE0NCAxMkMyMC43MTQ0IDcuNTkgMTcuMTQyIDQgMTIuNzUzNyA0QzguMzY1MzEgNCA0Ljc5MjkyIDcuNTkgNC43OTI5MiAxMloiIGZpbGw9IndoaXRlIj48L3BhdGg+CgkJCQkJCQkJCTwvbWFzaz4KCQkJCQkJCQkJPGcgbWFzaz0idXJsKCNtYXNrSW5mbykiPgoJCQkJCQkJCQkJPHJlY3QgeD0iMC44MTI1IiB3aWR0aD0iMjMuODgyMyIgaGVpZ2h0PSIyNCIgZmlsbD0iI0ZGRkZGRiI+PC9yZWN0PgoJCQkJCQkJCQk8L2c+CgkJCQkJCQkJPC9zdmc+">
+                                                                                                                        </span>
+                                                                                                                      </a>
+                                                                                                                      <a href="#" class="jp-carousel-icon-btn jp-carousel-icon-comments">
+                                                                                                                        <span class="jp-carousel-icon">
+                                                                                                                          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNSAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCQkJCQkJCQkJPG1hc2sgaWQ9Im1hc2tDb21tZW50cyIgbWFzay10eXBlPSJhbHBoYSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iMiIgeT0iMiIgd2lkdGg9IjIxIiBoZWlnaHQ9IjIwIj4KCQkJCQkJCQkJCTxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNC4zMjcxIDJIMjAuMjQ4NkMyMS4zNDMyIDIgMjIuMjM4OCAyLjkgMjIuMjM4OCA0VjE2QzIyLjIzODggMTcuMSAyMS4zNDMyIDE4IDIwLjI0ODYgMThINi4zMTcyOUwyLjMzNjkxIDIyVjRDMi4zMzY5MSAyLjkgMy4yMzI1IDIgNC4zMjcxIDJaTTYuMzE3MjkgMTZIMjAuMjQ4NlY0SDQuMzI3MVYxOEw2LjMxNzI5IDE2WiIgZmlsbD0id2hpdGUiPjwvcGF0aD4KCQkJCQkJCQkJPC9tYXNrPgoJCQkJCQkJCQk8ZyBtYXNrPSJ1cmwoI21hc2tDb21tZW50cykiPgoJCQkJCQkJCQkJPHJlY3QgeD0iMC4zNDY2OCIgd2lkdGg9IjIzLjg4MjMiIGhlaWdodD0iMjQiIGZpbGw9IiNGRkZGRkYiPjwvcmVjdD4KCQkJCQkJCQkJPC9nPgoJCQkJCQkJCTwvc3ZnPg==">
+                                                                                                                            <span class="jp-carousel-has-comments-indicator">
+                                                                                                                            </span>
+                                                                                                                          </span>
+                                                                                                                        </a>
+                                                                                                                      </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="jp-carousel-info-extra">
+                                                                                                                      <div class="jp-carousel-info-content-wrapper">
+                                                                                                                        <div class="jp-carousel-photo-title-container">
+                                                                                                                          <h2 class="jp-carousel-photo-title">
+                                                                                                                          </h2>
+                                                                                                                        </div>
+                                                                                                                        <div class="jp-carousel-comments-wrapper">
+                                                                                                                          <div id="jp-carousel-comments-loading">
+                                                                                                                            <span>Loading Comments...</span>
+                                                                                                                          </div>
+                                                                                                                          <div class="jp-carousel-comments">
+                                                                                                                          </div>
+                                                                                                                          <div id="jp-carousel-comment-form-container">
+                                                                                                                            <span id="jp-carousel-comment-form-spinner">&nbsp;</span>
+                                                                                                                            <div id="jp-carousel-comment-post-results">
+                                                                                                                            </div>
+                                                                                                                            <form id="jp-carousel-comment-form">
+                                                                                                                              <label class="screen-reader-text">Write a Comment...</label>
+                                                                                                                              <textarea class="jp-carousel-comment-form-field jp-carousel-comment-form-textarea" id="jp-carousel-comment-form-comment-field">
+                                                                                                                              </textarea>
+                                                                                                                              <div id="jp-carousel-comment-form-submit-and-info-wrapper">
+                                                                                                                                <div id="jp-carousel-comment-form-commenting-as">
+                                                                                                                                  <fieldset>
+                                                                                                                                    <label>Email (Required)</label>
+                                                                                                                                    <input class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-email-field">
+                                                                                                                                    </fieldset>
+                                                                                                                                    <fieldset>
+                                                                                                                                      <label>Name (Required)</label>
+                                                                                                                                      <input class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-author-field">
+                                                                                                                                      </fieldset>
+                                                                                                                                      <fieldset>
+                                                                                                                                        <label>Website</label>
+                                                                                                                                        <input class="jp-carousel-comment-form-field jp-carousel-comment-form-text-field" id="jp-carousel-comment-form-url-field">
+                                                                                                                                        </fieldset>
+                                                                                                                                      </div>
+                                                                                                                                      <input class="jp-carousel-comment-form-button" id="jp-carousel-comment-form-button-submit">
+                                                                                                                                      </div>
+                                                                                                                                    </form>
+                                                                                                                                  </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="jp-carousel-image-meta">
+                                                                                                                                  <div class="jp-carousel-title-and-caption">
+                                                                                                                                    <div class="jp-carousel-photo-info">
+                                                                                                                                      <h3 class="jp-carousel-caption">
+                                                                                                                                      </h3>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="jp-carousel-photo-description">
+                                                                                                                                    </div>
+                                                                                                                                  </div>
+                                                                                                                                  <ul class="jp-carousel-image-exif">
+                                                                                                                                  </ul>
+                                                                                                                                  <a class="jp-carousel-image-download" href="#">
+                                                                                                                                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjUiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNSAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCQkJCQkJCQkJPG1hc2sgaWQ9Im1hc2swIiBtYXNrLXR5cGU9ImFscGhhIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSIzIiB5PSIzIiB3aWR0aD0iMTkiIGhlaWdodD0iMTgiPgoJCQkJCQkJCQkJPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik01Ljg0NjE1IDVWMTlIMTkuNzc3NVYxMkgyMS43Njc3VjE5QzIxLjc2NzcgMjAuMSAyMC44NzIxIDIxIDE5Ljc3NzUgMjFINS44NDYxNUM0Ljc0MTU5IDIxIDMuODU1OTYgMjAuMSAzLjg1NTk2IDE5VjVDMy44NTU5NiAzLjkgNC43NDE1OSAzIDUuODQ2MTUgM0gxMi44MTE4VjVINS44NDYxNVpNMTQuODAyIDVWM0gyMS43Njc3VjEwSDE5Ljc3NzVWNi40MUw5Ljk5NTY5IDE2LjI0TDguNTkyNjEgMTQuODNMMTguMzc0NCA1SDE0LjgwMloiIGZpbGw9IndoaXRlIj48L3BhdGg+CgkJCQkJCQkJCTwvbWFzaz4KCQkJCQkJCQkJPGcgbWFzaz0idXJsKCNtYXNrMCkiPgoJCQkJCQkJCQkJPHJlY3QgeD0iMC44NzA2MDUiIHdpZHRoPSIyMy44ODIzIiBoZWlnaHQ9IjI0IiBmaWxsPSIjRkZGRkZGIj48L3JlY3Q+CgkJCQkJCQkJCTwvZz4KCQkJCQkJCQk8L3N2Zz4=">
+                                                                                                                                      <span class="jp-carousel-download-text">
+                                                                                                                                      </span>
+                                                                                                                                    </a>
+                                                                                                                                    <div class="jp-carousel-image-map">
+                                                                                                                                    </div>
+                                                                                                                                  </div>
+                                                                                                                                </div>
+                                                                                                                              </div>
+                                                                                                                            </div>
+                                                                                                                          </div>
+                                                                                                                        </div>
+                                                                                                                        <!-- `jetpack-carousel-swiper-css` is included in the concatenated jetpack.css -->
+                                                                                                                          <!-- `jetpack-carousel` is included in the concatenated jetpack.css -->
+                                                                                                                            <img src="https://pixel.wp.com/g.gif?v=ext&amp;blog=71673077&amp;post=1934&amp;tz=0&amp;srv=www.opsinventor.com&amp;j=1%3A13.4.4&amp;host=www.opsinventor.com&amp;ref=&amp;fcp=1072&amp;rand=0.7032658971129258" alt="" id="wpstats">
+                                                                                                                              <iframe src="https://widgets.wp.com/likes/master.html?ver=20260214#ver=20260214&amp;n=1" id="likes-master">
+                                                                                                                              </iframe>
+                                                                                                                              <div id="likes-other-gravatars" class="wpl-new-layout">
+                                                                                                                                <div class="likes-text">
+                                                                                                                                  <span>%d</span>
+                                                                                                                                </div>
+                                                                                                                                <ul class="wpl-avatars sd-like-gravatars">
+                                                                                                                                </ul>
+                                                                                                                              </div>
+                                                                                                                              <iframe src="https://platform.twitter.com/widgets/widget_iframe.2f70fb173b9000da126c79afe2098f02.html?origin=https%3A%2F%2Fwww.opsinventor.com" title="Twitter settings iframe">
+                                                                                                                              </iframe>
+                                                                                                                              <iframe id="rufous-sandbox" title="Twitter analytics iframe">
+                                                                                                                              </iframe>
+                                                                                                                            </body>
