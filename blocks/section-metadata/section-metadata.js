@@ -46,6 +46,7 @@ export function getColorScheme(section) {
 
 export function setColorScheme(section) {
   const scheme = getColorScheme(section);
+  if (!scheme) return;
   section.querySelectorAll(':scope > *').forEach((el) => {
     // Reset any pre-made color schemes
     el.classList.remove('light-scheme', 'dark-scheme');
@@ -70,8 +71,18 @@ function handleBackground(background, section) {
   }
 }
 
+function toClassName(name) {
+  return typeof name === 'string'
+    ? name
+      .toLowerCase()
+      .replace(/[^0-9a-z]/gi, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+    : '';
+}
+
 async function handleStyle(text, section) {
-  const styles = text.split(', ').map((style) => style.replaceAll(' ', '-'));
+  const styles = text.split(',').map((style) => toClassName(style));
   section.classList.add(...styles);
 }
 
