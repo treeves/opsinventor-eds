@@ -12,12 +12,10 @@ const locales = {
   '/zh': { lang: 'zh' },
 };
 
-// Widget patterns to look for
-const widgets = [
+const linkBlocks = [
   { fragment: '/fragments/' },
   { schedule: '/schedules/' },
   { youtube: 'https://www.youtube' },
-  { spotify: 'https://open.spotify.com' },
 ];
 
 // Blocks with self-managed styles
@@ -35,7 +33,16 @@ const decorateArea = ({ area = document }) => {
   eagerLoad(area, 'img');
 };
 
-(async function loadPage() {
-  setConfig({ hostnames, locales, widgets, components, decorateArea });
+export async function loadPage() {
+  setConfig({ hostnames, locales, linkBlocks, components, decorateArea });
   await loadArea();
+}
+await loadPage();
+
+(function da() {
+  const { searchParams } = new URL(window.location.href);
+  const hasPreview = searchParams.has('dapreview');
+  if (hasPreview) import('../tools/da/da.js').then((mod) => mod.default(loadPage));
+  const hasQE = searchParams.has('quick-edit');
+  if (hasQE) import('../tools/quick-edit/quick-edit.js').then((mod) => mod.default());
 }());

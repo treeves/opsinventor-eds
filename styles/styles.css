@@ -155,12 +155,15 @@
   --color-yellow-900: #1e1b00;
 
   /* named colors */
-  --color-light: #fff;
-  --color-dark: #000;
+  --color-light-base: 255 255 255;
+  --color-dark-base: 0 0 0;
+  --color-light: rgb(255 255 255);
+  --color-dark: rgb(0 0 0);
   --color-text: light-dark(var(--color-dark), var(--color-light));
   --color-link: light-dark(var(--color-gray-900), var(--color-gray-100));
   --color-brand: var(--color-purple-500);
   --color-accent: light-dark(var(--color-magenta-600), var(--color-magenta-500));
+  --color-background: light-dark(var(--color-light), var(--color-dark));
   --color-shaded: light-dark(#f9f9f9, #111);
 
   /* fonts */
@@ -204,7 +207,7 @@ html {
 
 body {
   margin: 0;
-  background-color: light-dark(var(--color-light), var(--color-dark));
+  background-color: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-family);
   font-size: var(--body-font-size-m);
@@ -256,17 +259,17 @@ a {
   }
 
   &.btn-primary {
-    color: light-dark(var(--color-light), var(--color-dark));
-    background-color: light-dark(var(--color-dark), var(--color-light));
+    color: var(--color-background);
+    background-color: var(--color-text);
 
     &.btn-outline {
-      color: light-dark(var(--color-dark), var(--color-light));
+      color: var(--color-text);
       background: transparent;
     }
   }
 
   &.btn-secondary {
-    color: light-dark(var(--color-light), var(--color-dark));
+    color: var(--color-background);
     background-color: var(--color-gray-500);
     border: 2px solid var(--color-gray-500);
 
@@ -314,7 +317,7 @@ button {
 }
 
 li {
-  margin-block: 1em 1em;
+  margin-block: 1em;
 }
 
 h1,
@@ -374,9 +377,9 @@ div[data-status] {
 }
 
 aem-sidekick {
-  display: none;
+  opacity: 0;
 
   &[open="true"].is-ready {
-    display: block;
+    opacity: 1;
   }
 }

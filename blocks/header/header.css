@@ -187,14 +187,13 @@ header {
     }
 
     &.is-open {
-      overflow: auto;
-      max-height: calc(100vh - var(--header-height));
+      overflow: scroll;
+      max-height: 100%;
     }
   }
 
   .main-nav-section {
     grid-area: nav;
-    overflow: auto;
 
     .default-content {
       max-width: 100%;
