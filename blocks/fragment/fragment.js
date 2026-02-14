@@ -11,26 +11,43 @@ function replaceDotMedia(path, doc) {
 }
 
 /**
+ * Inject a fragment into the dom to for calculating styles
+ * @param {HTMLElement} fragment the fragment
+ */
+function applyPageStyles(fragment) {
+  const container = document.createElement('div');
+  container.classList.add('hidden-container');
+  container.style = 'display: none';
+  document.body.append(container);
+  container.append(fragment);
+  return container;
+}
+
+/**
  * Loads a fragment.
  * @param {string} path The path to the fragment
  * @returns {HTMLElement} The root element of the fragment
  */
 export async function loadFragment(path) {
-  const resp = await fetch(`${path}.plain.html`);
-  if (!resp.ok) throw Error(`Couldn't fetch ${path}.plain.html`);
+  const resp = await fetch(`${path}`);
+  if (!resp.ok) throw Error(`Couldn't fetch ${path}`);
 
   const html = await resp.text();
   const doc = new DOMParser().parseFromString(html, 'text/html');
 
-  // Make images cacheable
-  replaceDotMedia(path, doc);
-
-  const sections = doc.body.querySelectorAll(':scope > div');
+  const sections = doc.body.querySelectorAll('main > div');
   const fragment = document.createElement('div');
   fragment.classList.add('fragment-content');
   fragment.append(...sections);
 
+  replaceDotMedia(path, doc);
+
+  const container = applyPageStyles(fragment);
+
   await loadArea({ area: fragment });
+
+  fragment.remove();
+  container.remove();
 
   return fragment;
 }
@@ -41,27 +58,21 @@ export async function loadFragment(path) {
  * @returns the element that can be replaced
  */
 function getReplaceEl(a) {
-  let count = 0;
   let current = a;
-  const parent = a.closest('.section');
+  const ancestor = a.closest('.section');
 
-  // Walk up the DOM tree from child to parent
-  while (current && current !== parent) {
-    current = current.parentElement;
-    if (current && current !== parent) {
-      count += 1;
+  // Walk up the DOM from child to ancestor
+  // Break when there is more than one child
+  while (current && current !== ancestor) {
+    const childCount = current.parentElement.children.length;
+    if (childCount <= 1) {
+      current = current.parentElement;
+    } else {
+      break;
     }
   }
 
-  if (count > 1) return a;
-
-  const { children } = parent;
-  if (children.length > 1) return a;
-
-  const { children: containerChildren } = children[0];
-  if (containerChildren.length > 1) return a;
-
-  return parent;
+  return current;
 }
 
 export default async function init(a) {
