@@ -1,6 +1,6 @@
 {
   "url": "https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/",
-  "timestamp": "2026-02-14T15:10:37.957Z",
+  "timestamp": "2026-02-14T15:29:31.771Z",
   "paths": {
     "documentPath": "/replacing-an-ssl-certificate-on-aem-6-5/index",
     "htmlFilePath": "/replacing-an-ssl-certificate-on-aem-6-5/index.plain.html",
@@ -8,9 +8,9 @@
     "dirPath": "/replacing-an-ssl-certificate-on-aem-6-5",
     "filename": "index"
   },
-  "screenshot": "import-work/screenshot.png",
+  "screenshot": "/workspace/import-work/screenshot.png",
   "html": {
-    "filePath": "import-work/cleaned.html",
+    "filePath": "/workspace/import-work/cleaned.html",
     "size": 105882
   },
   "metadata": {
@@ -40,19 +40,19 @@
     "count": 14,
     "mapping": {
       "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2022/10/opsinventor-logo-v1d_150dpi.png?w=439&ssl=1": "./images/b6c8a71dd607aa2f8094307272eb8915.png",
+      "https://secure.gravatar.com/avatar/c2112a511cb97407026d3f68db42b5f0c74e1950f834eee9096eee8ead4d0e0f?s=32&d=mm&r=g": "./images/526ed3d2fd57c71c44a31880410b2b20.jpg",
       "https://www.opsinventor.com/wp-content/uploads/2022/10/cropped-51007214282_b0c34870d0_k3.jpg": "./images/fd88b105ed3f7313bf7bb5e31b5ec2b2.jpg",
-      "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image-2.png?resize=768%2C510&ssl=1": "./images/b386d50003f43be21e16c52d6aa74f98.png",
+      "https://pixel.wp.com/g.gif?v=ext&blog=71673077&post=1934&tz=0&srv=www.opsinventor.com&j=1%3A13.4.4&host=www.opsinventor.com&ref=&fcp=1072&rand=0.7032658971129258": "./images/f29730c7edce65e1a585fa625de224c5.png",
       "https://i0.wp.com/live.staticflickr.com/65535/54981043763_ab4b2d08db_s.jpg?w=750&ssl=1": "./images/8fe17919d3e28d0669fa4e578a3d31dd.png",
+      "https://i0.wp.com/live.staticflickr.com/65535/54803992346_153371ccfe_s.jpg?w=750&ssl=1": "./images/e1cb5d9fe069ff491ebd44b8b1df944f.png",
       "https://i0.wp.com/live.staticflickr.com/65535/54981106449_8a8a8e7b83_s.jpg?w=750&ssl=1": "./images/0624c3d71bd1d0f491e3a26917c11216.png",
       "https://i0.wp.com/live.staticflickr.com/65535/54803146857_a2b962682b_s.jpg?w=750&ssl=1": "./images/52f668238f8da313da8c592d43851933.png",
+      "https://pixel.wp.com/g.gif?v=wpcom-no-pv&x_sharing-count-request=pinterest&r=0.87586779013016": "./images/20212776eabcc36158c51809c3e16bce.png",
       "https://i0.wp.com/live.staticflickr.com/65535/54981106389_b5b429a74a_s.jpg?w=750&ssl=1": "./images/3e827330bd398664a6f84b6d3d4be971.png",
-      "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image.png?resize=160%2C120&ssl=1": "./images/6540e7e26215029ae22e6fd567d53b59.png",
-      "https://pixel.wp.com/g.gif?v=ext&blog=71673077&post=1934&tz=0&srv=www.opsinventor.com&j=1%3A13.4.4&host=www.opsinventor.com&ref=&fcp=2108&rand=0.7015545276852787": "./images/07c4d7fb4e29ea8b58ffba07dd821337.png",
-      "https://pixel.wp.com/g.gif?v=wpcom-no-pv&x_sharing-count-request=pinterest&r=0.8228124127671352": "./images/ca13bfc8d0bd8c60dca6fa490a57e180.png",
-      "https://i0.wp.com/live.staticflickr.com/65535/54803992346_153371ccfe_s.jpg?w=750&ssl=1": "./images/e1cb5d9fe069ff491ebd44b8b1df944f.png",
       "https://i0.wp.com/live.staticflickr.com/65535/54804330980_97de4970cf_s.jpg?w=750&ssl=1": "./images/a2d51c6ce80bdac1a9a68101ff7ee2e3.png",
-      "https://secure.gravatar.com/avatar/c2112a511cb97407026d3f68db42b5f0c74e1950f834eee9096eee8ead4d0e0f?s=32&d=mm&r=g": "./images/526ed3d2fd57c71c44a31880410b2b20.jpg",
-      "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/04/image-1.png?resize=1140%2C641&ssl=1": "./images/69b6b2f76218211b6a1920c776bff530.png"
+      "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image-2.png?resize=768%2C510&ssl=1": "./images/b386d50003f43be21e16c52d6aa74f98.png",
+      "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/04/image-1.png?resize=1140%2C641&ssl=1": "./images/69b6b2f76218211b6a1920c776bff530.png",
+      "https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2023/02/image.png?resize=160%2C120&ssl=1": "./images/6540e7e26215029ae22e6fd567d53b59.png"
     },
     "stats": {
       "total": 14,
