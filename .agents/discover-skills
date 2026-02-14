@@ -5,8 +5,10 @@ IFS=$'\n\t'
 # Discover available skills in both project and global directories
 # Usage: .agents/discover-skills
 
-PROJECT_SKILLS_DIR=".claude/skills"
-GLOBAL_SKILLS_DIR="$HOME/.claude/skills"
+PROJECT_SKILLS_DIR=".skills"
+PROJECT_SKILLS_DIR_LEGACY=".claude/skills"
+GLOBAL_SKILLS_DIR="$HOME/.skills"
+GLOBAL_SKILLS_DIR_LEGACY="$HOME/.claude/skills"
 
 process_skills_directory() {
   local skills_dir="$1"
@@ -72,15 +74,17 @@ echo "Available Skills:"
 echo "=================="
 echo ""
 
-# Check project skills
-process_skills_directory "$PROJECT_SKILLS_DIR" "Project Skills (.claude/skills)"
+# Check project skills (new location first, then legacy)
+process_skills_directory "$PROJECT_SKILLS_DIR" "Project Skills (.skills)"
+process_skills_directory "$PROJECT_SKILLS_DIR_LEGACY" "Project Skills (.claude/skills - legacy)"
 
-# Check global skills
-process_skills_directory "$GLOBAL_SKILLS_DIR" "Personal Skills (~/.claude/skills)"
+# Check global skills (new location first, then legacy)
+process_skills_directory "$GLOBAL_SKILLS_DIR" "Personal Skills (~/.skills)"
+process_skills_directory "$GLOBAL_SKILLS_DIR_LEGACY" "Personal Skills (~/.claude/skills - legacy)"
 
 # If no skills found at all
-if [[ ! -d "$PROJECT_SKILLS_DIR" && ! -d "$GLOBAL_SKILLS_DIR" ]]; then
+if [[ ! -d "$PROJECT_SKILLS_DIR" && ! -d "$PROJECT_SKILLS_DIR_LEGACY" && ! -d "$GLOBAL_SKILLS_DIR" && ! -d "$GLOBAL_SKILLS_DIR_LEGACY" ]]; then
   echo "No skills directories found."
-  echo "- Project skills: $PROJECT_SKILLS_DIR"
-  echo "- Personal skills: $GLOBAL_SKILLS_DIR"
+  echo "- Project skills: $PROJECT_SKILLS_DIR (or $PROJECT_SKILLS_DIR_LEGACY)"
+  echo "- Personal skills: $GLOBAL_SKILLS_DIR (or $GLOBAL_SKILLS_DIR_LEGACY)"
 fi
