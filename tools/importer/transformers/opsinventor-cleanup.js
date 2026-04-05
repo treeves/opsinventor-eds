@@ -73,11 +73,9 @@ export default function transform(hookName, element, payload) {
       '#jp-relatedposts',
     ]);
 
-    // Remove comments section
-    // EXTRACTED: Found <div id="comments" class="comments-template"> in captured DOM
+    // Remove comment reply form but preserve actual comments for parser
     // EXTRACTED: Found <div id="respond" class="comment-respond"> in captured DOM
     WebImporter.DOMUtils.remove(element, [
-      '.comments-template',
       '#respond',
       '.comment-respond',
     ]);
@@ -121,11 +119,17 @@ export default function transform(hookName, element, payload) {
       }
     });
 
-    // Remove empty anchor links and loading text
+    // Remove WordPress/Jetpack junk text and empty elements
     const allPs = element.querySelectorAll('p');
     allPs.forEach((p) => {
       const text = p.textContent.trim();
-      if (text === 'Loading Comments...' || text === '%d' || text === '') {
+      if (text === 'Loading Comments...' || text === '%d' || text === 'Like Loading...' || text === '') {
+        p.remove();
+        return;
+      }
+      // Remove paragraphs that only contain hash anchors
+      const anchors = p.querySelectorAll('a');
+      if (anchors.length > 0 && !text) {
         p.remove();
       }
     });

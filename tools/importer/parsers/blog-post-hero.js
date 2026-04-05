@@ -4,84 +4,64 @@
 /**
  * Parser for blog-post-hero block
  *
- * Source: https://www.opsinventor.com/replacing-an-ssl-certificate-on-aem-6-5/
- * Base Block: blog-post-hero
- *
- * Block Structure (from markdown):
- * - Row 1: Block name header ("Blog Post Hero")
- * - (No content rows - block is metadata-driven)
- *
- * The blog-post-hero block reads all its content from page metadata
- * (og:title, author, date, image, tags) set via the Metadata block.
- * The parser extracts metadata values from the source DOM and creates
- * both the empty hero block and a Metadata block with extracted values.
+ * Handles three concerns:
+ * 1. Creates the blog-post-hero block (metadata-driven, reads from page meta tags)
+ * 2. Extracts and formats comments as a styled section (if any exist)
+ * 3. Creates a comprehensive Metadata block with title, description, author,
+ *    date, image, tags, categories, and template
  *
  * Source HTML Pattern:
  * <div class="post-XXXX post type-post...">
- *   <div class="news-thumb"><img src="..." title="..." alt="..."></div>
+ *   <div class="news-thumb"><img src="..."></div>
  *   <h1 class="single-title">Title</h1>
  *   <span class="posted-date">April 12, 2023</span>
- *   <span class="author-meta"><span class="author-meta-by">By</span><a>Author</a></span>
- *   <div class="single-content">...</div>
+ *   <span class="author-meta"><a>Author</a></span>
+ *   <div class="single-content"><div class="single-entry-summary">...</div></div>
+ *   <div class="entry-footer"><div class="cat-links"><a>Category</a></div></div>
  * </div>
- *
- * Generated: 2026-02-14
  */
 export default function parse(element, { document }) {
-  // Extract metadata from the source DOM
-  // VALIDATED: Selectors extracted from captured DOM (cleaned.html)
-
-  // Extract featured image
-  // EXTRACTED: Found <div class="news-thumb"><img src="..." title="..." alt="..."> in captured DOM
+  // --- Extract hero metadata ---
   const featuredImg = element.querySelector('.news-thumb img');
   const imageUrl = featuredImg ? (featuredImg.getAttribute('src') || '') : '';
 
-  // Extract title
-  // EXTRACTED: Found <h1 class="single-title"> in captured DOM
   const titleEl = element.querySelector('h1.single-title') || element.querySelector('h1');
   const title = titleEl ? titleEl.textContent.trim() : '';
 
-  // Extract date
-  // EXTRACTED: Found <span class="posted-date"> in captured DOM
   const dateEl = element.querySelector('.posted-date');
   const dateText = dateEl ? dateEl.textContent.trim() : '';
 
-  // Extract author
-  // EXTRACTED: Found <span class="author-meta"><a>Tad Reeves</a> in captured DOM
   const authorEl = element.querySelector('.author-meta a');
   const author = authorEl ? authorEl.textContent.trim() : '';
 
-  // Extract category from entry-footer
-  // EXTRACTED: Found <div class="cat-links"><a>technology</a> in captured DOM
-  const catEl = element.querySelector('.cat-links a');
-  const tags = catEl ? catEl.textContent.trim() : '';
+  // --- Extract ALL categories and tags ---
+  const catLinks = element.querySelectorAll('.cat-links a');
+  const categories = [...catLinks].map((a) => a.textContent.trim()).filter(Boolean);
 
-  // Create the blog-post-hero block (empty - metadata-driven)
+  const tagLinks = element.querySelectorAll('.tag-links a, .tags-links a, a[rel="tag"]');
+  const tags = [...tagLinks].map((a) => a.textContent.trim()).filter(Boolean);
+
+  // Combine categories + tags for the tags metadata field
+  const allTaxonomy = [...new Set([...categories, ...tags])];
+
+  // --- Extract description from first paragraph ---
+  const bodyContainer = element.querySelector('.single-entry-summary')
+    || element.querySelector('.single-content')
+    || element.querySelector('.entry-content');
+  const firstP = bodyContainer ? bodyContainer.querySelector('p') : null;
+  let description = '';
+  if (firstP) {
+    description = firstP.textContent.trim().substring(0, 200);
+    if (firstP.textContent.trim().length > 200) description += '...';
+  }
+
+  // --- Fix 3: Create the blog-post-hero block (empty, metadata-driven) ---
   const heroBlock = WebImporter.Blocks.createBlock(document, {
     name: 'Blog Post Hero',
     cells: [],
   });
 
-  // Create the Metadata block with extracted values
-  const metaCells = [];
-  if (title) metaCells.push(['title', title]);
-  if (title) metaCells.push(['og:title', title]);
-  if (author) metaCells.push(['author', author]);
-  if (dateText) metaCells.push(['date', dateText]);
-  if (imageUrl) metaCells.push(['image', imageUrl]);
-  if (tags) metaCells.push(['tags', tags]);
-
-  const metaBlock = WebImporter.Blocks.createBlock(document, {
-    name: 'Metadata',
-    cells: metaCells,
-  });
-
-  // Extract article body content (the actual post text)
-  const bodyContainer = element.querySelector('.single-entry-summary')
-    || element.querySelector('.single-content')
-    || element.querySelector('.entry-content');
-
-  // Remove non-content elements from body before extracting
+  // --- Clean body content ---
   if (bodyContainer) {
     const junk = bodyContainer.querySelectorAll(
       '.sharedaddy, .jetpack-likes-widget-wrapper, #jp-relatedposts, .sd-sharing-enabled, .sd-block'
@@ -89,21 +69,105 @@ export default function parse(element, { document }) {
     junk.forEach((el) => el.remove());
   }
 
-  // Build replacement: hero block + body content only
+  // --- Build page structure: hero block + body content ---
   const container = document.createElement('div');
   container.append(heroBlock);
 
   if (bodyContainer) {
-    // Move each child of the body container into our clean container
     while (bodyContainer.firstChild) {
       container.append(bodyContainer.firstChild);
     }
   }
 
-  // Append metadata block at the end of main
-  const main = document.querySelector('main') || document.body;
-  main.append(metaBlock);
+  // --- Fix 1: Extract and format comments section ---
+  const article = element.closest('article') || element.parentElement;
+  const commentsList = article ? article.querySelector('.commentlist, .comment-list') : null;
+  const commentItems = commentsList ? commentsList.querySelectorAll(':scope > li.comment, :scope > li.trackback, :scope > li.pingback') : [];
 
-  // Replace the entire post element with just hero + body content
+  if (commentItems.length > 0) {
+    // Section break before comments
+    const sectionBreak = document.createElement('hr');
+    container.append(sectionBreak);
+
+    // Comments heading
+    const commentsHeading = document.createElement('h2');
+    commentsHeading.textContent = 'Comments';
+    container.append(commentsHeading);
+
+    // Format each comment
+    commentItems.forEach((li) => {
+      const commentBody = li.querySelector('.comment-body');
+      if (!commentBody) return;
+
+      const commentAuthorEl = commentBody.querySelector('.comment-author .fn a, .comment-author .fn, cite.fn a, cite.fn');
+      const commentAuthor = commentAuthorEl ? commentAuthorEl.textContent.trim() : 'Anonymous';
+
+      const commentDateEl = commentBody.querySelector('.comment-meta a, .comment-metadata a, .commentmetadata a');
+      const commentDate = commentDateEl ? commentDateEl.textContent.trim() : '';
+
+      const commentTextEls = commentBody.querySelectorAll('p');
+      // Filter out paragraphs that are just inside nested elements
+      const commentTexts = [...commentTextEls]
+        .filter((p) => !p.closest('.comment-author') && !p.closest('.comment-meta') && !p.closest('.commentmetadata') && !p.closest('.reply'))
+        .map((p) => p.textContent.trim())
+        .filter(Boolean);
+
+      if (commentTexts.length > 0) {
+        const commentBlock = document.createElement('div');
+
+        const authorLine = document.createElement('p');
+        const strong = document.createElement('strong');
+        strong.textContent = commentAuthor;
+        authorLine.append(strong);
+        if (commentDate) {
+          const dateSpan = document.createElement('em');
+          dateSpan.textContent = ` — ${commentDate}`;
+          authorLine.append(dateSpan);
+        }
+        commentBlock.append(authorLine);
+
+        commentTexts.forEach((text) => {
+          const p = document.createElement('p');
+          p.textContent = text;
+          commentBlock.append(p);
+        });
+
+        container.append(commentBlock);
+      }
+    });
+
+    // Section-metadata for comments styling
+    const sectionMeta = WebImporter.Blocks.createBlock(document, {
+      name: 'Section Metadata',
+      cells: [
+        ['style', 'light'],
+      ],
+    });
+    container.append(sectionMeta);
+  }
+
+  // --- Section break before metadata ---
+  const metaHr = document.createElement('hr');
+  container.append(metaHr);
+
+  // --- Fix 2: Comprehensive Metadata block ---
+  const metaCells = [];
+  if (title) metaCells.push(['title', title]);
+  if (title) metaCells.push(['og:title', title]);
+  if (description) metaCells.push(['description', description]);
+  if (author) metaCells.push(['author', author]);
+  if (dateText) metaCells.push(['date', dateText]);
+  if (imageUrl) metaCells.push(['image', imageUrl]);
+  if (allTaxonomy.length > 0) metaCells.push(['tags', allTaxonomy.join(', ')]);
+  if (categories.length > 0) metaCells.push(['categories', categories.join(', ')]);
+  metaCells.push(['template', 'blog']);
+
+  const metaBlock = WebImporter.Blocks.createBlock(document, {
+    name: 'Metadata',
+    cells: metaCells,
+  });
+  container.append(metaBlock);
+
+  // Replace the entire post element with the clean structure
   element.replaceWith(container);
 }

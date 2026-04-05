@@ -33,24 +33,22 @@ var CustomImportScript = (() => {
     const dateText = dateEl ? dateEl.textContent.trim() : "";
     const authorEl = element.querySelector(".author-meta a");
     const author = authorEl ? authorEl.textContent.trim() : "";
-    const catEl = element.querySelector(".cat-links a");
-    const tags = catEl ? catEl.textContent.trim() : "";
+    const catLinks = element.querySelectorAll(".cat-links a");
+    const categories = [...catLinks].map((a) => a.textContent.trim()).filter(Boolean);
+    const tagLinks = element.querySelectorAll('.tag-links a, .tags-links a, a[rel="tag"]');
+    const tags = [...tagLinks].map((a) => a.textContent.trim()).filter(Boolean);
+    const allTaxonomy = [.../* @__PURE__ */ new Set([...categories, ...tags])];
+    const bodyContainer = element.querySelector(".single-entry-summary") || element.querySelector(".single-content") || element.querySelector(".entry-content");
+    const firstP = bodyContainer ? bodyContainer.querySelector("p") : null;
+    let description = "";
+    if (firstP) {
+      description = firstP.textContent.trim().substring(0, 200);
+      if (firstP.textContent.trim().length > 200) description += "...";
+    }
     const heroBlock = WebImporter.Blocks.createBlock(document, {
       name: "Blog Post Hero",
       cells: []
     });
-    const metaCells = [];
-    if (title) metaCells.push(["title", title]);
-    if (title) metaCells.push(["og:title", title]);
-    if (author) metaCells.push(["author", author]);
-    if (dateText) metaCells.push(["date", dateText]);
-    if (imageUrl) metaCells.push(["image", imageUrl]);
-    if (tags) metaCells.push(["tags", tags]);
-    const metaBlock = WebImporter.Blocks.createBlock(document, {
-      name: "Metadata",
-      cells: metaCells
-    });
-    const bodyContainer = element.querySelector(".single-entry-summary") || element.querySelector(".single-content") || element.querySelector(".entry-content");
     if (bodyContainer) {
       const junk = bodyContainer.querySelectorAll(
         ".sharedaddy, .jetpack-likes-widget-wrapper, #jp-relatedposts, .sd-sharing-enabled, .sd-block"
@@ -64,8 +62,69 @@ var CustomImportScript = (() => {
         container.append(bodyContainer.firstChild);
       }
     }
-    const main = document.querySelector("main") || document.body;
-    main.append(metaBlock);
+    const article = element.closest("article") || element.parentElement;
+    const commentsList = article ? article.querySelector(".commentlist, .comment-list") : null;
+    const commentItems = commentsList ? commentsList.querySelectorAll(":scope > li.comment, :scope > li.trackback, :scope > li.pingback") : [];
+    if (commentItems.length > 0) {
+      const sectionBreak = document.createElement("hr");
+      container.append(sectionBreak);
+      const commentsHeading = document.createElement("h2");
+      commentsHeading.textContent = "Comments";
+      container.append(commentsHeading);
+      commentItems.forEach((li) => {
+        const commentBody = li.querySelector(".comment-body");
+        if (!commentBody) return;
+        const commentAuthorEl = commentBody.querySelector(".comment-author .fn a, .comment-author .fn, cite.fn a, cite.fn");
+        const commentAuthor = commentAuthorEl ? commentAuthorEl.textContent.trim() : "Anonymous";
+        const commentDateEl = commentBody.querySelector(".comment-meta a, .comment-metadata a, .commentmetadata a");
+        const commentDate = commentDateEl ? commentDateEl.textContent.trim() : "";
+        const commentTextEls = commentBody.querySelectorAll("p");
+        const commentTexts = [...commentTextEls].filter((p) => !p.closest(".comment-author") && !p.closest(".comment-meta") && !p.closest(".commentmetadata") && !p.closest(".reply")).map((p) => p.textContent.trim()).filter(Boolean);
+        if (commentTexts.length > 0) {
+          const commentBlock = document.createElement("div");
+          const authorLine = document.createElement("p");
+          const strong = document.createElement("strong");
+          strong.textContent = commentAuthor;
+          authorLine.append(strong);
+          if (commentDate) {
+            const dateSpan = document.createElement("em");
+            dateSpan.textContent = ` \u2014 ${commentDate}`;
+            authorLine.append(dateSpan);
+          }
+          commentBlock.append(authorLine);
+          commentTexts.forEach((text) => {
+            const p = document.createElement("p");
+            p.textContent = text;
+            commentBlock.append(p);
+          });
+          container.append(commentBlock);
+        }
+      });
+      const sectionMeta = WebImporter.Blocks.createBlock(document, {
+        name: "Section Metadata",
+        cells: [
+          ["style", "light"]
+        ]
+      });
+      container.append(sectionMeta);
+    }
+    const metaHr = document.createElement("hr");
+    container.append(metaHr);
+    const metaCells = [];
+    if (title) metaCells.push(["title", title]);
+    if (title) metaCells.push(["og:title", title]);
+    if (description) metaCells.push(["description", description]);
+    if (author) metaCells.push(["author", author]);
+    if (dateText) metaCells.push(["date", dateText]);
+    if (imageUrl) metaCells.push(["image", imageUrl]);
+    if (allTaxonomy.length > 0) metaCells.push(["tags", allTaxonomy.join(", ")]);
+    if (categories.length > 0) metaCells.push(["categories", categories.join(", ")]);
+    metaCells.push(["template", "blog"]);
+    const metaBlock = WebImporter.Blocks.createBlock(document, {
+      name: "Metadata",
+      cells: metaCells
+    });
+    container.append(metaBlock);
     element.replaceWith(container);
   }
 
@@ -109,7 +168,6 @@ var CustomImportScript = (() => {
         "#jp-relatedposts"
       ]);
       WebImporter.DOMUtils.remove(element, [
-        ".comments-template",
         "#respond",
         ".comment-respond"
       ]);
@@ -142,7 +200,12 @@ var CustomImportScript = (() => {
       const allPs = element.querySelectorAll("p");
       allPs.forEach((p) => {
         const text = p.textContent.trim();
-        if (text === "Loading Comments..." || text === "%d" || text === "") {
+        if (text === "Loading Comments..." || text === "%d" || text === "Like Loading..." || text === "") {
+          p.remove();
+          return;
+        }
+        const anchors = p.querySelectorAll("a");
+        if (anchors.length > 0 && !text) {
           p.remove();
         }
       });
@@ -214,11 +277,35 @@ var CustomImportScript = (() => {
         }
       });
       executeTransformers("afterTransform", main, payload);
-      const hr = document.createElement("hr");
-      main.appendChild(hr);
-      WebImporter.rules.createMetadata(main, document);
       WebImporter.rules.transformBackgroundImages(main, document);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
+      const metadataBlocks = document.querySelectorAll(".metadata");
+      metadataBlocks.forEach((metaBlock) => {
+        let sibling = metaBlock.nextSibling;
+        while (sibling) {
+          const next = sibling.nextSibling;
+          sibling.remove();
+          sibling = next;
+        }
+      });
+      document.querySelectorAll("p").forEach((p) => {
+        const text = p.textContent.trim();
+        if (text === "Loading Comments..." || text === "%d" || text === "Like Loading..." || text === "") {
+          p.remove();
+        }
+      });
+      document.querySelectorAll("p").forEach((p) => {
+        if (!p.textContent.trim()) {
+          const anchors = p.querySelectorAll("a");
+          if (anchors.length > 0) p.remove();
+        }
+      });
+      document.querySelectorAll("img").forEach((img) => {
+        const src = img.getAttribute("src") || "";
+        if (src.includes("pixel.wp.com") || src.includes("g.gif")) {
+          (img.closest("p") || img).remove();
+        }
+      });
       const originalPath = new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html$/, "");
       const slug = originalPath.split("/").filter(Boolean).pop();
       const path = `/en/${WebImporter.FileUtils.sanitizePath(slug)}`;
