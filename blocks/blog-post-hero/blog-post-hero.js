@@ -22,9 +22,10 @@ function setupAnimatedBackground(section, isLargeScreen) {
           content: '';
           position: absolute;
           top: 0;
-          left: 0;
-          right: 0;
           bottom: 0;
+          left: 50%;
+          width: 100vw;
+          transform: translateX(-50%);
           background: radial-gradient(
             circle at 20% 80%,
             rgba(0, 175, 242, 0.15) 0%,
@@ -45,6 +46,7 @@ function setupAnimatedBackground(section, isLargeScreen) {
     // Add the animated background class and ensure relative positioning
     section.classList.add('hero-animated-bg');
     section.style.position = 'relative';
+    section.style.overflow = 'visible';
   } else {
     section.classList.remove('hero-animated-bg');
     section.style.position = '';
