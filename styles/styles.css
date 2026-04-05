@@ -52,28 +52,32 @@
   --color-code-text: #f8f8f2;
 
   /* fonts */
-  --font-family: "Roboto Condensed", roboto-condensed-fallback, "Helvetica Neue", helvetica, arial, sans-serif;
-  --font-family-mono: monospace, monospace;
+  --font-family: "Ranade", "Roboto Condensed", roboto-condensed-fallback, "Helvetica Neue", helvetica, arial, sans-serif;
+  --heading-font-family: "Ranade", "Roboto Condensed", 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-family-mono: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
-  /* headings - OpsInventor scale */
-  --heading-font-size-xxl: 36px;
-  --heading-font-size-xl: 30px;
-  --heading-font-size-l: 24px;
-  --heading-font-size-m: 18px;
-  --heading-font-size-s: 16px;
-  --heading-font-size-xs: 14px;
-  --heading-line-height: 1.1;
+  /* headings - Arbory scale */
+  --heading-font-size-xxl: 48px;
+  --heading-font-size-xl: 40px;
+  --heading-font-size-l: 32px;
+  --heading-font-size-m: 24px;
+  --heading-font-size-s: 20px;
+  --heading-font-size-xs: 18px;
+  --heading-line-height: 1.25;
   --heading-letter-spacing: -0.02em;
 
-  /* body */
+  /* body - Arbory scale */
   --body-font-size-xxxl: 25px;
   --body-font-size-xxl: 22px;
   --body-font-size-xl: 20px;
   --body-font-size-l: 18px;
-  --body-font-size-m: 16px;
-  --body-font-size-s: 14px;
-  --body-font-size-xs: 12px;
-  --body-line-height: 1.8;
+  --body-font-size-m: 22px;
+  --body-font-size-s: 18px;
+  --body-font-size-xs: 16px;
+  --body-line-height: 1.6;
+
+  /* content width */
+  --blog-content-width: 900px;
 
   /* misc */
   --header-height: 64px;
@@ -215,12 +219,13 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
+  font-family: var(--heading-font-family);
+  font-weight: 600;
   line-height: var(--heading-line-height);
   color: var(--color-heading);
   letter-spacing: var(--heading-letter-spacing);
-  margin-top: 20px;
-  margin-bottom: 10px;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
@@ -287,6 +292,17 @@ img {
 svg {
   width: 20px;
   height: 20px;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --heading-font-size-xxl: 60px;
+    --heading-font-size-xl: 48px;
+    --heading-font-size-l: 36px;
+    --heading-font-size-m: 30px;
+    --heading-font-size-s: 24px;
+    --heading-font-size-xs: 22px;
+  }
 }
 
 @media (width >= 1440px) {
