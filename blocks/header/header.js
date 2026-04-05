@@ -88,6 +88,28 @@ function decorateNavToggle(btn) {
 
 async function decorateAction(header, pattern) {
   const link = header.querySelector(`[href*="${pattern}"]`);
+  const actionName = pattern.split('/').pop();
+
+  // If link not found (DA may strip it), inject it for scheme toggle
+  if (!link && actionName === 'scheme') {
+    const actionsSection = header.querySelector('.actions-section');
+    if (!actionsSection) return;
+    const btn = document.createElement('button');
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'icon icon-scheme';
+    btn.append(iconSpan);
+    const textSpan = document.createElement('span');
+    textSpan.className = 'text';
+    textSpan.textContent = 'Color scheme';
+    btn.append(textSpan);
+    const wrapper = document.createElement('div');
+    wrapper.className = `action-wrapper ${actionName}`;
+    wrapper.append(btn);
+    actionsSection.querySelector('.default-content').prepend(wrapper);
+    decorateScheme(btn);
+    return;
+  }
+
   if (!link) return;
 
   const icon = link.querySelector('.icon');
@@ -101,7 +123,7 @@ async function decorateAction(header, pattern) {
     btn.append(textSpan);
   }
   const wrapper = document.createElement('div');
-  wrapper.className = `action-wrapper ${icon.classList[1].replace('icon-', '')}`;
+  wrapper.className = `action-wrapper ${icon ? icon.classList[1].replace('icon-', '') : actionName}`;
   wrapper.append(btn);
   link.parentElement.parentElement.replaceChild(wrapper, link.parentElement);
 
@@ -140,11 +162,24 @@ function decorateNavItem(li) {
 function decorateBrandSection(section) {
   section.classList.add('brand-section');
   const brandLink = section.querySelector('a');
-  const [, text] = brandLink.childNodes;
-  const span = document.createElement('span');
-  span.className = 'brand-text';
-  span.append(text);
-  brandLink.append(span);
+
+  // Inject logo SVG if icon-logo span is missing (DA strips spans)
+  if (!brandLink.querySelector('.icon-logo')) {
+    const logoImg = document.createElement('img');
+    logoImg.src = '/img/ops-logo.svg';
+    logoImg.alt = '';
+    logoImg.loading = 'eager';
+    brandLink.prepend(logoImg);
+  }
+
+  // Wrap remaining text in brand-text span
+  const textNode = [...brandLink.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim());
+  if (textNode) {
+    const span = document.createElement('span');
+    span.className = 'brand-text';
+    span.append(textNode);
+    brandLink.append(span);
+  }
 }
 
 function decorateNavSection(section) {
