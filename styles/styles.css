@@ -38,7 +38,7 @@
 
   /* named colors */
   --color-light: #fff;
-  --color-dark: #000;
+  --color-dark: #1a1a2e;
   --color-text: light-dark(#404040, #e0e0e0);
   --color-heading: light-dark(#000, #fff);
   --color-link: #00aff2;
@@ -59,7 +59,7 @@
 
   /* headings - Arbory scale */
   --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
+  --heading-font-size-xl: 36px;
   --heading-font-size-l: 32px;
   --heading-font-size-m: 24px;
   --heading-font-size-s: 20px;
@@ -298,7 +298,7 @@ svg {
 @media (width >= 900px) {
   :root {
     --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
+    --heading-font-size-xl: 42px;
     --heading-font-size-l: 36px;
     --heading-font-size-m: 30px;
     --heading-font-size-s: 24px;
