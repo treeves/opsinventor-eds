@@ -112,7 +112,6 @@ var CustomImportScript = (() => {
     container.append(metaHr);
     const metaCells = [];
     if (title) metaCells.push(["title", title]);
-    if (title) metaCells.push(["og:title", title]);
     if (description) metaCells.push(["description", description]);
     if (author) metaCells.push(["author", author]);
     if (dateText) metaCells.push(["date", dateText]);
