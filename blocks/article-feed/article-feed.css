@@ -6,62 +6,6 @@
   padding: 0 24px;
 }
 
-/* Featured cards: top 5 in a grid */
-.feed-featured {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 48px;
-}
-
-/* First featured card spans full width */
-.feed-featured .feed-card-featured:first-child {
-  grid-column: 1 / -1;
-}
-
-.feed-featured .feed-card-featured:first-child .feed-card-link {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.feed-featured .feed-card-featured:first-child .feed-card-image {
-  aspect-ratio: 16 / 10;
-}
-
-.feed-featured .feed-card-featured:first-child h3 {
-  font-size: var(--heading-font-size-l);
-}
-
-/* Remaining articles: compact list */
-.feed-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.feed-list .feed-card .feed-card-link {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 16px;
-  align-items: center;
-}
-
-.feed-list .feed-card .feed-card-image {
-  aspect-ratio: 1;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.feed-list .feed-card h3 {
-  font-size: var(--heading-font-size-s);
-  margin: 0;
-}
-
-.feed-list .feed-card .feed-card-description {
-  display: none;
-}
-
 /* Card base styles */
 .feed-card {
   border-radius: 8px;
@@ -135,6 +79,61 @@
   overflow: hidden;
 }
 
+/* List layout (lower specificity — must come before featured overrides) */
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feed-list .feed-card .feed-card-link {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.feed-list .feed-card .feed-card-image {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.feed-list .feed-card h3 {
+  font-size: var(--heading-font-size-s);
+  margin: 0;
+}
+
+.feed-list .feed-card .feed-card-description {
+  display: none;
+}
+
+/* Featured cards: top 5 in a grid (higher specificity overrides) */
+.feed-featured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.feed-featured .feed-card-featured:first-child {
+  grid-column: 1 / -1;
+}
+
+.feed-featured .feed-card-featured:first-child .feed-card-link {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.feed-featured .feed-card-featured:first-child .feed-card-image {
+  aspect-ratio: 16 / 10;
+}
+
+.feed-featured .feed-card-featured:first-child h3 {
+  font-size: var(--heading-font-size-l);
+}
+
 /* Mobile: single column */
 @media (width <= 600px) {
   .feed-featured {
@@ -143,9 +142,5 @@
 
   .feed-featured .feed-card-featured:first-child .feed-card-link {
     grid-template-columns: 1fr;
-  }
-
-  .feed-list .feed-card .feed-card-link {
-    grid-template-columns: 80px 1fr;
   }
 }
