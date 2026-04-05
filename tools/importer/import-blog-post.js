@@ -98,12 +98,43 @@ export default {
     // 4. Execute afterTransform transformers (final cleanup)
     executeTransformers('afterTransform', main, payload);
 
-    // 5. Apply WebImporter built-in rules
-    const hr = document.createElement('hr');
-    main.appendChild(hr);
-    WebImporter.rules.createMetadata(main, document);
+    // 5. Apply WebImporter built-in rules (skip createMetadata — parser handles it)
     WebImporter.rules.transformBackgroundImages(main, document);
     WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
+
+    // 6. Final cleanup — remove all content after the metadata block
+    // The metadata block is the last meaningful element; anything after it is junk
+    const metadataBlocks = document.querySelectorAll('.metadata');
+    metadataBlocks.forEach((metaBlock) => {
+      let sibling = metaBlock.nextSibling;
+      while (sibling) {
+        const next = sibling.nextSibling;
+        sibling.remove();
+        sibling = next;
+      }
+    });
+
+    // Also clean junk paragraphs anywhere in the document
+    document.querySelectorAll('p').forEach((p) => {
+      const text = p.textContent.trim();
+      if (text === 'Loading Comments...' || text === '%d' || text === 'Like Loading...' || text === '') {
+        p.remove();
+      }
+    });
+    // Remove paragraphs with only hash anchors
+    document.querySelectorAll('p').forEach((p) => {
+      if (!p.textContent.trim()) {
+        const anchors = p.querySelectorAll('a');
+        if (anchors.length > 0) p.remove();
+      }
+    });
+    // Remove tracking pixels
+    document.querySelectorAll('img').forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      if (src.includes('pixel.wp.com') || src.includes('g.gif')) {
+        (img.closest('p') || img).remove();
+      }
+    });
 
     // 6. Generate path under /en/ subtree
     const originalPath = new URL(params.originalURL).pathname
