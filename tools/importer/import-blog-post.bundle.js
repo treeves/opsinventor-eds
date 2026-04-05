@@ -57,6 +57,8 @@ var CustomImportScript = (() => {
     }
     const container = document.createElement("div");
     container.append(heroBlock);
+    const heroBreak = document.createElement("hr");
+    container.append(heroBreak);
     if (bodyContainer) {
       while (bodyContainer.firstChild) {
         container.append(bodyContainer.firstChild);

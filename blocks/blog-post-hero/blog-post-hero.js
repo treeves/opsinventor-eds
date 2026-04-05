@@ -26,13 +26,13 @@ function setupAnimatedBackground(section, isLargeScreen) {
           right: 0;
           bottom: 0;
           background: radial-gradient(
-            circle at 20% 80%, 
-            rgba(98, 168, 20, 0.3) 0%, 
+            circle at 20% 80%,
+            rgba(0, 175, 242, 0.15) 0%,
             transparent 50%
           ),
           radial-gradient(
-            circle at 80% 20%, 
-            rgba(64, 110, 12, 0.4) 0%, 
+            circle at 80% 20%,
+            rgba(0, 136, 204, 0.2) 0%,
             transparent 50%
           );
           animation: pulse 8s ease-in-out infinite;
