@@ -6,9 +6,9 @@
   margin: 0;
 }
 
-/* Body content sections: constrained readable width */
+/* Body content sections: same width as hero */
 .blog-template main .section:not(:nth-child(1)) {
-  max-width: 750px;
+  max-width: var(--blog-content-width, 900px);
   margin: 0 auto;
   padding: 0 24px 24px;
 }
