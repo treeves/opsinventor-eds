@@ -1,46 +1,10 @@
 /* Blog Post Hero — OpsInventor blue scheme */
 
-/* Container: full-width */
-.blog-post-hero-container {
-  width: 100%;
-  position: relative;
-  padding: 24px 0 0 !important;
-  margin: 0 !important;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-@media (width <= 900px) {
-  .blog-post-hero-container .default-content-wrapper p {
-    margin: 0;
-  }
-}
-
-.blog-post-hero-wrapper {
-  width: 100%;
-  max-width: var(--blog-content-width, 900px);
-  margin: 0 auto;
-  padding: 0 24px;
-  box-sizing: border-box;
-}
-
-@media (width >= 600px) {
-  .blog-post-hero-wrapper {
-    padding: 0 24px;
-  }
-}
-
+/* Block: full width of its section (width controlled by blog template) */
 .blog-post-hero {
   width: 100%;
   padding: 0;
   margin: 0;
-}
-
-@media (width <= 900px) {
-  .blog-post-hero {
-    margin: 0;
-  }
 }
 
 /* Hero card */
@@ -191,25 +155,6 @@
 
 /* Mobile: stack vertically */
 @media (width <= 858px) {
-  .blog-post-hero-container {
-    width: 100vw;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
-  .blog-post-hero-wrapper {
-    width: 100%;
-    max-width: 100%;
-    padding: 0;
-    margin: 0;
-  }
-
-  .blog-post-hero {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
   .blog-post-hero-content {
     flex-direction: column;
     gap: 0;
