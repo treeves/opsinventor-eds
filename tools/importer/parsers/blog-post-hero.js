@@ -153,7 +153,6 @@ export default function parse(element, { document }) {
   // --- Fix 2: Comprehensive Metadata block ---
   const metaCells = [];
   if (title) metaCells.push(['title', title]);
-  if (title) metaCells.push(['og:title', title]);
   if (description) metaCells.push(['description', description]);
   if (author) metaCells.push(['author', author]);
   if (dateText) metaCells.push(['date', dateText]);
