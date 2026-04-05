@@ -328,6 +328,7 @@ aem-sidekick {
 /* Dark mode — activated by header toggle adding .dark-scheme to body */
 body.dark-scheme {
   color-scheme: dark;
+
   --color-text: #e0e0e0;
   --color-heading: #fff;
   --color-background: #1a1d24;
@@ -337,9 +338,7 @@ body.dark-scheme {
   --color-gray-200: #2e3038;
   --color-gray-300: #3a3d45;
   --color-code-bg: #0d0f12;
-}
 
-body.dark-scheme {
   background-color: var(--color-background);
   color: var(--color-text);
 }
