@@ -92,6 +92,11 @@ function loadTemplate() {
 function decoratePictures(el) {
   const pics = el.querySelectorAll('picture');
   for (const pic of pics) {
+    pic.querySelectorAll('source, img').forEach((child) => {
+      const attr = child.hasAttribute('srcset') ? 'srcset' : 'src';
+      const val = child.getAttribute(attr);
+      if (val?.startsWith('./media_')) child.setAttribute(attr, val.replace('./', '/'));
+    });
     const source = pic.querySelector('source');
     const clone = source.cloneNode();
     const [pathname, params] = clone.getAttribute('srcset').split('?');
