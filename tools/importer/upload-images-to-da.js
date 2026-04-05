@@ -1,20 +1,10 @@
 #!/usr/bin/env node
 /**
- * Downloads featured images from WordPress and uploads them to DA.
- * Updates the .da.html file to reference the DA-hosted image path.
+ * Downloads ALL images from a post and uploads them to DA.
+ * Images are stored in the DA convention: /en/.{pagename}/{filename}
+ * Updates the .da.html with DA content URLs and <picture> elements.
  *
  * Usage: node upload-images-to-da.js <da-html-file> <da-token>
- *
- * Example:
- *   node upload-images-to-da.js content/en/my-post.da.html <token>
- *
- * The script:
- * 1. Reads the .da.html file
- * 2. Finds the image URL in the Metadata table
- * 3. Downloads the image
- * 4. Uploads it to DA at the same path as the document
- * 5. Updates the .da.html with the DA media reference
- * 6. Re-uploads the updated HTML to DA
  */
 const fs = require('fs');
 const path = require('path');
@@ -27,6 +17,7 @@ const daToken = process.argv[3];
 
 const ORG = 'treeves';
 const SITE = 'opsinventor-eds';
+const DA_CONTENT_BASE = `https://content.da.live/${ORG}/${SITE}`;
 
 if (!daHtmlFile || !daToken) {
   console.error('Usage: node upload-images-to-da.js <da-html-file> <da-token>');
@@ -56,8 +47,6 @@ function downloadImage(url) {
 
 async function uploadToDA(daPath, buffer, contentType) {
   const url = `https://admin.da.live/source/${ORG}/${SITE}${daPath}`;
-
-  // Build multipart form data manually
   const boundary = `----FormBoundary${crypto.randomBytes(8).toString('hex')}`;
   const filename = path.basename(daPath);
 
@@ -83,62 +72,100 @@ async function uploadToDA(daPath, buffer, contentType) {
   return response.json();
 }
 
+function getExtFromContentType(contentType) {
+  const map = {
+    'image/png': '.png', 'image/jpeg': '.jpg', 'image/jpg': '.jpg',
+    'image/gif': '.gif', 'image/webp': '.webp', 'image/svg+xml': '.svg',
+  };
+  return map[contentType] || '.png';
+}
+
 async function main() {
   let html = fs.readFileSync(daHtmlFile, 'utf8');
 
-  // Find image URL in metadata table: <tr><td>image</td><td>URL</td></tr>
-  const imageMatch = html.match(/<tr><td>image<\/td><td>([^<]+)<\/td><\/tr>/);
-  if (!imageMatch) {
-    console.log('No image metadata found, skipping.');
-    process.exit(0);
+  // Determine the DA document path and .{pagename} folder
+  // e.g. content/en/my-post.da.html -> pagename = my-post, folder = /en/.my-post
+  const relPath = daHtmlFile.replace(/^content/, '').replace(/\.da\.html$/, '').replace(/\.plain\.html$/, '');
+  const pageName = path.basename(relPath);
+  const dirPath = path.dirname(relPath);
+  const imageFolder = `${dirPath}/.${pageName}`;
+
+  console.log(`Page: ${relPath}`);
+  console.log(`Image folder: ${imageFolder}`);
+
+  // Find ALL image URLs in the HTML (src attributes and srcset)
+  const imgSrcRegex = /(?:src|srcset)="(https?:\/\/[^"]+)"/g;
+  const allUrls = new Set();
+  let m;
+  while ((m = imgSrcRegex.exec(html)) !== null) {
+    const url = m[1].replace(/&amp;/g, '&');
+    // Skip non-image URLs, tracking pixels, and gravatar
+    if (url.includes('pixel.wp.com') || url.includes('g.gif') || url.includes('gravatar.com')) continue;
+    // Only process WordPress image URLs
+    if (url.includes('wp.com') || url.includes('opsinventor.com/wp-content')) {
+      allUrls.add(url);
+    }
   }
 
-  const imageUrl = imageMatch[1].replace(/&amp;/g, '&');
-  console.log(`Found image: ${imageUrl}`);
+  // Also check metadata table image cell
+  const metaImgMatch = html.match(/<tr><td>image<\/td><td>([^<]+)<\/td><\/tr>/);
+  if (metaImgMatch) {
+    const metaUrl = metaImgMatch[1].replace(/&amp;/g, '&');
+    if (metaUrl.startsWith('http')) allUrls.add(metaUrl);
+  }
 
-  // Determine the DA document path from the filename
-  // e.g. content/en/my-post.da.html -> /en/my-post
-  const relPath = daHtmlFile
-    .replace(/^content/, '')
-    .replace(/\.da\.html$/, '')
-    .replace(/\.plain\.html$/, '');
+  console.log(`Found ${allUrls.size} unique image URLs to process`);
 
-  // Download the image
-  console.log('Downloading image...');
-  const { buffer, contentType } = await downloadImage(imageUrl);
+  // Download and upload each image, build URL mapping
+  const urlMap = {};
+  let idx = 0;
+  for (const originalUrl of allUrls) {
+    idx++;
+    try {
+      console.log(`[${idx}/${allUrls.size}] Downloading: ${originalUrl.substring(0, 80)}...`);
+      const { buffer, contentType } = await downloadImage(originalUrl);
+      const ext = getExtFromContentType(contentType);
+      const hash = crypto.createHash('md5').update(buffer).digest('hex').substring(0, 12);
+      const filename = `img${hash}${ext}`;
+      const daPath = `${imageFolder}/${filename}`;
+      const daContentUrl = `${DA_CONTENT_BASE}${daPath}`;
 
-  // Determine extension from content type
-  const extMap = {
-    'image/png': '.png',
-    'image/jpeg': '.jpg',
-    'image/jpg': '.jpg',
-    'image/gif': '.gif',
-    'image/webp': '.webp',
-    'image/svg+xml': '.svg',
-  };
-  const ext = extMap[contentType] || '.png';
-  const hash = crypto.createHash('md5').update(buffer).digest('hex').substring(0, 16);
-  const mediaFilename = `media_${hash}${ext}`;
+      await uploadToDA(daPath, buffer, contentType);
+      urlMap[originalUrl] = daContentUrl;
+      console.log(`  ✓ -> ${daPath}`);
+    } catch (err) {
+      console.error(`  ✗ Failed: ${err.message}`);
+    }
+  }
 
-  // Upload image to DA at document path
-  const daImagePath = `${relPath}/${mediaFilename}`;
-  console.log(`Uploading to DA: ${daImagePath}`);
-  await uploadToDA(daImagePath, buffer, contentType);
-  console.log('  ✓ Image uploaded');
+  // Replace all image URLs in HTML with DA URLs
+  // Handle both src="url" and srcset="url" and &amp; encoded versions
+  for (const [origUrl, daUrl] of Object.entries(urlMap)) {
+    const escaped = origUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const ampEscaped = origUrl.replace(/&/g, '&amp;').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    html = html.replace(new RegExp(escaped, 'g'), daUrl);
+    html = html.replace(new RegExp(ampEscaped, 'g'), daUrl);
+  }
 
-  // Update HTML: replace the image URL with the DA media reference
-  const daMediaRef = `./${mediaFilename}`;
-  html = html.replace(imageMatch[1], daMediaRef);
+  // For the metadata image: replace the plain text URL in the table cell
+  // with a <picture> element (DA convention)
+  html = html.replace(
+    /<tr><td>image<\/td><td>(https:\/\/content\.da\.live[^<]+)<\/td><\/tr>/,
+    (match, daUrl) => {
+      const picture = `<picture><source srcset="${daUrl}"><source srcset="${daUrl}" media="(min-width: 600px)"><img src="${daUrl}" alt="" loading="lazy"></picture>`;
+      return `<tr><td>image</td><td>${picture}</td></tr>`;
+    }
+  );
+
+  // Write updated HTML
   fs.writeFileSync(daHtmlFile, html);
-  console.log(`  ✓ Updated ${daHtmlFile} with DA image ref: ${daMediaRef}`);
+  console.log(`\nUpdated ${daHtmlFile} with ${Object.keys(urlMap).length} DA image refs`);
 
-  // Re-upload the updated HTML to DA
-  console.log('Re-uploading HTML to DA...');
+  // Upload the final HTML to DA
+  console.log('Uploading final HTML to DA...');
   const htmlBuffer = Buffer.from(html, 'utf8');
   await uploadToDA(`${relPath}.html`, htmlBuffer, 'text/html');
-  console.log('  ✓ HTML re-uploaded');
-
-  console.log('Done!');
+  console.log('✓ Done!');
 }
 
 main().catch((err) => {
