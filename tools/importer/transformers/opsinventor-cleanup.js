@@ -28,10 +28,22 @@ export default function transform(hookName, element, payload) {
       '.skip-link',
     ]);
 
-    // Remove sidebar
+    // Remove sidebar and all widget areas
     // EXTRACTED: Found <aside id="sidebar" class="col-md-4"> in captured DOM
     WebImporter.DOMUtils.remove(element, [
       'aside#sidebar',
+      'aside',
+      '.widget-area',
+      '.widget',
+      '.col-md-4',
+    ]);
+
+    // Remove site footer
+    WebImporter.DOMUtils.remove(element, [
+      'footer',
+      '.site-footer',
+      '.footer-widgets',
+      '.footer-bottom',
     ]);
 
     // Remove Table of Contents widget
@@ -98,5 +110,24 @@ export default function transform(hookName, element, payload) {
       'input',
       'form',
     ]);
+
+    // Remove tracking pixels and junk paragraphs
+    const allImgs = element.querySelectorAll('img');
+    allImgs.forEach((img) => {
+      const src = img.getAttribute('src') || '';
+      if (src.includes('pixel.wp.com') || src.includes('g.gif')) {
+        const parent = img.closest('p') || img.closest('figure') || img;
+        parent.remove();
+      }
+    });
+
+    // Remove empty anchor links and loading text
+    const allPs = element.querySelectorAll('p');
+    allPs.forEach((p) => {
+      const text = p.textContent.trim();
+      if (text === 'Loading Comments...' || text === '%d' || text === '') {
+        p.remove();
+      }
+    });
   }
 }
