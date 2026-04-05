@@ -57,10 +57,9 @@ export default function parse(element, { document }) {
   const tags = catEl ? catEl.textContent.trim() : '';
 
   // Create the blog-post-hero block (empty - metadata-driven)
-  const heroCells = [];
   const heroBlock = WebImporter.Blocks.createBlock(document, {
     name: 'Blog Post Hero',
-    cells: heroCells,
+    cells: [],
   });
 
   // Create the Metadata block with extracted values
@@ -77,14 +76,34 @@ export default function parse(element, { document }) {
     cells: metaCells,
   });
 
-  // Create a container with hero block, then append metadata at document end
+  // Extract article body content (the actual post text)
+  const bodyContainer = element.querySelector('.single-entry-summary')
+    || element.querySelector('.single-content')
+    || element.querySelector('.entry-content');
+
+  // Remove non-content elements from body before extracting
+  if (bodyContainer) {
+    const junk = bodyContainer.querySelectorAll(
+      '.sharedaddy, .jetpack-likes-widget-wrapper, #jp-relatedposts, .sd-sharing-enabled, .sd-block'
+    );
+    junk.forEach((el) => el.remove());
+  }
+
+  // Build replacement: hero block + body content only
   const container = document.createElement('div');
   container.append(heroBlock);
 
-  // Append metadata block to the end of the main content
+  if (bodyContainer) {
+    // Move each child of the body container into our clean container
+    while (bodyContainer.firstChild) {
+      container.append(bodyContainer.firstChild);
+    }
+  }
+
+  // Append metadata block at the end of main
   const main = document.querySelector('main') || document.body;
   main.append(metaBlock);
 
-  // Replace the original element with the hero block
+  // Replace the entire post element with just hero + body content
   element.replaceWith(container);
 }
