@@ -39,16 +39,17 @@
   /* named colors */
   --color-light: #fff;
   --color-dark: #000;
-  --color-text: #404040;
-  --color-heading: #000;
+  --color-text: light-dark(#404040, #e0e0e0);
+  --color-heading: light-dark(#000, #fff);
   --color-link: #00aff2;
   --color-link-hover: #23527c;
   --color-brand: #00aff2;
   --color-accent: #00aff2;
-  --color-background: #fff;
+  --color-background: light-dark(var(--color-light), var(--color-dark));
+  --color-shaded: light-dark(#f9f9f9, #111);
 
   /* code block colors */
-  --color-code-bg: #2b2b2b;
+  --color-code-bg: light-dark(#2b2b2b, #0d0f12);
   --color-code-text: #f8f8f2;
 
   /* fonts */
@@ -325,25 +326,10 @@ aem-sidekick {
   }
 }
 
-/* Dark mode — activated by header toggle adding .dark-scheme to body */
-body.dark-scheme {
-  color-scheme: dark;
-
-  --color-text: #e0e0e0;
-  --color-heading: #fff;
-  --color-background: #1a1d24;
-  --color-light: #1a1d24;
-  --color-dark: #fff;
-  --color-gray-100: #252830;
-  --color-gray-200: #2e3038;
-  --color-gray-300: #3a3d45;
-  --color-code-bg: #0d0f12;
-
-  background-color: var(--color-background);
-  color: var(--color-text);
+.light-scheme {
+  color-scheme: light;
 }
 
-/* Light mode — explicit (when toggled back from dark) */
-body.light-scheme {
-  color-scheme: light;
+.dark-scheme {
+  color-scheme: dark;
 }

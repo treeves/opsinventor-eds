@@ -78,8 +78,9 @@ export async function loadBlock(block) {
 }
 
 function loadTemplate() {
-  const template = getMetadata('template');
-  if (!template) return;
+  const meta = getMetadata('template');
+  if (!meta) return;
+  const template = meta.replaceAll(' ', '-').toLowerCase();
   const { codeBase } = getConfig();
   document.body.classList.add('has-template');
   loadStyle(`${codeBase}/templates/${template}/${template}.css`).then(() => {
@@ -192,7 +193,7 @@ export function decorateLink(config, a) {
     }
     decorateButton(a);
     if (!dnb) {
-      const { href } = a;
+      const href = a.getAttribute('href');
       const found = config.linkBlocks.some((pattern) => {
         const key = Object.keys(pattern)[0];
         if (!href.includes(pattern[key])) return false;
@@ -202,8 +203,7 @@ export function decorateLink(config, a) {
       if (found) return a;
     }
   } catch (ex) {
-    config.log('Could not decorate link');
-    config.log(ex);
+    config.log('Could not decorate link', ex);
   }
   return null;
 }
@@ -228,7 +228,6 @@ function groupChildren(section) {
   const children = section.querySelectorAll(':scope > *');
   const groups = [];
   let currentGroup = null;
-
   for (const child of children) {
     const isDiv = child.tagName === 'DIV';
     const currentType = currentGroup?.classList.contains('block-content');
@@ -242,7 +241,6 @@ function groupChildren(section) {
 
     currentGroup.append(child);
   }
-
   return groups;
 }
 
@@ -277,6 +275,11 @@ function decorateHeader() {
   if (breadcrumbs) header.append(breadcrumbs);
 }
 
+function decorateSession() {
+  sessionStorage.setItem('session', true);
+  document.body.classList.add('session');
+}
+
 function decorateDoc() {
   decorateHeader();
   loadTemplate();
@@ -290,7 +293,11 @@ function decorateDoc() {
 
 export async function loadArea({ area } = { area: document }) {
   const isDoc = area === document;
-  if (isDoc) decorateDoc();
+  const isSession = sessionStorage.getItem('session');
+  if (isDoc) {
+    if (isSession) await decorateSession();
+    decorateDoc();
+  }
   decoratePictures(area);
   const { decorateArea } = getConfig();
   if (decorateArea) decorateArea({ area });
@@ -300,7 +307,10 @@ export async function loadArea({ area } = { area: document }) {
     await Promise.all(section.linkBlocks.map((block) => loadBlock(block)));
     await Promise.all(section.blocks.map((block) => loadBlock(block)));
     delete section.dataset.status;
-    if (isDoc && idx === 0) import('./postlcp.js').then((mod) => mod.default());
+    if (isDoc && idx === 0) {
+      if (!isSession) decorateSession();
+      import('./postlcp.js').then((mod) => mod.default());
+    }
   }
   if (isDoc) import('./lazy.js');
 }

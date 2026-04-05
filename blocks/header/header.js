@@ -71,7 +71,7 @@ function decorateScheme(btn) {
     body.classList.remove(theme.remove);
     body.classList.add(theme.add);
     localStorage.setItem('color-scheme', theme.add);
-    // Re-calculate section schemes
+    // Re-calculatie section schemes
     const sections = document.querySelectorAll('.section');
     for (const section of sections) {
       setColorScheme(section);
@@ -86,51 +86,22 @@ function decorateNavToggle(btn) {
   });
 }
 
-/**
- * Creates an action button from a link or injects one if DA stripped it.
- */
-function createActionButton(link, actionName) {
-  const btn = document.createElement('button');
-  const icon = link?.querySelector('.icon');
-  const text = link?.textContent || actionName;
-
-  if (icon) {
-    btn.append(icon);
-  } else {
-    const iconSpan = document.createElement('span');
-    iconSpan.className = `icon icon-${actionName}`;
-    btn.append(iconSpan);
-  }
-
-  const textSpan = document.createElement('span');
-  textSpan.className = 'text';
-  textSpan.textContent = text;
-  btn.append(textSpan);
-
-  return btn;
-}
-
 async function decorateAction(header, pattern) {
-  const actionName = pattern.split('/').pop();
   const link = header.querySelector(`[href*="${pattern}"]`);
+  if (!link) return;
 
-  // DA may strip action links — inject scheme toggle if missing
-  if (!link) {
-    if (actionName !== 'scheme') return;
-    const actionsSection = header.querySelector('.actions-section .default-content');
-    if (!actionsSection) return;
-    const btn = createActionButton(null, actionName);
-    const wrapper = document.createElement('div');
-    wrapper.className = `action-wrapper ${actionName}`;
-    wrapper.append(btn);
-    actionsSection.prepend(wrapper);
-    decorateScheme(btn);
-    return;
+  const icon = link.querySelector('.icon');
+  const text = link.textContent;
+  const btn = document.createElement('button');
+  if (icon) btn.append(icon);
+  if (text) {
+    const textSpan = document.createElement('span');
+    textSpan.className = 'text';
+    textSpan.textContent = text;
+    btn.append(textSpan);
   }
-
-  const btn = createActionButton(link, actionName);
   const wrapper = document.createElement('div');
-  wrapper.className = `action-wrapper ${actionName}`;
+  wrapper.className = `action-wrapper ${icon.classList[1].replace('icon-', '')}`;
   wrapper.append(btn);
   link.parentElement.parentElement.replaceChild(wrapper, link.parentElement);
 
@@ -169,24 +140,11 @@ function decorateNavItem(li) {
 function decorateBrandSection(section) {
   section.classList.add('brand-section');
   const brandLink = section.querySelector('a');
-
-  // DA strips icon spans — inject logo image as fallback
-  if (!brandLink.querySelector('.icon')) {
-    const logoImg = document.createElement('img');
-    logoImg.src = '/img/ops-logo.svg';
-    logoImg.alt = '';
-    logoImg.loading = 'eager';
-    brandLink.prepend(logoImg);
-  }
-
-  // Wrap text node in brand-text span (stock Author Kit pattern)
-  const textNode = [...brandLink.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim());
-  if (textNode) {
-    const span = document.createElement('span');
-    span.className = 'brand-text';
-    span.append(textNode);
-    brandLink.append(span);
-  }
+  const [, text] = brandLink.childNodes;
+  const span = document.createElement('span');
+  span.className = 'brand-text';
+  span.append(text);
+  brandLink.append(span);
 }
 
 function decorateNavSection(section) {
@@ -217,7 +175,7 @@ async function decorateHeader(fragment) {
   if (sections[2]) decorateActionSection(sections[2]);
 
   for (const pattern of HEADER_ACTIONS) {
-    await decorateAction(fragment, pattern);
+    decorateAction(fragment, pattern);
   }
 }
 
