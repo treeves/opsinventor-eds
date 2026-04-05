@@ -1,6 +1,6 @@
 header {
-  --logo-width: 40px;
-  --logo-height: 40px;
+  --logo-width: 120px;
+  --logo-height: 120px;
   --mega-columns: 4;
 
   display: block;
@@ -194,6 +194,8 @@ header {
 
   .main-nav-section {
     grid-area: nav;
+    display: flex;
+    align-items: center;
 
     .default-content {
       max-width: 100%;
@@ -210,8 +212,9 @@ header {
     }
 
     .main-nav-link {
-      display: block;
-      line-height: 64px;
+      display: flex;
+      align-items: center;
+      height: 64px;
     }
 
     .menu,
