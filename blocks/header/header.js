@@ -71,7 +71,7 @@ function decorateScheme(btn) {
     body.classList.remove(theme.remove);
     body.classList.add(theme.add);
     localStorage.setItem('color-scheme', theme.add);
-    // Re-calculatie section schemes
+    // Re-calculate section schemes
     const sections = document.querySelectorAll('.section');
     for (const section of sections) {
       setColorScheme(section);
@@ -86,44 +86,51 @@ function decorateNavToggle(btn) {
   });
 }
 
-async function decorateAction(header, pattern) {
-  const link = header.querySelector(`[href*="${pattern}"]`);
-  const actionName = pattern.split('/').pop();
+/**
+ * Creates an action button from a link or injects one if DA stripped it.
+ */
+function createActionButton(link, actionName) {
+  const btn = document.createElement('button');
+  const icon = link?.querySelector('.icon');
+  const text = link?.textContent || actionName;
 
-  // If link not found (DA may strip it), inject it for scheme toggle
-  if (!link && actionName === 'scheme') {
-    const actionsSection = header.querySelector('.actions-section');
-    if (!actionsSection) return;
-    const btn = document.createElement('button');
+  if (icon) {
+    btn.append(icon);
+  } else {
     const iconSpan = document.createElement('span');
-    iconSpan.className = 'icon icon-scheme';
+    iconSpan.className = `icon icon-${actionName}`;
     btn.append(iconSpan);
-    const textSpan = document.createElement('span');
-    textSpan.className = 'text';
-    textSpan.textContent = 'Color scheme';
-    btn.append(textSpan);
+  }
+
+  const textSpan = document.createElement('span');
+  textSpan.className = 'text';
+  textSpan.textContent = text;
+  btn.append(textSpan);
+
+  return btn;
+}
+
+async function decorateAction(header, pattern) {
+  const actionName = pattern.split('/').pop();
+  const link = header.querySelector(`[href*="${pattern}"]`);
+
+  // DA may strip action links — inject scheme toggle if missing
+  if (!link) {
+    if (actionName !== 'scheme') return;
+    const actionsSection = header.querySelector('.actions-section .default-content');
+    if (!actionsSection) return;
+    const btn = createActionButton(null, actionName);
     const wrapper = document.createElement('div');
     wrapper.className = `action-wrapper ${actionName}`;
     wrapper.append(btn);
-    actionsSection.querySelector('.default-content').prepend(wrapper);
+    actionsSection.prepend(wrapper);
     decorateScheme(btn);
     return;
   }
 
-  if (!link) return;
-
-  const icon = link.querySelector('.icon');
-  const text = link.textContent;
-  const btn = document.createElement('button');
-  if (icon) btn.append(icon);
-  if (text) {
-    const textSpan = document.createElement('span');
-    textSpan.className = 'text';
-    textSpan.textContent = text;
-    btn.append(textSpan);
-  }
+  const btn = createActionButton(link, actionName);
   const wrapper = document.createElement('div');
-  wrapper.className = `action-wrapper ${icon ? icon.classList[1].replace('icon-', '') : actionName}`;
+  wrapper.className = `action-wrapper ${actionName}`;
   wrapper.append(btn);
   link.parentElement.parentElement.replaceChild(wrapper, link.parentElement);
 
@@ -163,8 +170,8 @@ function decorateBrandSection(section) {
   section.classList.add('brand-section');
   const brandLink = section.querySelector('a');
 
-  // Inject logo SVG if icon-logo span is missing (DA strips spans)
-  if (!brandLink.querySelector('.icon-logo')) {
+  // DA strips icon spans — inject logo image as fallback
+  if (!brandLink.querySelector('.icon')) {
     const logoImg = document.createElement('img');
     logoImg.src = '/img/ops-logo.svg';
     logoImg.alt = '';
@@ -172,7 +179,7 @@ function decorateBrandSection(section) {
     brandLink.prepend(logoImg);
   }
 
-  // Wrap remaining text in brand-text span
+  // Wrap text node in brand-text span (stock Author Kit pattern)
   const textNode = [...brandLink.childNodes].find((n) => n.nodeType === 3 && n.textContent.trim());
   if (textNode) {
     const span = document.createElement('span');
@@ -210,7 +217,7 @@ async function decorateHeader(fragment) {
   if (sections[2]) decorateActionSection(sections[2]);
 
   for (const pattern of HEADER_ACTIONS) {
-    decorateAction(fragment, pattern);
+    await decorateAction(fragment, pattern);
   }
 }
 
