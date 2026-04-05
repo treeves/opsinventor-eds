@@ -23,7 +23,7 @@
   --spacing-xs: 4px;
 
   /* color schemes */
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* OpsInventor color tokens */
   --color-gray-100: #f5f5f5;
@@ -53,7 +53,7 @@
 
   /* fonts */
   --font-family: "Ranade", "Roboto Condensed", roboto-condensed-fallback, "Helvetica Neue", helvetica, arial, sans-serif;
-  --heading-font-family: "Ranade", "Roboto Condensed", 'Segoe UI', Helvetica, Arial, sans-serif;
+  --heading-font-family: "Ranade", "Roboto Condensed", 'Segoe UI', helvetica, arial, sans-serif;
   --font-family-mono: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* headings - Arbory scale */
@@ -294,7 +294,7 @@ svg {
   height: 20px;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   :root {
     --heading-font-size-xxl: 60px;
     --heading-font-size-xl: 48px;
@@ -323,4 +323,28 @@ aem-sidekick {
   &[open="true"].is-ready {
     opacity: 1;
   }
+}
+
+/* Dark mode — activated by header toggle adding .dark-scheme to body */
+body.dark-scheme {
+  color-scheme: dark;
+  --color-text: #e0e0e0;
+  --color-heading: #fff;
+  --color-background: #1a1d24;
+  --color-light: #1a1d24;
+  --color-dark: #fff;
+  --color-gray-100: #252830;
+  --color-gray-200: #2e3038;
+  --color-gray-300: #3a3d45;
+  --color-code-bg: #0d0f12;
+}
+
+body.dark-scheme {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Light mode — explicit (when toggled back from dark) */
+body.light-scheme {
+  color-scheme: light;
 }
