@@ -107,7 +107,12 @@ export default function decorate(block) {
 
   if (metaImage) {
     const img = document.createElement('img');
-    img.src = metaImage;
+    try {
+      const metaUrl = new URL(metaImage, window.location.href);
+      img.src = `${metaUrl.pathname}${metaUrl.search}`;
+    } catch {
+      img.src = metaImage;
+    }
     img.alt = title;
     img.loading = 'eager';
     img.style.maxWidth = '100%';
