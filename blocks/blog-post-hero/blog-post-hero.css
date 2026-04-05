@@ -3,7 +3,7 @@
 /* Block: full width of its section (width controlled by blog template) */
 .blog-post-hero {
   width: 100%;
-  padding: 0;
+  padding: 0 0 0.8em;
   margin: 0;
 }
 
