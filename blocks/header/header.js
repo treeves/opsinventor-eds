@@ -140,6 +140,26 @@ function decorateNavItem(li) {
 function decorateBrandSection(section) {
   section.classList.add('brand-section');
   const brandLink = section.querySelector('a');
+
+  // Replace <use>-based SVG icon with inline SVG for cross-origin compatibility
+  const icon = brandLink.querySelector('svg.icon');
+  if (icon) {
+    const use = icon.querySelector('use');
+    if (use) {
+      const href = use.getAttribute('href');
+      const svgUrl = href.split('#')[0];
+      fetch(svgUrl).then((resp) => resp.text()).then((svgText) => {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = svgText;
+        const inlineSvg = tmp.querySelector('svg');
+        if (inlineSvg) {
+          inlineSvg.setAttribute('class', icon.getAttribute('class'));
+          icon.replaceWith(inlineSvg);
+        }
+      });
+    }
+  }
+
   const [, text] = brandLink.childNodes;
   const span = document.createElement('span');
   span.className = 'brand-text';
