@@ -69,9 +69,13 @@ export default function parse(element, { document }) {
     junk.forEach((el) => el.remove());
   }
 
-  // --- Build page structure: hero block + body content ---
+  // --- Build page structure: hero block → section break → body content ---
   const container = document.createElement('div');
   container.append(heroBlock);
+
+  // Section break so hero and body are separate EDS sections
+  const heroBreak = document.createElement('hr');
+  container.append(heroBreak);
 
   if (bodyContainer) {
     while (bodyContainer.firstChild) {
