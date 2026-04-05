@@ -1,9 +1,8 @@
-auto-generated: true
 indices:
-  blog:
+  en:
     include:
-      - /blog/**
-    target: /blog/query-index.json
+      - /en/**
+    target: /en/query-index.json
     properties:
       title:
         select: head > meta[property="og:title"]
@@ -14,17 +13,13 @@ indices:
         value: |
           attribute(el, "content")
       date:
-        select: head > meta[name="publication-date"]
+        select: head > meta[name="date"]
         value: |
-          dateValue(attribute(el, 'content'), 'MM-DD-YYYY')
+          attribute(el, "content")
       lastModified:
         select: none
         value: |
           parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
-      featured:
-        select: head > meta[name="featured"]
-        value: |
-          attribute(el, "content")
       author:
         select: head > meta[name="author"]
         value: |
@@ -33,19 +28,19 @@ indices:
         select: head > meta[property="og:image"]
         value: |
           match(attribute(el, "content"), "https:\/\/[^/]+(/.*)")
-      content:
-        select: main > div
-        values: characters(textContent(el), 0, 200)
       tags:
-        select: head > meta[property="article:tag"]
-        values: |
-          attribute(el, 'content')
-  authors:
-    include:
-      - /author/**
-    target: /author/query-index.json
-    properties:
-      title:
-        select: head > meta[property="og:title"]
+        select: head > meta[name="tags"]
+        value: |
+          attribute(el, "content")
+      categories:
+        select: head > meta[name="categories"]
+        value: |
+          attribute(el, "content")
+      template:
+        select: head > meta[name="template"]
+        value: |
+          attribute(el, "content")
+      pagetype:
+        select: head > meta[name="pagetype"]
         value: |
           attribute(el, "content")
