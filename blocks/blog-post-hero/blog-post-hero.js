@@ -162,7 +162,7 @@ export default function decorate(block) {
           day: 'numeric',
         });
       }
-    } catch (error) {
+    } catch (e) {
       formattedDate = publishDate;
     }
 
