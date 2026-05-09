@@ -1,0 +1,44 @@
+{
+  "_provenance": {
+    "writtenBy": "stardust:direct",
+    "writtenAt": "2026-05-09T13:45:10Z",
+    "stardustVersion": "0.2.0"
+  },
+  "site": {
+    "originUrl": "https://www.opsinventor.com",
+    "deployUrl": null,
+    "extractedAt": "2026-05-09T13:45:10Z",
+    "pageCap": 25,
+    "totalDiscovered": 245,
+    "crawled": 1
+  },
+  "direction": {
+    "resolvedAt": "2026-05-09T13:45:10Z",
+    "phrase": "Bolder and more distinctive",
+    "directionFile": "stardust/direction.md"
+  },
+  "pages": [
+    {
+      "slug": "home",
+      "url": "https://www.opsinventor.com/",
+      "title": "OpsInventor - Adobe Experience Manager Consulting & Knowhow",
+      "type": "landing",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/home.json",
+      "prototypePath": null,
+      "migratedPath": null
+    }
+  ]
+}
