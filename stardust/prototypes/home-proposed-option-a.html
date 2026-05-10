@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- stardust:provenance writtenBy: stardust:prototype writtenAt: 2026-05-10T00:00:00Z variant: A — DEPLOY -->
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsInventor | Option A — DEPLOY</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root{--orange:#CE5B12;--orange-dk:#92470D;--teal:#39AAB5;--teal-dk:#17828D;--ink:#0B1115;--ink2:#0F1C23;--surface:#F6FAFB;--text:#0E1B22;--muted:#35525C;--border:#BFD5DB;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Space Grotesk",sans-serif;background:var(--ink);color:#e8f4f6;}
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:0 clamp(20px,5vw,60px);height:60px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:100;background:var(--ink);}
+    .logo{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:15px;}
+    .logo em{font-style:normal;color:var(--orange);}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:rgba(232,244,246,.7);text-decoration:none;font-size:13px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;}
+    .nav-cta{background:var(--orange);color:#fff;padding:8px 16px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;}
+    .hero{display:grid;grid-template-columns:1fr 340px;min-height:calc(100vh - 60px);max-height:820px;}
+    .hero-main{padding:clamp(40px,7vw,80px) clamp(24px,5vw,60px);display:flex;flex-direction:column;justify-content:center;border-right:3px solid var(--orange);}
+    .hero-tag{font-family:"Space Mono",monospace;font-size:11px;color:var(--teal);text-transform:uppercase;letter-spacing:.18em;margin-bottom:28px;}
+    .hero-tag::before{content:"▶ ";}
+    h1{font-size:clamp(2.8rem,6vw,5.5rem);font-weight:700;line-height:.95;letter-spacing:-.02em;color:#fff;}
+    h1 span{color:var(--orange);display:block;}
+    .hero-dek{margin-top:24px;font-size:1.15rem;color:rgba(232,244,246,.72);max-width:52ch;line-height:1.65;}
+    .hero-actions{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+    .btn{display:inline-block;padding:13px 22px;font-weight:700;font-size:14px;text-decoration:none;letter-spacing:.04em;text-transform:uppercase;font-family:"Space Grotesk",sans-serif;}
+    .btn-primary{background:var(--orange);color:#fff;}
+    .btn-ghost{border:1px solid rgba(232,244,246,.3);color:rgba(232,244,246,.8);}
+    .hero-sidebar{background:var(--ink2);display:flex;flex-direction:column;}
+    .sidebar-header{background:var(--orange);padding:14px 20px;}
+    .sidebar-header h2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#fff;}
+    .sidebar-item{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:5px;}
+    .item-tag{font-family:"Space Mono",monospace;font-size:10px;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;}
+    .item-title{font-size:13px;font-weight:600;line-height:1.35;color:#e0f0f3;}
+    .sidebar-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.08);margin-top:auto;}
+    .sidebar-footer a{font-size:12px;color:var(--orange);text-decoration:none;font-weight:700;text-transform:uppercase;letter-spacing:.08em;}
+    .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);border-top:3px solid var(--orange);}
+    .stat{padding:28px 32px;border-right:1px solid rgba(255,255,255,.06);}
+    .stat:last-child{border-right:none;}
+    .stat-num{font-size:2.6rem;font-weight:700;color:#fff;line-height:1;letter-spacing:-.03em;}
+    .stat-num em{font-style:normal;color:var(--orange);}
+    .stat-label{margin-top:6px;font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(232,244,246,.5);}
+    .section{background:var(--surface);color:var(--text);padding:64px clamp(24px,5vw,60px);}
+    .section-eyebrow{font-family:"Space Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:var(--orange);margin-bottom:10px;}
+    .section-eyebrow::before{content:"// ";}
+    .section-title{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:#0B1115;letter-spacing:-.02em;margin-bottom:8px;}
+    .section-sub{color:var(--muted);max-width:65ch;line-height:1.6;margin-bottom:36px;}
+    .article-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+    .article-card{background:#fff;padding:24px;border-top:4px solid var(--border);}
+    .article-card:hover,.article-card:first-child{border-top-color:var(--orange);}
+    .card-tag{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--teal-dk);margin-bottom:12px;}
+    .article-card h3{font-size:1.05rem;font-weight:700;line-height:1.3;color:var(--text);margin-bottom:10px;}
+    .article-card p{font-size:14px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+    .read-link{font-size:13px;font-weight:700;color:var(--orange);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;}
+    .read-link::after{content:" →";}
+    .advisory{background:var(--orange);color:#fff;padding:56px clamp(24px,5vw,60px);display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+    .advisory h2{font-size:clamp(1.6rem,3vw,2.6rem);font-weight:700;letter-spacing:-.02em;max-width:22ch;}
+    .advisory p{margin-top:12px;font-size:1rem;color:rgba(255,255,255,.8);max-width:48ch;line-height:1.6;}
+    .btn-invert{background:#fff;color:var(--orange);padding:14px 24px;font-weight:700;font-size:14px;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;display:inline-block;font-family:"Space Grotesk",sans-serif;}
+    .solutions{background:var(--ink2);color:#e8f4f6;padding:64px clamp(24px,5vw,60px);}
+    .solutions .section-title{color:#fff;margin-bottom:32px;}
+    .solutions-grid{display:grid;grid-template-columns:repeat(3,1fr);}
+    .solution-item{padding:28px 24px;border-left:3px solid transparent;}
+    .solution-item:hover{border-left-color:var(--orange);background:rgba(255,255,255,.03);}
+    .solution-num{font-family:"Space Mono",monospace;font-size:10px;color:var(--teal);letter-spacing:.1em;margin-bottom:12px;}
+    .solution-item h3{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:8px;}
+    .solution-item p{font-size:14px;color:rgba(232,244,246,.6);line-height:1.55;}
+    footer{background:var(--ink);border-top:3px solid var(--orange);padding:28px clamp(24px,5vw,60px);display:flex;justify-content:space-between;align-items:center;}
+    .footer-brand{font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:13px;}
+    .footer-brand em{font-style:normal;color:var(--orange);}
+    .footer-links{display:flex;gap:20px;}
+    .footer-links a{color:rgba(232,244,246,.5);text-decoration:none;font-size:12px;text-transform:uppercase;letter-spacing:.08em;}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;max-height:none;}.hero-sidebar{display:none;}.stats-bar{grid-template-columns:repeat(2,1fr);}.article-grid{grid-template-columns:1fr;}.advisory{grid-template-columns:1fr;}.solutions-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="logo">OPS<em>INVENTOR</em></div>
+  <ul class="nav-links"><li><a href="#">Insights</a></li><li><a href="#">Solutions</a></li><li><a href="#">Advisory</a></li></ul>
+  <a href="#" class="nav-cta">Get in touch</a>
+</nav>
+<section class="hero">
+  <div class="hero-main">
+    <div class="hero-tag">Engineering leadership intelligence</div>
+    <h1>Ship faster.<br/><span>Break nothing.</span></h1>
+    <p class="hero-dek">OpsInventor turns AEM complexity into competitive advantage. Tactical insight for engineering leaders who don't have time for vague advice.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-primary">Read the latest</a>
+      <a href="#" class="btn btn-ghost">What we do</a>
+    </div>
+  </div>
+  <aside class="hero-sidebar">
+    <div class="sidebar-header"><h2>Latest Insights</h2></div>
+    <div class="sidebar-item"><div class="item-tag">AEM Cloud</div><div class="item-title">AEM Infrastructure &amp; Personnel Strategy: A Talk with Tom Johnson of Hirobe</div></div>
+    <div class="sidebar-item"><div class="item-tag">Operations</div><div class="item-title">Replacing an SSL Certificate on AEM 6.5 Without the Drama</div></div>
+    <div class="sidebar-item"><div class="item-tag">Strategy</div><div class="item-title">When to Go Cloud: Signals That Tell You It's Time</div></div>
+    <div class="sidebar-item"><div class="item-tag">AEM Dev</div><div class="item-title">OSGi Config Patterns That Won't Burn You in Production</div></div>
+    <div class="sidebar-footer"><a href="#">All insights →</a></div>
+  </aside>
+</section>
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">200<em>+</em></div><div class="stat-label">AEM engagements</div></div>
+  <div class="stat"><div class="stat-num">15<em>yr</em></div><div class="stat-label">Platform depth</div></div>
+  <div class="stat"><div class="stat-num">3<em>×</em></div><div class="stat-label">Faster migrations</div></div>
+  <div class="stat"><div class="stat-num">0<em>%</em></div><div class="stat-label">Vague advice</div></div>
+</div>
+<section class="section">
+  <div class="section-eyebrow">Insights</div>
+  <h2 class="section-title">Tactical depth. No filler.</h2>
+  <p class="section-sub">Real-world patterns from AEM teams in production. Every article is written for decision-makers who have skin in the game.</p>
+  <div class="article-grid">
+    <article class="article-card">
+      <div class="card-tag">AEM Cloud · Interview</div>
+      <h3>AEM Infrastructure and Personnel Strategy: A Talk with Tom Johnson of Hirobe</h3>
+      <p>What it actually takes to move a large-scale AEM deployment to cloud-native — staffing, tooling, and the decisions nobody warns you about.</p>
+      <a href="#" class="read-link">Read article</a>
+    </article>
+    <article class="article-card">
+      <div class="card-tag">AEM 6.5 · Operations</div>
+      <h3>Replacing an SSL Certificate on AEM 6.5</h3>
+      <p>Step-by-step, no ambiguity. Including the parts that break and why they break.</p>
+      <a href="#" class="read-link">Read article</a>
+    </article>
+    <article class="article-card">
+      <div class="card-tag">Strategy · Staffing</div>
+      <h3>In-House AEM vs. Managed Services: The Real Tradeoffs</h3>
+      <p>Beyond the vendor pitch: what experienced teams have learned about cost, control, and capability over time.</p>
+      <a href="#" class="read-link">Read article</a>
+    </article>
+  </div>
+</section>
+<div class="advisory">
+  <div>
+    <h2>Problems don't wait for the next sprint.</h2>
+    <p>OpsInventor advisory engagements are direct, fast, and outcome-focused. No lengthy onboarding. No slide decks. Just answers.</p>
+  </div>
+  <div><a href="#" class="btn-invert">Start a conversation</a></div>
+</div>
+<section class="solutions">
+  <div class="section-eyebrow" style="color:var(--teal);">// What we solve</div>
+  <h2 class="section-title">From assessment to execution.</h2>
+  <div class="solutions-grid">
+    <div class="solution-item"><div class="solution-num">01</div><h3>Cloud Migration</h3><p>AEMaaCS readiness, BPA triage, and migration execution with zero guesswork on the other side.</p></div>
+    <div class="solution-item"><div class="solution-num">02</div><h3>Performance &amp; Reliability</h3><p>Dispatcher tuning, replication pipelines, and Sling architecture for systems that hold up under load.</p></div>
+    <div class="solution-item"><div class="solution-num">03</div><h3>Team &amp; Org Design</h3><p>Staffing models, skills assessment, and operating structures that scale with your platform demands.</p></div>
+  </div>
+</section>
+<footer>
+  <div class="footer-brand">OPS<em>INVENTOR</em></div>
+  <div class="footer-links"><a href="#">Insights</a><a href="#">Solutions</a><a href="#">Advisory</a><a href="#">Contact</a></div>
+</footer>
+</body>
+</html>

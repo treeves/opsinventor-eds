@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- stardust:provenance
+    writtenBy: stardust:prototype
+    writtenAt: 2026-05-09T15:30:20Z
+    againstDirection: stardust/direction.md
+    sourcePage: stardust/current/pages/home.json
+  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsInventor | Advisory-Led Engineering Insight</title>
+  <style>
+    :root {
+      --color-ink-900: #124953;
+      --color-ink-700: #17828D;
+      --color-ink-500: #39AAB5;
+      --color-accent-500: #CE5B12;
+      --color-accent-700: #92470D;
+      --color-bg-900: #0B1115;
+      --color-surface-0: #F6FAFB;
+      --color-surface-1: #EAF7F9;
+      --color-text-primary: #0E1B22;
+      --color-text-muted: #35525C;
+      --color-border-subtle: #BFD5DB;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "IBM Plex Sans", "Segoe UI", sans-serif; color: var(--color-text-primary); background: linear-gradient(180deg, #f9fcfd 0%, #f2fafb 100%); }
+    .shell {
+      min-height: 84vh;
+      background:
+        radial-gradient(800px 520px at 8% -12%, rgba(57,170,181,0.55) 0%, rgba(57,170,181,0) 70%),
+        radial-gradient(760px 480px at 95% 8%, rgba(206,91,18,0.32) 0%, rgba(206,91,18,0) 72%),
+        linear-gradient(155deg, #0e3540 0%, #0b1115 56%, #0b1115 100%);
+      color: #ecf7f9;
+      position: relative;
+      overflow: hidden;
+    }
+    .shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(120deg, rgba(57,170,181,0.16) 0%, rgba(57,170,181,0) 42%), linear-gradient(300deg, rgba(206,91,18,0.1) 0%, rgba(206,91,18,0) 45%);
+      pointer-events: none;
+    }
+    .wrap { width: min(1120px, 92vw); margin: 0 auto; }
+    header { padding: 20px 0; border-bottom: 1px solid rgba(191,213,219,0.3); position: relative; z-index: 1; }
+    .brand { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .logo { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .logo span { color: #5fd3de; }
+    nav a { color: #ddf2f5; text-decoration: none; margin-left: 18px; font-size: 14px; }
+    .hero { padding: 58px 0 64px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 34px; position: relative; z-index: 1; }
+    .eyebrow { color: #8fe8ef; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 12px; font-weight: 700; }
+    h1 { font-family: "Source Serif 4", Georgia, serif; font-size: clamp(2.2rem, 4.5vw, 4rem); line-height: 1.02; margin: 0 0 14px; color: #f5fbfc; }
+    .dek { font-size: 1.1rem; color: #cde5ea; max-width: 58ch; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
+    .cta { display: inline-block; padding: 12px 18px; border-radius: 999px; background: var(--color-accent-500); color: #fff; text-decoration: none; font-weight: 700; box-shadow: 0 8px 22px rgba(206,91,18,0.42); }
+    .cta.secondary { background: transparent; border: 1px solid rgba(234,247,249,0.45); color: #ecf7f9; box-shadow: none; }
+    .signal-strip { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-top: 22px; }
+    .signal { border: 1px solid rgba(191,213,219,0.28); border-radius: 10px; padding: 10px 12px; background: rgba(13,40,46,0.55); }
+    .signal strong { display: block; font-size: 1.05rem; color: #7de2ec; }
+    .signal span { font-size: 12px; color: #bfd8dd; text-transform: uppercase; letter-spacing: 0.06em; }
+    .panel { background: linear-gradient(165deg, rgba(18,73,83,0.88), rgba(14,40,47,0.9)); border: 1px solid rgba(143,232,239,0.28); border-radius: 14px; padding: 22px; box-shadow: 0 18px 34px rgba(0,0,0,0.26); }
+    .panel h2 { margin: 0 0 8px; font-size: 1.2rem; color: #f4fbfc; }
+    .panel p { margin: 0; color: #c4dce0; line-height: 1.55; }
+    .panel ul { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .panel li { background: rgba(8,20,24,0.38); border: 1px solid rgba(191,213,219,0.2); border-radius: 8px; padding: 8px 10px; font-size: 14px; color: #def0f3; }
+    main { padding: 40px 0 78px; }
+    .section-title { margin: 0 0 18px; font-size: 1.45rem; color: var(--color-ink-900); }
+    .subline { color: var(--color-text-muted); margin: 0 0 18px; max-width: 75ch; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .card {
+      background: linear-gradient(180deg, #ffffff 0%, #f7fcfd 100%);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 10px 24px rgba(18,73,83,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before { content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--color-ink-500), var(--color-accent-500)); }
+    .meta { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-700); margin-bottom: 8px; }
+    .card h3 { margin: 0 0 8px; font-family: "Source Serif 4", Georgia, serif; font-size: 1.22rem; line-height: 1.22; }
+    .card p { margin: 0; color: var(--color-text-muted); line-height: 1.55; }
+    .card a { color: var(--color-accent-700); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 10px; }
+
+    .solutions { margin-top: 34px; background: var(--color-surface-1); border: 1px solid var(--color-border-subtle); border-radius: 14px; padding: 18px; }
+    .solution-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .solution {
+      background: #fff;
+      border: 1px solid #cce2e7;
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .solution b { display: block; margin-bottom: 6px; color: var(--color-ink-900); }
+    .solution p { margin: 0; color: var(--color-text-muted); font-size: 14px; line-height: 1.5; }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; }
+      .grid, .solution-grid, .signal-strip { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" data-section="hero">
+    <header>
+      <div class="wrap brand">
+        <div class="logo">OPS<span>INVENTOR</span></div>
+        <nav>
+          <a href="#">Insights</a>
+          <a href="#">Capabilities</a>
+          <a href="#">Case Perspectives</a>
+          <a href="#">Contact</a>
+        </nav>
+      </div>
+    </header>
+    <section class="wrap hero">
+      <div>
+        <div class="eyebrow">Strategic Engineering Advisory</div>
+        <h1>Bright ideas, grounded execution, and insights designed to unlock real delivery outcomes.</h1>
+        <p class="dek">OpsInventor helps leadership teams turn architecture complexity into strategic momentum. Every article is shaped like a solution brief: clear framing, decisive options, and practical next moves.</p>
+        <div class="actions">
+          <a class="cta" href="#">Start a strategic consult</a>
+          <a class="cta secondary" href="#">See solution pathways</a>
+        </div>
+        <div class="signal-strip">
+          <div class="signal"><strong>42%</strong><span>faster alignment cycles</span></div>
+          <div class="signal"><strong>18+</strong><span>platform rescue programs</span></div>
+          <div class="signal"><strong>245</strong><span>insights in the knowledge base</span></div>
+        </div>
+      </div>
+      <aside class="panel">
+        <h2>Insight-to-solution engine</h2>
+        <p>From technical signal to actionable path, each publication now supports decision-making velocity.</p>
+        <ul>
+          <li>Diagnose delivery friction in under two weeks</li>
+          <li>Map modernization bets to business outcomes</li>
+          <li>Scale execution with lean governance patterns</li>
+        </ul>
+      </aside>
+    </section>
+  </div>
+  <main class="wrap" data-section="insights">
+    <h2 class="section-title">Featured Insights</h2>
+    <p class="subline">An energetic consultancy front should still feel deeply thoughtful. These pieces highlight clarity, urgency, and practical direction.</p>
+    <section class="grid">
+      <article class="card">
+        <div class="meta">AEM Delivery Systems • 9 min</div>
+        <h3>What consultation-ready architecture looks like in modern AEM programs</h3>
+        <p>A practical framing of governance, speed, and resilience decisions that executive sponsors actually care about.</p>
+        <a href="#">Read insight</a>
+      </article>
+      <article class="card">
+        <div class="meta">Operations Strategy • 7 min</div>
+        <h3>How to evaluate technical debt without losing modernization speed</h3>
+        <p>A decision map for teams balancing pressure, migration risk, and momentum with solution-first focus.</p>
+        <a href="#">Read insight</a>
+      </article>
+      <article class="card">
+        <div class="meta">Engineering Leadership • 11 min</div>
+        <h3>Speaking of Engineering: why signal-rich communication wins executive trust</h3>
+        <p>Consultancy credibility compounds when bold framing, real evidence, and implementation detail stay aligned.</p>
+        <a href="#">Read insight</a>
+      </article>
+    </section>
+
+    <section class="solutions">
+      <h2 class="section-title">Solution Pathways</h2>
+      <div class="solution-grid">
+        <article class="solution">
+          <b>Modernization Sprint</b>
+          <p>Rapidly surface architecture constraints and define the highest-value intervention sequence.</p>
+        </article>
+        <article class="solution">
+          <b>Advisory Blueprint</b>
+          <p>Convert strategic priorities into an operating model your engineering teams can execute confidently.</p>
+        </article>
+        <article class="solution">
+          <b>Delivery Enablement</b>
+          <p>Embed practical governance, quality signals, and capability growth into day-to-day flow.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

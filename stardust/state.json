@@ -1,7 +1,7 @@
 {
   "_provenance": {
-    "writtenBy": "stardust:direct",
-    "writtenAt": "2026-05-09T13:45:10Z",
+    "writtenBy": "stardust:prototype",
+    "writtenAt": "2026-05-09T15:30:20Z",
     "stardustVersion": "0.2.0"
   },
   "site": {
@@ -10,19 +10,45 @@
     "extractedAt": "2026-05-09T13:45:10Z",
     "pageCap": 25,
     "totalDiscovered": 245,
-    "crawled": 1
+    "crawled": 21
   },
   "direction": {
-    "resolvedAt": "2026-05-09T13:45:10Z",
-    "phrase": "Bolder and more distinctive",
+    "resolvedAt": "2026-05-09T15:30:20Z",
+    "phrase": "Modernize for advanced consultancy positioning; article-first beauty; apply attached teal-copper palette; ignore legacy colors",
     "directionFile": "stardust/direction.md"
   },
   "pages": [
     {
-      "slug": "home",
-      "url": "https://www.opsinventor.com/",
-      "title": "OpsInventor - Adobe Experience Manager Consulting & Knowhow",
-      "type": "landing",
+      "slug": "__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe",
+      "url": "https://www.opsinventor.com/aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe/",
+      "title": "AEM Infrastructure and Personnel Strategy: A talk with Tom Johnson of Hirobe - OpsInventor",
+      "type": "article",
+      "status": "prototyped",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T15:30:20Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T15:30:20Z"
+        },
+        {
+          "status": "prototyped",
+          "at": "2026-05-09T15:30:20Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe.json",
+      "prototypePath": "stardust/prototypes/__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe.html",
+      "migratedPath": null
+    },
+    {
+      "slug": "__another-addition-to-social-bookmarking-otavo",
+      "url": "https://www.opsinventor.com//another-addition-to-social-bookmarking-otavo",
+      "title": "Another Addition to Social Bookmarking: Otavo – OpsInventor",
+      "type": "article",
       "status": "directed",
       "history": [
         {
@@ -36,8 +62,434 @@
       ],
       "stale": false,
       "staleReason": null,
-      "currentStatePath": "stardust/current/pages/home.json",
+      "currentStatePath": "stardust/current/pages/__another-addition-to-social-bookmarking-otavo.json",
       "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__china-will-force-ipv6-switch-china-is-taking-over-the-internet",
+      "url": "https://www.opsinventor.com//china-will-force-ipv6-switch-china-is-taking-over-the-internet",
+      "title": "China Will Force IPv6 Switch – China is Taking over the Internet!! – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__china-will-force-ipv6-switch-china-is-taking-over-the-internet.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__dell-offers-first-amd-based-desktop-pc",
+      "url": "https://www.opsinventor.com//dell-offers-first-amd-based-desktop-pc",
+      "title": "Dell Offers First AMD-Based Desktop PC – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__dell-offers-first-amd-based-desktop-pc.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__how-to-make-a-terrorist-in-3-easy-steps",
+      "url": "https://www.opsinventor.com//how-to-make-a-terrorist-in-3-easy-steps",
+      "title": "How to Make a Terrorist in 3 Easy Steps – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__how-to-make-a-terrorist-in-3-easy-steps.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__is-internet-3d-dead",
+      "url": "https://www.opsinventor.com//is-internet-3d-dead",
+      "title": "Is Internet 3D Dead? – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__is-internet-3d-dead.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__is-log-analysis-for-web-analytics-a-dead-subject",
+      "url": "https://www.opsinventor.com//is-log-analysis-for-web-analytics-a-dead-subject",
+      "title": "Is Log Analysis for Web Analytics a Dead Subject? – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__is-log-analysis-for-web-analytics-a-dead-subject.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__review-of-best-social-bookmarking-social-news-services",
+      "url": "https://www.opsinventor.com//review-of-best-social-bookmarking-social-news-services",
+      "title": "Review of Best Social Bookmarking &#038; Social News Services – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__review-of-best-social-bookmarking-social-news-services.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__search-for-a-better-battery-keeps-going-and-going",
+      "url": "https://www.opsinventor.com//search-for-a-better-battery-keeps-going-and-going",
+      "title": "Search For a Better Battery Keeps Going and Going – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__search-for-a-better-battery-keeps-going-and-going.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__seo-tips-on-how-to-improve-search-engine-results",
+      "url": "https://www.opsinventor.com//seo-tips-on-how-to-improve-search-engine-results",
+      "title": "SEO Tips on how to improve search engine results – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__seo-tips-on-how-to-improve-search-engine-results.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__shopping-cart-designed-for-the-homeless",
+      "url": "https://www.opsinventor.com//shopping-cart-designed-for-the-homeless",
+      "title": "Shopping cart designed for the homeless? – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__shopping-cart-designed-for-the-homeless.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__speaking-of-engineering",
+      "url": "https://www.opsinventor.com//speaking-of-engineering",
+      "title": "Speaking of Engineering&#8230; – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "prototyped",
+          "at": "2026-05-09T15:30:20Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__speaking-of-engineering.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__statistics",
+      "url": "https://www.opsinventor.com//statistics",
+      "title": "Statistics – OpsInventor",
+      "type": "static",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__statistics.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__the-biggest-error-box-ever",
+      "url": "https://www.opsinventor.com//the-biggest-error-box-ever",
+      "title": "The BIGGEST Error Box Ever? – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__the-biggest-error-box-ever.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__the-no-click-user-interface",
+      "url": "https://www.opsinventor.com//the-no-click-user-interface",
+      "title": "The No-Click User Interface  – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__the-no-click-user-interface.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__the-rise-of-baidu-thats-chinese-for-google",
+      "url": "https://www.opsinventor.com//the-rise-of-baidu-thats-chinese-for-google",
+      "title": "The rise of Baidu (that's Chinese for Google) – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__the-rise-of-baidu-thats-chinese-for-google.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__the-technology-and-anatomy-of-an-argument",
+      "url": "https://www.opsinventor.com//the-technology-and-anatomy-of-an-argument",
+      "title": "The Technology and Anatomy of an Argument – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__the-technology-and-anatomy-of-an-argument.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__the-technology-of-assists",
+      "url": "https://www.opsinventor.com//the-technology-of-assists",
+      "title": "The Technology of Assists – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__the-technology-of-assists.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__the-technology-of-human-communication",
+      "url": "https://www.opsinventor.com//the-technology-of-human-communication",
+      "title": "The Technology of Human Communication – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__the-technology-of-human-communication.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "__what-inventions-have-resulted-in-peace",
+      "url": "https://www.opsinventor.com//what-inventions-have-resulted-in-peace",
+      "title": "What Inventions Have Resulted in Peace? – OpsInventor",
+      "type": "article",
+      "status": "directed",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/__what-inventions-have-resulted-in-peace.json",
+      "prototypePath": null,
+      "migratedPath": null
+    },
+    {
+      "slug": "home",
+      "url": "https://www.opsinventor.com/",
+      "title": "OpsInventor – Adobe Experience Manager Consulting & Knowhow",
+      "type": "landing",
+      "status": "prototyped",
+      "history": [
+        {
+          "status": "extracted",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "directed",
+          "at": "2026-05-09T13:45:10Z"
+        },
+        {
+          "status": "prototyped",
+          "at": "2026-05-09T15:30:20Z"
+        }
+      ],
+      "stale": false,
+      "staleReason": null,
+      "currentStatePath": "stardust/current/pages/home.json",
+      "prototypePath": "stardust/prototypes/home.html",
       "migratedPath": null
     }
   ]

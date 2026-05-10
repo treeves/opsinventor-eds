@@ -1,0 +1,12 @@
+{
+  "slug": "__statistics",
+  "url": "https://www.opsinventor.com//statistics",
+  "title": "Statistics – OpsInventor",
+  "type": "static",
+  "_provenance": {
+    "writtenBy": "stardust:extract-bootstrap",
+    "writtenAt": "2026-05-09T13:45:10Z",
+    "renderedBy": "http-fetch",
+    "source": "https://www.opsinventor.com//statistics"
+  }
+}

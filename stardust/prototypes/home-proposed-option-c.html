@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- stardust:provenance
+    writtenBy: stardust:prototype
+    writtenAt: 2026-05-09T15:30:20Z
+    againstDirection: stardust/direction.md
+    variant: C
+  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsInventor | Variant C - Insight Canvas</title>
+  <style>
+    :root {
+      --ink-900: #124953;
+      --ink-700: #17828D;
+      --ink-500: #39AAB5;
+      --accent-500: #CE5B12;
+      --accent-700: #92470D;
+      --bg-900: #0B1115;
+      --surface-0: #F6FAFB;
+      --surface-1: #EAF7F9;
+      --text: #0f1f27;
+      --muted: #375662;
+      --line: #bfd5db;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif; background: var(--surface-0); color: var(--text); }
+    .top { background: linear-gradient(180deg, #f8fcfd 0%, #ebf7f9 100%); border-bottom: 1px solid var(--line); }
+    .wrap { width: min(1160px, 92vw); margin: 0 auto; }
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
+    .brand { font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-900); }
+    .brand span { color: var(--accent-500); }
+    .nav a { color: var(--ink-900); text-decoration: none; margin-left: 16px; font-size: 14px; }
+    .canvas { padding: 30px 0 56px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: 0.11em; font-size: 12px; color: var(--ink-700); font-weight: 700; }
+    h1 { margin: 10px 0 14px; font-family: "Source Serif 4", Georgia, serif; font-size: clamp(2.2rem, 4vw, 3.8rem); line-height: 1.05; color: var(--ink-900); }
+    .dek { color: var(--muted); line-height: 1.62; max-width: 60ch; }
+    .cta-row { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn { background: var(--ink-700); color: #fff; text-decoration: none; padding: 11px 16px; border-radius: 9px; font-weight: 700; }
+    .btn.alt { background: var(--accent-500); }
+    .insight-board {
+      border-radius: 16px;
+      padding: 14px;
+      background:
+        radial-gradient(340px 200px at 10% 0%, rgba(57,170,181,0.28) 0%, rgba(57,170,181,0) 70%),
+        radial-gradient(280px 180px at 95% 100%, rgba(206,91,18,0.26) 0%, rgba(206,91,18,0) 75%),
+        #102b33;
+      color: #e8f6f8;
+    }
+    .insight-board h2 { margin: 0 0 10px; font-size: 1.05rem; }
+    .matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .node { border: 1px solid rgba(191,213,219,0.4); border-radius: 10px; padding: 10px; font-size: 13px; background: rgba(9,22,26,0.38); }
+    main { padding: 34px 0 70px; }
+    .section-title { margin: 0 0 8px; color: var(--ink-900); font-size: 1.5rem; }
+    .section-sub { margin: 0 0 16px; color: var(--muted); }
+    .list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .item { background: #fff; border: 1px solid var(--line); border-radius: 13px; padding: 14px; box-shadow: 0 8px 20px rgba(18,73,83,0.07); }
+    .item .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-700); margin-bottom: 7px; }
+    .item h3 { margin: 0 0 8px; font-family: "Source Serif 4", Georgia, serif; line-height: 1.25; }
+    .item p { margin: 0; color: var(--muted); line-height: 1.5; }
+    @media (max-width: 940px) {
+      .canvas, .list { grid-template-columns: 1fr; }
+      .nav .links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <section class="top">
+    <div class="wrap">
+      <header class="nav">
+        <div class="brand">OPS<span>INVENTOR</span></div>
+        <nav class="links"><a href="#">Insights</a><a href="#">Frameworks</a><a href="#">Capabilities</a><a href="#">Contact</a></nav>
+      </header>
+      <div class="canvas">
+        <div>
+          <div class="eyebrow">Variant C • Insight Canvas</div>
+          <h1>Where modern engineering insight meets executable consulting strategy.</h1>
+          <p class="dek">Designed to feel bright and intelligent, this concept emphasizes idea quality and solution momentum. It positions articles as strategic assets, not simple blog posts.</p>
+          <div class="cta-row">
+            <a class="btn" href="#">See advisory frameworks</a>
+            <a class="btn alt" href="#">Get a tailored recommendation</a>
+          </div>
+        </div>
+        <aside class="insight-board">
+          <h2>Current decision themes</h2>
+          <div class="matrix">
+            <div class="node">Cloud posture and operational overhead</div>
+            <div class="node">Staffing model and capability development</div>
+            <div class="node">Migration risk by platform surface</div>
+            <div class="node">Governance speed vs quality assurance</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <h2 class="section-title">Latest Insight Briefs</h2>
+    <p class="section-sub">Each brief leads to an actionable pathway, keeping technical depth and executive clarity in balance.</p>
+    <section class="list">
+      <article class="item"><div class="tag">Infrastructure strategy • 9 min</div><h3>AEM infrastructure and personnel strategy in practice</h3><p>How architecture choices shift when talent supply, timeline pressure, and governance needs collide.</p></article>
+      <article class="item"><div class="tag">Platform leadership • 8 min</div><h3>Should every AEM environment move to the cloud?</h3><p>A structured decision model grounded in capability maturity and lifecycle economics.</p></article>
+      <article class="item"><div class="tag">Operating model • 10 min</div><h3>Building internally vs partnering for acceleration</h3><p>Where in-house control matters most, and where specialist leverage creates compounding value.</p></article>
+      <article class="item"><div class="tag">Capability growth • 7 min</div><h3>Recruiting experienced talent vs training on the job</h3><p>Guidance for balancing delivery continuity with long-term capability resilience.</p></article>
+    </section>
+  </main>
+</body>
+</html>

@@ -3,7 +3,7 @@
     "antipattern": "overused-font",
     "name": "Overused font",
     "description": "Inter, Roboto, Open Sans, Lato, Montserrat, and Arial are used on millions of sites. Choose a distinctive font that gives your interface personality.",
-    "file": "/home/tad/git/treeves/opsinventor-eds/stardust/current/home.raw.html",
+    "file": "/home/tad/git/treeves/opsinventor-eds/stardust/current/__the-biggest-error-box-ever.raw.html",
     "line": 0,
     "snippet": "Primary font: roboto"
   },
@@ -11,8 +11,8 @@
     "antipattern": "skipped-heading",
     "name": "Skipped heading level",
     "description": "Heading levels should not skip (e.g. h1 then h3 with no h2). Screen readers use heading hierarchy for navigation. Skipping levels breaks the document outline.",
-    "file": "/home/tad/git/treeves/opsinventor-eds/stardust/current/home.raw.html",
+    "file": "/home/tad/git/treeves/opsinventor-eds/stardust/current/__the-biggest-error-box-ever.raw.html",
     "line": 0,
-    "snippet": "<h1> \"OpsInventor\" followed by <h3> \"Most Recent Articles\" (missing h2)"
+    "snippet": "<h1> \"The BIGGEST Error Box Ever?\" followed by <h3> \"Share me:\" (missing h2)"
   }
 ]

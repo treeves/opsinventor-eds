@@ -1,15 +1,12 @@
 {
+  "slug": "home",
+  "url": "https://www.opsinventor.com/",
+  "title": "OpsInventor – Adobe Experience Manager Consulting & Knowhow",
+  "type": "landing",
   "_provenance": {
     "writtenBy": "stardust:extract-bootstrap",
     "writtenAt": "2026-05-09T13:45:10Z",
     "renderedBy": "http-fetch",
     "source": "https://www.opsinventor.com/"
-  },
-  "slug": "home",
-  "url": "https://www.opsinventor.com/",
-  "title": "OpsInventor - Adobe Experience Manager Consulting & Knowhow",
-  "type": "landing",
-  "status": "extracted",
-  "snapshotPath": "stardust/current/home.raw.html",
-  "detectPath": "stardust/current/home.detect.json"
+  }
 }
