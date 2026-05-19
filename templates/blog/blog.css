@@ -57,16 +57,6 @@
   letter-spacing: -0.01em;
 }
 
-/* Drop cap on the first paragraph of article body */
-.blog-template .default-content > p:first-of-type::first-letter {
-  font-family: var(--display-font-family);
-  font-size: 3.2em;
-  float: left;
-  line-height: 0.85;
-  margin: 6px 12px 0 0;
-  color: var(--orange);
-}
-
 /* Body images: clean edges, no chrome (figure block handles chrome) */
 .blog-template .default-content img {
   margin: 28px 0;
