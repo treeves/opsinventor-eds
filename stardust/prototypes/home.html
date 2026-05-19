@@ -23,16 +23,19 @@
 </head>
 <body>
 <div class="chooser">
-  <span class="chooser-label">Homepage</span>
+  <span class="chooser-label">Tad Reeves / OpsInventor</span>
   <span class="chooser-sep">|</span>
-  <button class="btn btn-variant active" onclick="load('home-proposed-option-a.html',this)">A — DEPLOY</button>
-  <button class="btn btn-variant" onclick="load('home-proposed-option-b.html',this)">B — SIGNAL</button>
+  <button class="btn btn-variant active" onclick="load('home-proposed.html',this)">★ PROPOSED (Rev 3)</button>
+  <span class="chooser-sep">|</span>
+  <span class="chooser-label" style="opacity:.4">Earlier:</span>
   <button class="btn btn-variant" onclick="load('home-proposed-option-c.html',this)">C — EDGE</button>
+  <button class="btn btn-variant" onclick="load('home-proposed-option-b.html',this)">B — SIGNAL</button>
+  <button class="btn btn-variant" onclick="load('home-proposed-option-a.html',this)">A — DEPLOY</button>
   <span class="spacer"></span>
   <button class="btn btn-article" onclick="load('__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe-proposed.html',this)">Article prototype →</button>
   <span class="hint">Open in new tab for full-screen</span>
 </div>
-<iframe id="frame" src="home-proposed-option-a.html"></iframe>
+<iframe id="frame" src="home-proposed.html"></iframe>
 <script>
 function load(src,btn){
   document.getElementById('frame').src=src;

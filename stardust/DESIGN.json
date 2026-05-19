@@ -1,0 +1,36 @@
+{
+  "_provenance": {
+    "writtenBy": "stardust:direct",
+    "writtenAt": "2026-05-19T00:00:00Z"
+  },
+  "tokens": {
+    "color": {
+      "ink": "#0B1115",
+      "ink-2": "#0F1C23",
+      "orange": "#CE5B12",
+      "orange-dk": "#92470D",
+      "teal": "#39AAB5",
+      "teal-dk": "#17828D",
+      "surface": "#F6FAFB",
+      "white": "#FFFFFF",
+      "text": "#0E1B22",
+      "muted": "#35525C",
+      "border": "#BFD5DB"
+    },
+    "font": {
+      "display": "\"Archivo Black\", \"Inter\", sans-serif",
+      "body": "\"Inter\", system-ui, sans-serif",
+      "mono": "\"Space Mono\", ui-monospace, monospace"
+    },
+    "radius": { "all": "0" },
+    "border": { "accent": "4px", "section": "3px", "card": "1px" },
+    "motion": { "ticker": "22s linear infinite", "hover": "0.15s ease" }
+  },
+  "rules": [
+    "No serif fonts.",
+    "Accent is hard-edged, never gradient.",
+    "Headlines use Archivo Black or Inter 900.",
+    "Mountain imagery is the visual motif.",
+    "Border-radius is always 0."
+  ]
+}
