@@ -41,6 +41,14 @@ header {
     padding: 0 var(--spacing-s);
   }
 
+  /* Neutralize global .section > .default-content sizing inside the header
+     so each section is sized by the header grid, not the page content width. */
+  .section > .default-content {
+    max-width: none;
+    width: auto;
+    margin: 0;
+  }
+
   /* BRAND SECTION (left) */
   .brand-section {
     grid-area: brand;
