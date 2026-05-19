@@ -34,6 +34,12 @@ const ARTICLES = [
     hlxPath: 'fragments/nav/header',
   },
   {
+    slug: 'footer',
+    src: 'fragments/nav/footer.plain.html',
+    daPath: '/fragments/nav/footer.html',
+    hlxPath: 'fragments/nav/footer',
+  },
+  {
     slug: 'tailing-and-viewing-adobe-cloud-manager-build-logs',
     src: 'en/tailing-and-viewing-adobe-cloud-manager-build-logs/index.plain.html',
   },
