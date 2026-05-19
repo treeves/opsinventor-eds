@@ -1,219 +1,98 @@
-/**
- * Decorates the blog-post-hero block
- * cryptid energy channeled directly into code by ur boy frank
- */
-
 import { getMetadata } from '../../scripts/ak.js';
 
-// Helper function for animated radial gradient background
-function setupAnimatedBackground(section, isLargeScreen) {
-  if (isLargeScreen.matches) {
-    // Add CSS keyframes and pseudo-element styles if not already added
-    if (!document.querySelector('#hero-pulse-animation')) {
-      const style = document.createElement('style');
-      style.id = 'hero-pulse-animation';
-      style.textContent = `
-        @keyframes pulse {
-          0%, 100% { opacity: 0.6; }
-          50% { opacity: 1; }
-        }
-        
-        .hero-animated-bg::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 50%;
-          width: 100vw;
-          transform: translateX(-50%);
-          background: radial-gradient(
-            circle at 20% 80%,
-            rgba(0, 175, 242, 0.15) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            circle at 80% 20%,
-            rgba(0, 136, 204, 0.2) 0%,
-            transparent 50%
-          );
-          animation: pulse 8s ease-in-out infinite;
-          z-index: -1;
-        }
-      `;
-      document.head.appendChild(style);
-    }
+function fmtDate(raw) {
+  if (!raw) return '';
+  const d = new Date(raw);
+  if (Number.isNaN(d.getTime())) return raw;
+  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+}
 
-    // Add the animated background class and ensure relative positioning
-    section.classList.add('hero-animated-bg');
-    section.style.position = 'relative';
-    section.style.overflow = 'visible';
-  } else {
-    section.classList.remove('hero-animated-bg');
-    section.style.position = '';
-  }
+function avatarFor(name) {
+  if (!name) return 'TR';
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function readTime(words) {
+  const m = Math.max(1, Math.round(words / 220));
+  return `${m} min read`;
 }
 
 export default function decorate(block) {
-  // Get the background image from the first picture element in the section
   const section = block.closest('.section');
-  const backgroundPicture = section.querySelector('.default-content-wrapper picture');
-
-  // Get metadata
   const title = getMetadata('og:title') || document.querySelector('h1')?.textContent || '';
-  const tags = getMetadata('article:tag') || getMetadata('tags') || '';
-  const author = getMetadata('author') || '';
-  const publishDate = getMetadata('date') || getMetadata('article:date');
-  const metaImage = getMetadata('image') || getMetadata('og:image') || '';
+  const dek = block.textContent.trim() || getMetadata('description') || '';
+  const tagsRaw = getMetadata('article:tag') || getMetadata('tags') || '';
+  const author = getMetadata('author') || 'Tad Reeves';
+  const date = getMetadata('date') || getMetadata('article:date') || '';
+  const category = getMetadata('category') || 'Insights';
+  const heroImg = getMetadata('image') || getMetadata('og:image') || '';
 
-  // Clear the block content
+  // word count for read-time estimate
+  const wordCount = document.body.textContent.split(/\s+/).filter(Boolean).length;
+
+  // Build the layered hero
+  if (heroImg) {
+    const bg = document.createElement('div');
+    bg.className = 'bph-bg';
+    bg.style.backgroundImage = `url("${heroImg}")`;
+    section.prepend(bg);
+    const overlay = document.createElement('div');
+    overlay.className = 'bph-overlay';
+    section.prepend(overlay);
+    section.classList.add('has-bph-bg');
+  }
+
+  const tags = tagsRaw.split(',').map((t) => t.trim()).filter(Boolean);
+
   block.innerHTML = '';
+  const inner = document.createElement('div');
+  inner.className = 'bph-inner';
 
-  // Set animated radial gradient background for large screens
-  if (window.innerWidth >= 1100) {
-    const isLargeScreen = window.matchMedia('(min-width: 1100px)');
+  const crumb = document.createElement('div');
+  crumb.className = 'bph-breadcrumb';
+  crumb.innerHTML = `<a href="/en/insights">Insights</a> / ${category}`;
+  inner.append(crumb);
 
-    const setupBackgroundBound = () => setupAnimatedBackground(section, isLargeScreen);
-
-    // Initial setup
-    setupBackgroundBound();
-
-    // Update on resize
-    isLargeScreen.addEventListener('change', setupBackgroundBound);
-
-    // Hide the original picture element if it exists
-    if (backgroundPicture) {
-      backgroundPicture.style.display = 'none';
-    }
-  }
-
-  // Create the main container
-  const container = document.createElement('div');
-  container.className = 'blog-post-hero-content';
-  container.style.maxWidth = '100%';
-  container.style.width = '100%';
-  container.style.boxSizing = 'border-box';
-
-  // Create content column first (needed for image onload handler)
-  const contentCol = document.createElement('div');
-  contentCol.className = 'hero-content-col';
-  contentCol.style.maxWidth = '100%';
-  contentCol.style.boxSizing = 'border-box';
-
-  // Create image column (80% width)
-  const imageCol = document.createElement('div');
-  imageCol.className = 'hero-image-col';
-  imageCol.style.maxWidth = '100%';
-  imageCol.style.boxSizing = 'border-box';
-
-  if (metaImage) {
-    const img = document.createElement('img');
-    try {
-      const metaUrl = new URL(metaImage, window.location.href);
-      img.src = `${metaUrl.pathname}${metaUrl.search}`;
-    } catch {
-      img.src = metaImage;
-    }
-    img.alt = title;
-    img.loading = 'eager';
-    img.style.maxWidth = '100%';
-    img.style.width = '100%';
-    img.style.boxSizing = 'border-box';
-
-    // Detect aspect ratio when image loads
-    img.onload = function handleImageLoad() {
-      const aspectRatio = this.naturalWidth / this.naturalHeight;
-
-      // Determine if image is closer to 16:9 (1.78) or 1:1 (1.0)
-      if (Math.abs(aspectRatio - 1) < Math.abs(aspectRatio - 1.78)) {
-        // Image is closer to square (1:1)
-        imageCol.classList.add('aspect-1-1');
-        contentCol.classList.add('with-square-image');
-      } else {
-        // Image is closer to 16:9
-        imageCol.classList.add('aspect-16-9');
-      }
-    };
-
-    imageCol.appendChild(img);
-  } else {
-    // Default to 16:9 if no image
-    imageCol.classList.add('aspect-16-9');
-  }
-
-  // Store reference for aspect ratio detection
-  window.heroContentCol = contentCol;
-
-  // Add title
-  if (title) {
-    const titleEl = document.createElement('h1');
-    titleEl.textContent = title;
-    contentCol.appendChild(titleEl);
-  }
-
-  // Add date in place of category
-  if (publishDate) {
-    const dateEl = document.createElement('div');
-    dateEl.className = 'hero-category'; // Use category styling for the date
-
-    // Try to parse the date, with fallback for different formats
-    let formattedDate;
-    try {
-      const date = new Date(publishDate);
-      if (Number.isNaN(date.getTime())) {
-        // If date is invalid, just show the raw value
-        formattedDate = publishDate;
-      } else {
-        formattedDate = date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        });
-      }
-    } catch (e) {
-      formattedDate = publishDate;
-    }
-
-    dateEl.textContent = formattedDate;
-    contentCol.appendChild(dateEl);
-  }
-
-  // Add author and date
-  const metaInfo = document.createElement('div');
-  metaInfo.className = 'hero-meta-info';
-
-  if (author) {
-    const authorEl = document.createElement('span');
-    authorEl.className = 'hero-author';
-    authorEl.textContent = `By ${author}`;
-    metaInfo.appendChild(authorEl);
-  }
-
-  if (metaInfo.children.length > 0) {
-    contentCol.appendChild(metaInfo);
-  }
-
-  // Add tags
-  if (tags) {
-    const tagsContainer = document.createElement('div');
-    tagsContainer.className = 'hero-tags';
-    const tagList = document.createElement('ul');
-
-    tags.split(',').forEach((tag) => {
-      const tagItem = document.createElement('li');
-      tagItem.textContent = tag.trim();
-      tagList.appendChild(tagItem);
+  if (tags.length) {
+    const tagRow = document.createElement('div');
+    tagRow.className = 'bph-tags';
+    tags.forEach((t, i) => {
+      const span = document.createElement('span');
+      span.className = i === 0 ? 'bph-tag' : 'bph-tag bph-tag-ghost';
+      span.textContent = t;
+      tagRow.append(span);
     });
-
-    tagsContainer.appendChild(tagList);
-    contentCol.appendChild(tagsContainer);
+    inner.append(tagRow);
   }
 
-  // Append columns to container
-  container.appendChild(imageCol);
-  container.appendChild(contentCol);
+  const h1 = document.createElement('h1');
+  h1.className = 'bph-title';
+  h1.textContent = title;
+  inner.append(h1);
 
-  // Append container to block
-  block.appendChild(container);
+  if (dek) {
+    const p = document.createElement('p');
+    p.className = 'bph-dek';
+    p.textContent = dek;
+    inner.append(p);
+  }
 
-  block.classList.add('initialized');
+  const byline = document.createElement('div');
+  byline.className = 'bph-byline';
+  byline.innerHTML = `
+    <div class="bph-avatar">${avatarFor(author)}</div>
+    <div>
+      <div class="bph-byline-name">${author}</div>
+      <div class="bph-byline-meta">// ${fmtDate(date)}${date ? ' · ' : ''}${readTime(wordCount)}</div>
+    </div>
+  `;
+  inner.append(byline);
+
+  block.append(inner);
+
+  // Hide the page H1 elsewhere (the hero owns it now)
+  const pageH1 = document.querySelector('main > .section:not(:first-child) h1');
+  if (pageH1) pageH1.style.display = 'none';
 }
