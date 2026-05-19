@@ -1,69 +1,106 @@
-/* Blog post template styles — OpsInventor blue scheme */
+/* Blog post template — OpsInventor (Rev 3 ink/orange/teal) */
 
-/* Hero section: constrained to blog content width */
-.blog-template main .section:nth-child(1) {
-  max-width: var(--blog-content-width, 900px);
-  margin: 0 auto;
-  padding: 24px 24px 0;
-}
-
-/* Body content sections: same width as hero */
-.blog-template main .section:not(:nth-child(1)) {
-  max-width: var(--blog-content-width, 900px);
-  margin: 0 auto;
-  padding: 0 24px 24px;
-}
-
-/* Override the global 83.4% max-width on default-content inside blog */
+/* Article-body typography: comfortable reading */
 .blog-template .section > .default-content {
-  max-width: 100%;
-}
-
-/* h2 headings in blog posts: blue accent */
-.blog-template h2 {
-  color: var(--color-brand);
-  font-size: var(--heading-font-size-xl);
-  margin-top: 2em;
-  margin-bottom: 0.5em;
-  padding-bottom: 0.25em;
-  border-bottom: 1px solid var(--color-gray-200);
-}
-
-/* Body text: comfortable reading */
-.blog-template .default-content {
   font-size: var(--body-font-size-l);
-  line-height: 1.8;
+  line-height: 1.78;
+  color: var(--text);
+  max-width: 100%;
+  width: 100%;
 }
 
-/* Images in body content */
+/* Article body column constrained to readable width */
+.blog-template main .section {
+  max-width: var(--blog-content-width);
+  width: var(--grid-container-width);
+  margin: 0 auto;
+  padding: 0 0 var(--spacing-l);
+}
+
+/* First section sits flush against article hero / breadcrumb when present */
+.blog-template main .section:nth-of-type(1) {
+  padding-top: var(--spacing-xl);
+}
+
+.blog-template .default-content p {
+  margin-bottom: 26px;
+}
+
+/* H2 in articles: orange underbar (matches prototype) */
+.blog-template .default-content h2 {
+  font-family: var(--display-font-family);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--ink);
+  margin: 56px 0 20px;
+  padding: 0;
+  border: none;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.blog-template .default-content h2::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 5px;
+  background: var(--orange);
+  margin-bottom: 16px;
+}
+
+/* H3 in articles: weighted body type */
+.blog-template .default-content h3 {
+  font-family: var(--body-font-family);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin: 30px 0 12px;
+  letter-spacing: -0.01em;
+}
+
+/* Drop cap on the first paragraph of article body */
+.blog-template .default-content > p:first-of-type::first-letter {
+  font-family: var(--display-font-family);
+  font-size: 3.2em;
+  float: left;
+  line-height: 0.85;
+  margin: 6px 12px 0 0;
+  color: var(--orange);
+}
+
+/* Body images: clean edges, no chrome (figure block handles chrome) */
 .blog-template .default-content img {
-  border-radius: 6px;
-  margin: 1em 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: 28px 0;
+  box-shadow: none;
+  border-radius: 0;
 }
 
-/* Code blocks */
+/* Pre/code blocks inherit global ink+orange styling; align margins */
 .blog-template pre {
-  border-left: 3px solid var(--color-brand);
-  border-radius: 0 5px 5px 0;
+  margin: 28px 0;
+  border-left: 4px solid var(--orange);
+  border-radius: 0;
 }
 
-/* Metadata block: hidden (processed by EDS into meta tags) */
+/* Hide the metadata block — EDS reads it server-side */
 .blog-template .metadata-container,
 .blog-template .metadata-wrapper,
 .blog-template .metadata {
   display: none;
 }
 
-/* Light section style (for comments) */
+/* "Light" section style — surface-tinted card with orange left rule */
 .blog-template .section.light {
-  background-color: var(--color-gray-100);
-  border-radius: 8px;
-  padding: 24px 32px;
-  margin-top: 2em;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--orange);
+  padding: 28px 32px;
+  margin-top: var(--spacing-xl);
 }
 
 .blog-template .section.light h2 {
-  border-bottom: none;
   margin-top: 0;
+}
+
+.blog-template .section.light h2::before {
+  display: none;
 }

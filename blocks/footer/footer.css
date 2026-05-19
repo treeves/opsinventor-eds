@@ -1,57 +1,123 @@
 footer {
+  display: block;
+  background-color: var(--ink);
+  color: #9bafb6;
+  border-top: 4px solid var(--orange);
+  padding: 48px var(--grid-gutter-width) 24px;
+
   a {
     text-decoration: none;
+    color: inherit;
+    transition: color 0.15s ease;
+  }
+
+  a:hover {
+    color: var(--orange);
   }
 
   .footer-content {
-    max-width: var(--grid-container-width);
-    margin: 48px auto;
-    font-size: 14px;
+    max-width: var(--grid-content-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-m);
+    align-items: flex-start;
   }
 
-  .section-legal ul {
+  .footer-content .section {
+    width: 100%;
+  }
+
+  .footer-content .section .default-content {
+    max-width: none;
+    width: 100%;
     margin: 0;
-    padding: 0;
-    list-style: none;
+  }
+
+  /* Section 3 — copyright */
+  .section-copyright {
+    /* placeholder for ordering */
   }
 
   .section-copyright p {
     margin: 0;
+    font-size: 0.82rem;
+    color: #6a8088;
   }
 
-  .section {
-    .default-content {
-      max-width: initial;
-      margin: initial;
-    }
+  /* Section 1 — brand lockup */
+  .footer-content .section:first-child p {
+    margin: 0;
+    font-family: var(--display-font-family);
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+
+  .footer-content .section:first-child p strong {
+    color: var(--white);
+    font-weight: normal;
+  }
+
+  .footer-content .section:first-child p::after {
+    content: " // OPSINVENTOR";
+    font-family: var(--mono-font-family);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    margin-left: 4px;
+    text-transform: uppercase;
+  }
+
+  /* Section 2 — legal links */
+  .section-legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-family: var(--mono-font-family);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .section-legal li {
+    margin: 0;
   }
 }
 
 @media (width >= 900px) {
   footer {
-    margin: 0;
+    padding: 56px var(--grid-gutter-width) 32px;
+  }
 
-    .section-legal {
-      display: flex;
-      justify-content: end;
-      gap: var(--spacing-xl);
-      margin-bottom: 24px;
+  footer .footer-content {
+    flex-flow: row wrap;
+    align-items: center;
+    gap: var(--spacing-l);
+  }
 
-      ul {
-        display: flex;
-        justify-content: end;
-        gap: var(--spacing-xl);
-      }
+  /* Brand on left */
+  footer .footer-content .section:first-child {
+    width: auto;
+    flex: 0 0 auto;
+  }
 
-      li {
-        margin: 0;
-      }
-    }
+  /* Links pushed to right */
+  footer .section-legal {
+    margin-left: auto;
+    width: auto;
+    flex: 0 0 auto;
+  }
 
-    .section-copyright {
-      display: flex;
-      justify-content: end;
-      gap: var(--spacing-xl);
-    }
+  /* Copyright wraps below on its own row */
+  footer .section-copyright {
+    width: 100%;
+    border-top: 1px solid var(--ink-3);
+    padding-top: 18px;
+    margin-top: 12px;
   }
 }

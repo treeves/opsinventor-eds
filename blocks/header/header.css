@@ -1,7 +1,5 @@
 header {
-  --logo-width: 120px;
-  --logo-height: 120px;
-  --mega-columns: 4;
+  --header-cta-padding: 11px 18px;
 
   display: block;
   position: fixed;
@@ -9,9 +7,11 @@ header {
   left: 0;
   right: 0;
   z-index: 1000;
-  overflow: hidden;
+  background-color: var(--ink);
+  color: var(--white);
+  border-bottom: 1px solid var(--ink-3);
   max-height: var(--header-height);
-  background-color: light-dark(var(--color-light), var(--color-dark));
+  overflow: visible;
 
   ul {
     margin: 0;
@@ -26,344 +26,268 @@ header {
 
   a {
     text-decoration: none;
+    color: inherit;
   }
 
-  .btn {
-    margin-block: 6px;
-  }
-
+  /* GRID LAYOUT */
   .header-content {
     display: grid;
-    grid-template-areas:
-      "brand"
-      "nav"
-      "actions";
-    grid-template-rows: var(--header-height) auto 1fr;
+    grid-template:
+      "brand actions" var(--header-height) "nav nav" auto / 1fr auto;
+    align-items: center;
+    max-width: var(--grid-content-width);
+    width: var(--grid-container-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-s);
   }
 
+  /* BRAND SECTION (left) */
+  .brand-section {
+    grid-area: brand;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: var(--header-height);
+  }
+
+  .brand-section .default-content,
+  .brand-section .default-content p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  /* The "Toggle menu" link in brand section becomes the mobile burger */
+  .brand-section .default-content p:nth-of-type(2) {
+    margin-left: auto;
+  }
+
+  .brand-section a[href="/"] {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: var(--display-font-family);
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+
+  .brand-section .icon-logo {
+    display: none; /* prototype uses a text lockup, no icon */
+  }
+
+  .brand-text {
+    color: var(--white);
+    white-space: nowrap;
+  }
+
+  /* Append "// OPSINVENTOR" imprint via pseudo — keeps fragment content simple */
+  .brand-text::after {
+    content: " // OPSINVENTOR";
+    font-family: var(--mono-font-family);
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    margin-left: 4px;
+    text-transform: uppercase;
+  }
+
+  /* NAV SECTION */
+  .main-nav-section {
+    grid-area: nav;
+    display: none; /* hidden on mobile until .is-mobile-open */
+    background-color: var(--ink-2);
+    border-top: 1px solid var(--ink-3);
+  }
+
+  .main-nav-section .default-content {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  .main-nav-list {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-s) 0;
+  }
+
+  .main-nav-item {
+    padding: 0;
+  }
+
+  .main-nav-link {
+    display: block;
+    padding: 14px 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #cdd6da;
+    transition: color 0.15s ease;
+  }
+
+  .main-nav-link:hover {
+    color: var(--white);
+  }
+
+  /* ACTIONS SECTION (right — Hard Problems CTA + mobile toggle) */
+  .actions-section {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    height: var(--header-height);
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .actions-section .default-content p,
+  .actions-section .default-content {
+    margin: 0;
+  }
+
+  .actions-section .default-content {
+    max-width: none;
+  }
+
+  /* The "Hard Problems →" CTA button styled directly */
+  .actions-section .btn-accent {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono-font-family);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--orange);
+    color: var(--white);
+    padding: var(--header-cta-padding);
+    border: 2px solid var(--orange);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .actions-section .btn-accent:hover {
+    background: transparent;
+    color: var(--orange);
+  }
+
+  /* Action widgets (scheme, language) when present — small icon buttons */
   .action-wrapper {
     position: relative;
     height: 100%;
-
-    button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      padding: 0;
-      background-color: transparent;
-      height: 100%;
-      width: 64px;
-
-      .icon {
-        width: 24px;
-        height: 24px;
-      }
-
-      .text {
-        display: block;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-      }
-    }
   }
 
-  .breadcrumbs {
-    display: none;
-  }
-
-  .menu,
-  .mega-menu {
-    padding-bottom: var(--grid-gutter-width);
-
-    .default-content {
-      margin: 0;
-
-      > :first-child {
-        margin-top: 0;
-      }
-
-      > :last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    li {
-      margin-block: 12px;
-    }
-
-    ul:not(:has(+ *)) {
-      li:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    .section {
-      margin-block: 24px;
-    }
-
-    &.language {
-      max-width: var(--grid-container-width);
-      margin: 0 auto;
-
-      .section {
-        margin: 0;
-      }
-    }
-  }
-
-  .brand-section {
-    grid-area: brand;
-
-    .default-content {
-      height: var(--header-height);
-      display: flex;
-      justify-content: space-between;
-
-      p,
-      a {
-        display: flex;
-        align-items: center;
-        position: relative;
-        font-size: var(--heading-font-size-m);
-        font-weight: 700;
-        text-decoration: none;
-        margin: 0;
-        color: var(--color-brand);
-
-        img {
-          height: var(--logo-height);
-        }
-
-        svg {
-          width: var(--logo-width);
-          height: var(--logo-height);
-        }
-
-        .brand-text {
-          display: block;
-          width: 0;
-          height: 0;
-          overflow: hidden;
-        }
-      }
-    }
-
-    .action-wrapper {
-      right: -23px; /* 64 minus waffle icon inset */
-    }
-  }
-
-  .actions-section {
-    grid-area: actions;
-    max-height: 64px;
-    overflow: hidden;
-    transition: all 0.2s ease-in-out;
-
-    > .default-content {
-      display: flex;
-      justify-content: end;
-      align-items: center;
-    }
-
-    > .block-content {
-      border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
-    }
-
-    .action-wrapper {
-      height: var(--header-height);
-      right: -13px;
-
-      button {
-        width: 44px;
-      }
-    }
-
-    &.is-open {
-      overflow: scroll;
-      max-height: 100%;
-    }
-  }
-
-  .main-nav-section {
-    grid-area: nav;
+  .action-wrapper button {
     display: flex;
+    justify-content: center;
     align-items: center;
-
-    .default-content {
-      max-width: 100%;
-      margin: 0;
-    }
-
-    .main-nav-item {
-      border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
-
-      > * {
-        max-width: var(--grid-container-width);
-        margin: 0 auto;
-      }
-    }
-
-    .main-nav-link {
-      display: flex;
-      align-items: center;
-      height: 64px;
-    }
-
-    .menu,
-    .mega-menu {
-      display: none;
-    }
-
-    .is-open {
-      .main-nav-link {
-        border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
-      }
-
-      .menu,
-      .mega-menu {
-        display: block;
-      }
-    }
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    color: #8ea7ae;
+    height: var(--header-height);
+    width: 48px;
+    cursor: pointer;
+    transition: color 0.15s ease;
   }
 
-  &.is-mobile-open {
-    height: initial;
-    max-height: initial;
-    overflow: initial;
-    bottom: 0;
+  .action-wrapper button:hover {
+    color: var(--white);
+  }
 
-    .header-content {
-      height: 100%;
-    }
+  .action-wrapper .icon {
+    width: 22px;
+    height: 22px;
+  }
 
-    .brand-section {
-      border-bottom: 1px solid light-dark(var(--color-gray-200), var(--color-gray-600));
-    }
+  .action-wrapper .text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  /* Mobile burger toggle — the "Toggle menu" link in brand section */
+  .brand-section a[href*="/tools/widgets/toggle"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--white);
+  }
+
+  .brand-section a[href*="/tools/widgets/toggle"] .icon {
+    width: 22px;
+    height: 22px;
   }
 }
 
+/* Mobile open state — nav drawer drops down under header */
+header.is-mobile-open {
+  max-height: 100vh;
+}
+
+header.is-mobile-open .main-nav-section {
+  display: block;
+}
+
+/* Mega-menu (existing infrastructure preserved, restyled) */
+header .menu,
+header .mega-menu {
+  background-color: var(--ink-2);
+  padding: var(--spacing-l);
+  border-top: 1px solid var(--ink-3);
+}
+
+header .menu .default-content,
+header .mega-menu .default-content {
+  margin: 0;
+}
+
+header .menu ul,
+header .mega-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* DESKTOP */
 @media (width >= 900px) {
-  header {
-    overflow: initial;
-
-    .header-content {
-      max-width: var(--grid-container-width);
-      margin: 0 auto;
-      grid-template: "brand nav actions" 1fr / auto 1fr auto;
-      gap: var(--spacing-l);
-    }
-
-    .menu,
-    .mega-menu {
-      background-color: var(--color-shaded);
-      padding: var(--spacing-xl) 0;
-      position: absolute;
-      left: 0;
-      right: 0;
-
-      &.language {
-        display: none;
-        max-width: initial;
-        margin: 0;
-        width: 180px;
-        background-color: var(--color-shaded);
-        padding: var(--spacing-xl);
-        position: absolute;
-        left: auto;
-        right: 0;
-        z-index: 1001;
-      }
-    }
-
-    .mega-menu {
-      > .fragment-content {
-        display: grid;
-        grid-template-columns: repeat(var(--mega-columns), 1fr);
-        max-width: var(--grid-container-width);
-        margin: 0 auto;
-
-        .section {
-          margin-block: initial;
-        }
-      }
-    }
-
-    .brand-section {
-      border-bottom: initial;
-
-      .default-content {
-        max-width: initial;
-        margin: 0;
-      }
-
-      .action-wrapper.more {
-        display: none;
-      }
-    }
-
-    .main-nav-section {
-      .main-nav-list {
-        display: flex;
-        gap: var(--spacing-l);
-      }
-
-      .main-nav-item {
-        border-bottom: initial;
-
-        > * {
-          max-width: initial;
-          margin: initial;
-        }
-
-        &.is-open {
-          .main-nav-link {
-            border-bottom: initial;
-          }
-        }
-      }
-    }
-
-    .actions-section {
-      position: relative;
-      overflow: initial;
-
-      .default-content {
-        max-width: initial;
-        margin: 0;
-      }
-
-      .action-wrapper {
-        position: relative;
-        right: -10px;
-      }
-
-      .block-content {
-        border-bottom: initial;
-      }
-
-      &.is-open {
-        overflow: initial;
-
-        .menu.language {
-          display: block;
-        }
-      }
-    }
-
-    &.is-mobile-open {
-      bottom: initial;
-
-      .header-content {
-        height: initial;
-      }
-    }
+  header .header-content {
+    grid-template: "brand nav actions" var(--header-height) / auto 1fr auto;
+    gap: 32px;
+    padding: 0 var(--grid-gutter-width);
   }
+
+  header .main-nav-section {
+    display: block; /* always visible on desktop */
+    background: transparent;
+    border-top: none;
+    height: var(--header-height);
+  }
+
+  header .main-nav-list {
+    flex-direction: row;
+    gap: 30px;
+    padding: 0;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-start;
+  }
+
+  header .main-nav-link {
+    padding: 0;
+    font-size: 0.92rem;
+  }
+
+  /* Hide the mobile-only "Toggle menu" link on desktop */
+  header .brand-section a[href*="/tools/widgets/toggle"] {
+    display: none;
+  }
+}
+
+header.is-mobile-open .brand-section a[href*="/tools/widgets/toggle"] .icon {
+  transform: rotate(90deg);
 }
