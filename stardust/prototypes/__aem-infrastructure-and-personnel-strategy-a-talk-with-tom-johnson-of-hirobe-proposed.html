@@ -1,100 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- stardust:provenance
-    writtenBy: stardust:prototype
-    writtenAt: 2026-05-09T15:30:20Z
-    againstDirection: stardust/direction.md
-    sourcePage: stardust/current/pages/__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe.json
-  -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AEM Infrastructure and Personnel Strategy | OpsInventor</title>
+  <!-- stardust:provenance writtenBy: stardust:prototype writtenAt: 2026-05-10T00:00:00Z sourcePage: stardust/current/pages/__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe.json -->
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AEM Infrastructure & Personnel Strategy — OpsInventor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --ink-900: #124953;
-      --ink-700: #17828D;
-      --ink-500: #39AAB5;
-      --accent-500: #CE5B12;
-      --accent-700: #92470D;
-      --bg-900: #0B1115;
-      --surface-0: #F6FAFB;
-      --surface-1: #EAF7F9;
-      --text: #12232b;
-      --muted: #3a5a66;
-      --line: #bfd5db;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(180deg, #f9fcfd 0%, #f2fafb 100%); color: var(--text); font-family: "Manrope", "Segoe UI", sans-serif; }
-    .mast {
-      background:
-        radial-gradient(760px 340px at 5% -5%, rgba(57,170,181,0.44) 0%, rgba(57,170,181,0) 70%),
-        radial-gradient(620px 340px at 90% 10%, rgba(206,91,18,0.31) 0%, rgba(206,91,18,0) 70%),
-        linear-gradient(156deg, #0f3c46 0%, #0b1115 58%, #0b1115 100%);
-      color: #e8f5f8;
-      border-bottom: 4px solid var(--accent-500);
-    }
-    .wrap { width: min(980px, 92vw); margin: 0 auto; }
-    .mast .wrap { padding: 42px 0 30px; }
-    .kicker { color: #8de4ec; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; font-weight: 700; }
-    h1 { margin: 10px 0 12px; font-family: "Source Serif 4", Georgia, serif; font-size: clamp(2rem, 4.2vw, 3.35rem); line-height: 1.05; }
-    .dek { color: #c6dde2; line-height: 1.63; max-width: 68ch; }
-    .meta { margin-top: 14px; color: #c0d8de; font-size: 13px; }
+    :root{--orange:#CE5B12;--orange-dk:#92470D;--teal:#39AAB5;--teal-dk:#17828D;--ink:#0B1115;--ink2:#0F1C23;--surface:#F6FAFB;--white:#ffffff;--text:#0E1B22;--muted:#35525C;--border:#BFD5DB;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Inter",sans-serif;background:var(--white);color:var(--text);}
 
-    article { display: grid; grid-template-columns: 1.55fr 0.85fr; gap: 24px; padding: 42px 0 72px; }
-    .lead { font-size: 1.18rem; line-height: 1.75; border-left: 4px solid var(--ink-700); padding-left: 14px; color: #1d3741; }
-    p { font-size: 1.03rem; line-height: 1.82; color: var(--text); margin: 20px 0; }
-    .callout { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 16px; box-shadow: 0 10px 20px rgba(18,73,83,0.08); }
-    .callout strong { display: block; color: var(--ink-900); margin-bottom: 7px; }
-    .rail { background: var(--surface-1); border: 1px solid var(--line); border-radius: 12px; padding: 14px; align-self: start; position: sticky; top: 16px; }
-    .rail h2 { margin: 0 0 10px; font-size: 1.03rem; color: var(--ink-900); }
-    .rail ol { margin: 0; padding-left: 18px; display: grid; gap: 9px; }
-    .rail li { color: var(--muted); font-size: 14px; line-height: 1.45; }
-    .rail a { display: inline-block; margin-top: 12px; background: var(--accent-500); color: #fff; text-decoration: none; font-weight: 700; padding: 10px 12px; border-radius: 8px; }
+    /* NAV */
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:0 clamp(20px,5vw,60px);height:60px;background:var(--ink);position:sticky;top:0;z-index:100;}
+    .logo{font-weight:900;font-size:16px;letter-spacing:.12em;text-transform:uppercase;}
+    .logo em{font-style:normal;color:var(--orange);}
+    .nav-links{display:flex;gap:0;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:0 14px;line-height:60px;}
+    .nav-links a:hover{color:#fff;}
+    .nav-cta{background:var(--orange);color:#fff;padding:0 20px;text-decoration:none;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:60px;}
 
-    @media (max-width: 930px) {
-      article { grid-template-columns: 1fr; }
-      .rail { position: static; }
-    }
+    /* ARTICLE HEADER */
+    .article-header{background:var(--ink);padding:64px clamp(24px,5vw,60px) 0;}
+    .header-inner{max-width:800px;margin:0 auto;}
+    .breadcrumb{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.4);margin-bottom:24px;}
+    .breadcrumb a{color:var(--orange);text-decoration:none;}
+    .article-tags{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+    .tag{background:var(--orange);color:#fff;font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;padding:5px 10px;font-weight:700;}
+    .tag.teal{background:transparent;border:1px solid var(--teal);color:var(--teal);}
+    h1{font-weight:900;font-size:clamp(1.9rem,4vw,3.2rem);line-height:1.05;letter-spacing:-.025em;color:#fff;margin-bottom:20px;}
+    .article-byline{display:flex;align-items:center;gap:20px;padding:24px 0;border-top:1px solid rgba(255,255,255,.1);}
+    .byline-avatar{width:40px;height:40px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;flex-shrink:0;}
+    .byline-name{font-weight:700;font-size:14px;color:#fff;}
+    .byline-meta{font-family:"Space Mono",monospace;font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;}
+
+    /* ARTICLE KEY POINTS BAND */
+    .key-points{background:var(--orange);padding:28px clamp(24px,5vw,60px);}
+    .key-points-inner{max-width:800px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;}
+    .key-label{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.7);padding-top:2px;white-space:nowrap;}
+    .key-list{display:flex;gap:10px;flex-wrap:wrap;}
+    .key-item{background:rgba(0,0,0,.2);color:#fff;font-size:13px;font-weight:600;padding:6px 12px;}
+
+    /* ARTICLE BODY */
+    .article-body{max-width:800px;margin:0 auto;padding:56px clamp(24px,5vw,60px);}
+    .article-body p{font-size:17px;line-height:1.75;color:var(--text);margin-bottom:24px;}
+    .article-body h2{font-weight:800;font-size:1.5rem;letter-spacing:-.02em;margin:40px 0 16px;color:var(--ink);}
+    .article-body h2::before{content:"";display:block;width:32px;height:3px;background:var(--orange);margin-bottom:12px;}
+    .article-body h3{font-weight:700;font-size:1.15rem;margin:28px 0 12px;color:var(--ink);}
+    .article-body ul{margin:0 0 24px 0;padding:0;list-style:none;}
+    .article-body ul li{padding:8px 0 8px 24px;position:relative;font-size:16px;line-height:1.65;border-bottom:1px solid var(--border);}
+    .article-body ul li::before{content:"";position:absolute;left:0;top:17px;width:10px;height:2px;background:var(--orange);}
+
+    /* PULLQUOTE */
+    .pullquote{border-left:5px solid var(--orange);background:var(--surface);padding:24px 28px;margin:36px 0;}
+    .pullquote p{font-size:1.25rem;font-weight:700;line-height:1.4;color:var(--ink);margin:0;}
+    .pullquote cite{display:block;margin-top:12px;font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-style:normal;}
+
+    /* Q&A FORMAT */
+    .qa-block{margin:32px 0;display:grid;grid-template-columns:auto 1fr;gap:16px;}
+    .qa-speaker{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;padding-top:4px;font-weight:700;white-space:nowrap;}
+    .qa-q .qa-speaker{color:var(--orange);}
+    .qa-a .qa-speaker{color:var(--teal-dk);}
+    .qa-text{font-size:16px;line-height:1.7;color:var(--text);}
+    .qa-q .qa-text{font-weight:600;color:var(--ink);}
+
+    /* RELATED */
+    .related{background:var(--surface);border-top:3px solid var(--orange);padding:48px clamp(24px,5vw,60px);}
+    .related-inner{max-width:800px;margin:0 auto;}
+    .related-label{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--orange);margin-bottom:20px;}
+    .related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+    .related-card{background:var(--white);border:1px solid var(--border);padding:18px;}
+    .related-card:hover{border-color:var(--orange);}
+    .related-tag{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-dk);margin-bottom:8px;}
+    .related-card h3{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:10px;}
+    .related-card a{font-size:12px;font-weight:700;color:var(--orange);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;}
+    .related-card a::after{content:" →";}
+
+    /* CTA */
+    .article-cta{background:var(--ink);color:#fff;padding:48px clamp(24px,5vw,60px);}
+    .article-cta-inner{max-width:800px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px;}
+    .article-cta h2{font-weight:900;font-size:1.6rem;letter-spacing:-.02em;}
+    .article-cta p{margin-top:8px;font-size:14px;color:rgba(255,255,255,.6);max-width:45ch;line-height:1.6;}
+    .btn-orange-solid{background:var(--orange);color:#fff;padding:14px 24px;font-weight:700;font-size:14px;text-decoration:none;text-transform:uppercase;letter-spacing:.06em;display:inline-block;white-space:nowrap;}
+
+    /* FOOTER */
+    footer{background:var(--ink2);padding:24px clamp(24px,5vw,60px);display:flex;justify-content:space-between;align-items:center;border-top:4px solid var(--orange);}
+    .footer-brand{font-weight:900;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:#fff;}
+    .footer-brand em{font-style:normal;color:var(--orange);}
+    .footer-links{display:flex;gap:20px;}
+    .footer-links a{color:rgba(232,244,246,.4);text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.1em;}
+
+    @media(max-width:700px){.key-points-inner,.qa-block{grid-template-columns:1fr;}.related-grid{grid-template-columns:1fr;}.article-cta-inner{flex-direction:column;}.article-byline{flex-wrap:wrap;}}
   </style>
 </head>
 <body>
-  <header class="mast" data-section="article-header">
-    <div class="wrap">
-      <div class="kicker">Interview Insight • AEM strategy briefing</div>
-      <h1>AEM Infrastructure and Personnel Strategy: A talk with Tom Johnson of Hirobe</h1>
-      <p class="dek">A high-value conversation on a core modernization tension: how infrastructure direction and staffing reality must be designed together to deliver durable AEM outcomes.</p>
-      <div class="meta">OpsInventor • Adobe Experience Manager Consulting &amp; Knowhow</div>
+
+<nav class="nav">
+  <div class="logo">OPS<em>INVENTOR</em></div>
+  <ul class="nav-links"><li><a href="#">Insights</a></li><li><a href="#">Solutions</a></li><li><a href="#">Advisory</a></li></ul>
+  <a href="#" class="nav-cta">Get in touch</a>
+</nav>
+
+<div class="article-header">
+  <div class="header-inner">
+    <div class="breadcrumb"><a href="#">Insights</a> / Interview</div>
+    <div class="article-tags">
+      <span class="tag">AEM Cloud</span>
+      <span class="tag teal">Interview</span>
+      <span class="tag teal">Infrastructure</span>
     </div>
-  </header>
-
-  <main class="wrap" data-section="article-body">
-    <article>
+    <h1>AEM Infrastructure and Personnel Strategy: A Talk with Tom Johnson of Hirobe</h1>
+    <div class="article-byline">
+      <div class="byline-avatar">OI</div>
       <div>
-        <p class="lead">"Should every AEM environment be in the cloud?" is not only an infrastructure question. It is a capability question, an operating model question, and ultimately a sequencing question.</p>
-
-        <p>I got a chance to do a fun talk with Tom Johnson, a Senior AEM Recruiter at Hirobe, on the significance of personnel in the major decision points on where you take your AEM projects from an infrastructure standpoint.</p>
-
-        <div class="callout">
-          <strong>Consultancy interpretation</strong>
-          Treat cloud adoption, team staffing, and delivery governance as one interconnected strategy system. Optimizing one in isolation often creates downstream drag.
-        </div>
-
-        <p>The practical implication is that platform decisions must be paced to your team's current skill profile and realistic hiring/training trajectory. This framing reduces brittle transformation plans and improves execution resilience.</p>
-
-        <p>For leaders evaluating AEM as a Cloud Service, the most useful question becomes: "Which capability model allows us to ship confidently over the next 12-24 months?" This turns the conversation from technology preference to delivery economics.</p>
+        <div class="byline-name">OpsInventor Editorial</div>
+        <div class="byline-meta">May 2024 · 12 min read</div>
       </div>
+    </div>
+  </div>
+</div>
 
-      <aside class="rail">
-        <h2>From insight to action</h2>
-        <ol>
-          <li>Assess current infra posture and critical delivery constraints.</li>
-          <li>Map staffing options: internal build, partner blend, targeted hires.</li>
-          <li>Sequence cloud decisions against capability maturity milestones.</li>
-        </ol>
-        <a href="#">Request an infrastructure strategy brief</a>
-      </aside>
-    </article>
-  </main>
+<div class="key-points">
+  <div class="key-points-inner">
+    <div class="key-label">Key topics</div>
+    <div class="key-list">
+      <span class="key-item">Cloud vs on-premise AEM</span>
+      <span class="key-item">Staffing strategy</span>
+      <span class="key-item">Migration decision factors</span>
+      <span class="key-item">AEMaaCS readiness</span>
+    </div>
+  </div>
+</div>
+
+<div class="article-body">
+
+  <p>Tom Johnson leads infrastructure and delivery at Hirobe, a professional services firm that has helped organizations across enterprise sectors navigate AEM deployments for over a decade. We sat down with him to discuss what it actually takes to move from on-premise or AMS AEM to Adobe's cloud-native offering — and what most organizations get wrong before they start.</p>
+
+  <div class="pullquote">
+    <p>"The technical migration is honestly the easier part. Where teams struggle is the organizational readiness — who owns what, how decisions get made, and whether the people in the room actually have authority to commit."</p>
+    <cite>— Tom Johnson, Hirobe</cite>
+  </div>
+
+  <h2>The Cloud vs. On-Premise Decision</h2>
+
+  <p>Many organizations still run AEM on-premise or through Adobe Managed Services and face real pressure to evaluate AEM as a Cloud Service. The promise is continuous updates, reduced ops burden, and tighter Adobe product integration. But the tradeoffs are real.</p>
+
+  <div class="qa-block qa-q">
+    <div class="qa-speaker">Q</div>
+    <div class="qa-text">When you're advising a client about whether to move to AEM as a Cloud Service, what's the first question you ask?</div>
+  </div>
+  <div class="qa-block qa-a">
+    <div class="qa-speaker">Tom</div>
+    <div class="qa-text">I ask them how much custom code they're running. Not just the volume — the kind. If they have a lot of tightly coupled integrations, custom OSGi services with complex lifecycle dependencies, or heavy use of deprecated APIs, the migration story gets complicated fast. That doesn't mean don't go — it means the prep work is bigger than they think.</div>
+  </div>
+
+  <div class="qa-block qa-q">
+    <div class="qa-speaker">Q</div>
+    <div class="qa-text">What about cost? Cloud is often sold as a cost-saving move.</div>
+  </div>
+  <div class="qa-block qa-a">
+    <div class="qa-speaker">Tom</div>
+    <div class="qa-text">It can be. But organizations often undercount the transition costs — the engineering time to refactor code, the learning curve for teams unfamiliar with cloud-native AEM patterns, and the potential need to rethink how content is delivered. The ongoing licensing model is different too. You're paying for a managed service, not a perpetual license. That's not bad — but you need to plan for it honestly.</div>
+  </div>
+
+  <h2>Staffing and Team Structure</h2>
+
+  <p>One of the underreported challenges in AEM cloud migrations is organizational: who knows what, who owns the new environment, and how do you build institutional knowledge as the platform evolves under continuous delivery?</p>
+
+  <div class="qa-block qa-q">
+    <div class="qa-speaker">Q</div>
+    <div class="qa-text">How do you advise clients on staffing for a migration?</div>
+  </div>
+  <div class="qa-block qa-a">
+    <div class="qa-speaker">Tom</div>
+    <div class="qa-text">You need someone — ideally more than one person — who deeply understands both the existing implementation and the target state. That's rare. Most teams have either people who know the current system intimately but haven't worked cloud-native, or consultants who know AEMaaCS patterns but don't know the client's specific implementation quirks. The overlap is hard to find. We usually recommend building a small tiger team of internal engineers who get deep training on the cloud environment before the migration work begins in earnest.</div>
+  </div>
+
+  <div class="pullquote">
+    <p>"Don't outsource your architectural understanding. You can outsource execution, but someone on your team needs to own the 'why' of every decision, or you'll be dependent on external support forever."</p>
+    <cite>— Tom Johnson, Hirobe</cite>
+  </div>
+
+  <h2>What Actually Goes Wrong</h2>
+
+  <p>We asked Tom to be direct about the failure modes he sees most often. His answer was unambiguous.</p>
+
+  <div class="qa-block qa-a">
+    <div class="qa-speaker">Tom</div>
+    <div class="qa-text">In order: underestimating the BPA findings, starting the migration before the content strategy is defined, and assuming the Dispatcher config from on-premise will translate cleanly. It almost never does. The cache invalidation model is different, the delivery tier behaves differently — teams that just lift and shift their vhost and dispatcher config are in for a rough go-live.</div>
+  </div>
+
+  <h2>The Bottom Line</h2>
+  <p>Moving to AEM as a Cloud Service is the right direction for most organizations that are heavily invested in the Adobe ecosystem. But it's a genuine migration — not an upgrade — and it deserves a genuine migration plan: inventory of custom code, organizational readiness assessment, a realistic timeline, and people who understand what they're building toward, not just moving away from.</p>
+
+</div>
+
+<div class="related">
+  <div class="related-inner">
+    <div class="related-label">// Related reading</div>
+    <div class="related-grid">
+      <div class="related-card">
+        <div class="related-tag">AEM 6.5 · Operations</div>
+        <h3>Replacing an SSL Certificate on AEM 6.5</h3>
+        <a href="#">Read article</a>
+      </div>
+      <div class="related-card">
+        <div class="related-tag">Strategy · Staffing</div>
+        <h3>In-House AEM vs. Managed Services: The Real Tradeoffs</h3>
+        <a href="#">Read article</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="article-cta">
+  <div class="article-cta-inner">
+    <div>
+      <h2>Facing a migration decision right now?</h2>
+      <p>OpsInventor advisory gets you a direct, scoped answer — no slide decks, no discovery theater.</p>
+    </div>
+    <a href="#" class="btn-orange-solid">Start a conversation</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">OPS<em>INVENTOR</em></div>
+  <div class="footer-links"><a href="#">Insights</a><a href="#">Solutions</a><a href="#">Advisory</a><a href="#">Contact</a></div>
+</footer>
+
 </body>
 </html>

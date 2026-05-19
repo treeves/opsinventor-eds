@@ -1,70 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- stardust:provenance
-    writtenBy: stardust:prototype
-    writtenAt: 2026-05-09T15:30:20Z
-    sourceCurrent: https://www.opsinventor.com/
-    sourceProposed: [
-      stardust/prototypes/home-proposed-option-a.html,
-      stardust/prototypes/home-proposed-option-b.html,
-      stardust/prototypes/home-proposed-option-c.html
-    ]
-  -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prototype Review | Home</title>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsInventor — Homepage Prototypes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
   <style>
-    body { margin: 0; font-family: "Segoe UI", sans-serif; background: #0b1115; color: #e8f4f7; }
-    .bar { padding: 12px 16px; border-bottom: 1px solid #234; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-    .tag { background: #124953; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-    .selector { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
-    .selector button { cursor: pointer; border: 1px solid #1f5560; background: #0f2f37; color: #d5edf1; border-radius: 6px; padding: 6px 10px; font-size: 12px; }
-    .selector button.active { background: #ce5b12; border-color: #ce5b12; color: #fff; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; height: calc(100vh - 54px); padding: 8px; }
-    .pane { background: #fff; border-radius: 6px; overflow: hidden; }
-    .label { margin: 0; padding: 8px 10px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; background: #102028; color: #b7d7de; }
-    iframe { width: 100%; height: calc(100% - 34px); border: 0; }
-    .variant-note { padding: 8px 10px; font-size: 12px; color: #9fc6ce; border-top: 1px solid #1c3a43; background: #0d2026; }
-    .note { position: fixed; right: 16px; bottom: 14px; background: #ce5b12; color: #fff; padding: 8px 10px; border-radius: 4px; font-size: 12px; }
-    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; height: auto; } .pane { height: 70vh; } }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Inter",sans-serif;background:#0B1115;color:#e8f4f6;height:100vh;display:flex;flex-direction:column;}
+    .chooser{background:#0F1C23;border-bottom:3px solid #CE5B12;padding:12px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;flex-wrap:wrap;}
+    .chooser-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:rgba(232,244,246,.5);}
+    .chooser-sep{color:rgba(232,244,246,.2);font-size:18px;}
+    .btn{padding:8px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border:none;border-radius:0;}
+    .btn-variant{background:rgba(255,255,255,.07);color:rgba(232,244,246,.7);}
+    .btn-variant.active{background:#CE5B12;color:#fff;}
+    .btn-variant:hover{background:rgba(206,91,18,.5);color:#fff;}
+    .btn-article{background:transparent;border:1px solid rgba(206,91,18,.5);color:#CE5B12;}
+    .btn-article:hover,.btn-article.active{background:#CE5B12;color:#fff;}
+    iframe{flex:1;width:100%;border:none;}
+    .spacer{flex:1;}
+    .hint{font-size:11px;color:rgba(232,244,246,.3);letter-spacing:.04em;}
   </style>
 </head>
 <body>
-  <div class="bar">
-    <strong>Before / After Review</strong>
-    <span class="tag">Direction: advanced consultancy + article-first beauty</span>
-    <div class="selector">
-      <button class="active" data-src="./home-proposed-option-a.html" data-note="Variant A: Momentum Grid">Variant A</button>
-      <button data-src="./home-proposed-option-b.html" data-note="Variant B: Energetic Pulse">Variant B</button>
-      <button data-src="./home-proposed-option-c.html" data-note="Variant C: Insight Canvas">Variant C</button>
-    </div>
-  </div>
-  <section class="grid">
-    <div class="pane">
-      <p class="label">Current Site</p>
-      <iframe src="https://www.opsinventor.com/" title="Current home"></iframe>
-    </div>
-    <div class="pane">
-      <p class="label">Proposed Prototype</p>
-      <iframe id="proposedFrame" src="./home-proposed-option-a.html" title="Proposed home"></iframe>
-      <div id="variantNote" class="variant-note">Variant A: Momentum Grid</div>
-    </div>
-  </section>
-  <div class="note">If current page blocks framing, open it in a separate tab and compare with the right panel.</div>
-
-  <script>
-    const frame = document.getElementById('proposedFrame');
-    const note = document.getElementById('variantNote');
-    const buttons = document.querySelectorAll('.selector button');
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        buttons.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        frame.src = btn.dataset.src;
-        note.textContent = btn.dataset.note;
-      });
-    });
-  </script>
+<div class="chooser">
+  <span class="chooser-label">Homepage</span>
+  <span class="chooser-sep">|</span>
+  <button class="btn btn-variant active" onclick="load('home-proposed-option-a.html',this)">A — DEPLOY</button>
+  <button class="btn btn-variant" onclick="load('home-proposed-option-b.html',this)">B — SIGNAL</button>
+  <button class="btn btn-variant" onclick="load('home-proposed-option-c.html',this)">C — EDGE</button>
+  <span class="spacer"></span>
+  <button class="btn btn-article" onclick="load('__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe-proposed.html',this)">Article prototype →</button>
+  <span class="hint">Open in new tab for full-screen</span>
+</div>
+<iframe id="frame" src="home-proposed-option-a.html"></iframe>
+<script>
+function load(src,btn){
+  document.getElementById('frame').src=src;
+  document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
 </body>
 </html>

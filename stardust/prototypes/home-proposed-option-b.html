@@ -1,187 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- stardust:provenance
-    writtenBy: stardust:prototype
-    writtenAt: 2026-05-09T15:30:20Z
-    againstDirection: stardust/direction.md
-    sourcePage: stardust/current/pages/home.json
-  -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OpsInventor | Advisory-Led Engineering Insight</title>
+  <!-- stardust:provenance writtenBy: stardust:prototype writtenAt: 2026-05-10T00:00:00Z variant: B — SIGNAL -->
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OpsInventor | Option B — SIGNAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --color-ink-900: #124953;
-      --color-ink-700: #17828D;
-      --color-ink-500: #39AAB5;
-      --color-accent-500: #CE5B12;
-      --color-accent-700: #92470D;
-      --color-bg-900: #0B1115;
-      --color-surface-0: #F6FAFB;
-      --color-surface-1: #EAF7F9;
-      --color-text-primary: #0E1B22;
-      --color-text-muted: #35525C;
-      --color-border-subtle: #BFD5DB;
-    }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: "IBM Plex Sans", "Segoe UI", sans-serif; color: var(--color-text-primary); background: linear-gradient(180deg, #f9fcfd 0%, #f2fafb 100%); }
-    .shell {
-      min-height: 84vh;
-      background:
-        radial-gradient(800px 520px at 8% -12%, rgba(57,170,181,0.55) 0%, rgba(57,170,181,0) 70%),
-        radial-gradient(760px 480px at 95% 8%, rgba(206,91,18,0.32) 0%, rgba(206,91,18,0) 72%),
-        linear-gradient(155deg, #0e3540 0%, #0b1115 56%, #0b1115 100%);
-      color: #ecf7f9;
-      position: relative;
-      overflow: hidden;
-    }
-    .shell::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: linear-gradient(120deg, rgba(57,170,181,0.16) 0%, rgba(57,170,181,0) 42%), linear-gradient(300deg, rgba(206,91,18,0.1) 0%, rgba(206,91,18,0) 45%);
-      pointer-events: none;
-    }
-    .wrap { width: min(1120px, 92vw); margin: 0 auto; }
-    header { padding: 20px 0; border-bottom: 1px solid rgba(191,213,219,0.3); position: relative; z-index: 1; }
-    .brand { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-    .logo { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-    .logo span { color: #5fd3de; }
-    nav a { color: #ddf2f5; text-decoration: none; margin-left: 18px; font-size: 14px; }
-    .hero { padding: 58px 0 64px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 34px; position: relative; z-index: 1; }
-    .eyebrow { color: #8fe8ef; text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px; margin-bottom: 12px; font-weight: 700; }
-    h1 { font-family: "Source Serif 4", Georgia, serif; font-size: clamp(2.2rem, 4.5vw, 4rem); line-height: 1.02; margin: 0 0 14px; color: #f5fbfc; }
-    .dek { font-size: 1.1rem; color: #cde5ea; max-width: 58ch; }
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px; }
-    .cta { display: inline-block; padding: 12px 18px; border-radius: 999px; background: var(--color-accent-500); color: #fff; text-decoration: none; font-weight: 700; box-shadow: 0 8px 22px rgba(206,91,18,0.42); }
-    .cta.secondary { background: transparent; border: 1px solid rgba(234,247,249,0.45); color: #ecf7f9; box-shadow: none; }
-    .signal-strip { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-top: 22px; }
-    .signal { border: 1px solid rgba(191,213,219,0.28); border-radius: 10px; padding: 10px 12px; background: rgba(13,40,46,0.55); }
-    .signal strong { display: block; font-size: 1.05rem; color: #7de2ec; }
-    .signal span { font-size: 12px; color: #bfd8dd; text-transform: uppercase; letter-spacing: 0.06em; }
-    .panel { background: linear-gradient(165deg, rgba(18,73,83,0.88), rgba(14,40,47,0.9)); border: 1px solid rgba(143,232,239,0.28); border-radius: 14px; padding: 22px; box-shadow: 0 18px 34px rgba(0,0,0,0.26); }
-    .panel h2 { margin: 0 0 8px; font-size: 1.2rem; color: #f4fbfc; }
-    .panel p { margin: 0; color: #c4dce0; line-height: 1.55; }
-    .panel ul { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-    .panel li { background: rgba(8,20,24,0.38); border: 1px solid rgba(191,213,219,0.2); border-radius: 8px; padding: 8px 10px; font-size: 14px; color: #def0f3; }
-    main { padding: 40px 0 78px; }
-    .section-title { margin: 0 0 18px; font-size: 1.45rem; color: var(--color-ink-900); }
-    .subline { color: var(--color-text-muted); margin: 0 0 18px; max-width: 75ch; }
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
-    .card {
-      background: linear-gradient(180deg, #ffffff 0%, #f7fcfd 100%);
-      border: 1px solid var(--color-border-subtle);
-      border-radius: 12px;
-      padding: 18px;
-      box-shadow: 0 10px 24px rgba(18,73,83,0.08);
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before { content: ""; position: absolute; inset: 0 auto auto 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--color-ink-500), var(--color-accent-500)); }
-    .meta { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-ink-700); margin-bottom: 8px; }
-    .card h3 { margin: 0 0 8px; font-family: "Source Serif 4", Georgia, serif; font-size: 1.22rem; line-height: 1.22; }
-    .card p { margin: 0; color: var(--color-text-muted); line-height: 1.55; }
-    .card a { color: var(--color-accent-700); text-decoration: none; font-weight: 600; display: inline-block; margin-top: 10px; }
+    :root{--orange:#CE5B12;--orange-dk:#92470D;--teal:#39AAB5;--teal-dk:#17828D;--ink:#0B1115;--surface:#F6FAFB;--white:#ffffff;--text:#0E1B22;--muted:#35525C;--border:#BFD5DB;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:"Barlow",sans-serif;background:var(--white);color:var(--text);}
 
-    .solutions { margin-top: 34px; background: var(--color-surface-1); border: 1px solid var(--color-border-subtle); border-radius: 14px; padding: 18px; }
-    .solution-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
-    .solution {
-      background: #fff;
-      border: 1px solid #cce2e7;
-      border-radius: 12px;
-      padding: 14px;
-    }
-    .solution b { display: block; margin-bottom: 6px; color: var(--color-ink-900); }
-    .solution p { margin: 0; color: var(--color-text-muted); font-size: 14px; line-height: 1.5; }
+    /* ANNOUNCEMENT BAR */
+    .announce{background:var(--orange);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;letter-spacing:.04em;}
+    .announce a{color:#fff;text-decoration:underline;}
 
-    @media (max-width: 920px) {
-      .hero { grid-template-columns: 1fr; }
-      .grid, .solution-grid, .signal-strip { grid-template-columns: 1fr; }
-      nav { display: none; }
-    }
+    /* NAV */
+    .nav{display:flex;justify-content:space-between;align-items:center;padding:0 clamp(20px,5vw,60px);height:64px;border-bottom:3px solid var(--ink);background:var(--white);position:sticky;top:0;z-index:100;}
+    .logo{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);}
+    .logo em{font-style:normal;color:var(--orange);}
+    .nav-links{display:flex;gap:6px;list-style:none;}
+    .nav-links a{color:var(--ink);text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;}
+    .nav-links a:hover{background:var(--ink);color:#fff;}
+    .nav-cta{background:var(--orange);color:#fff;padding:10px 20px;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-family:"Barlow Condensed",sans-serif;}
+
+    /* HERO — full-width black band with big condensed type */
+    .hero{background:var(--ink);color:#fff;padding:72px clamp(24px,5vw,60px) 64px;position:relative;overflow:hidden;}
+    .hero::before{content:"INSIGHTS";position:absolute;right:-20px;top:-30px;font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:clamp(120px,18vw,220px);line-height:1;color:rgba(255,255,255,.04);pointer-events:none;text-transform:uppercase;letter-spacing:-.02em;}
+    .hero-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 360px;gap:60px;align-items:center;}
+    .hero-left{}
+    .hero-kicker{font-family:"Space Mono",monospace;font-size:11px;color:var(--orange);text-transform:uppercase;letter-spacing:.2em;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+    .hero-kicker::before{content:"";display:block;width:32px;height:2px;background:var(--orange);}
+    h1{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:clamp(3.2rem,7vw,7rem);line-height:.9;text-transform:uppercase;letter-spacing:-.01em;}
+    h1 .accent{color:var(--orange);}
+    .hero-dek{margin-top:24px;font-size:1.15rem;color:rgba(255,255,255,.7);max-width:50ch;line-height:1.6;font-weight:400;}
+    .hero-actions{margin-top:32px;display:flex;gap:0;border:2px solid var(--orange);}
+    .hero-actions a{display:inline-block;padding:14px 26px;font-weight:800;font-size:14px;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;font-family:"Barlow Condensed",sans-serif;}
+    .hero-actions .primary{background:var(--orange);color:#fff;}
+    .hero-actions .secondary{color:rgba(255,255,255,.7);}
+    .hero-actions .secondary:hover{color:#fff;}
+
+    /* HERO FEATURED ARTICLE */
+    .hero-featured{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-left:4px solid var(--orange);padding:24px;}
+    .feat-label{font-family:"Space Mono",monospace;font-size:10px;color:var(--orange);text-transform:uppercase;letter-spacing:.14em;margin-bottom:14px;}
+    .feat-title{font-family:"Barlow Condensed",sans-serif;font-size:1.6rem;font-weight:800;line-height:1.1;color:#fff;margin-bottom:12px;}
+    .feat-excerpt{font-size:14px;color:rgba(255,255,255,.65);line-height:1.55;}
+    .feat-link{display:inline-block;margin-top:16px;font-size:13px;font-weight:700;color:var(--orange);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;}
+    .feat-link::after{content:" →";}
+
+    /* RIBBON — colored problem statements */
+    .ribbon{display:grid;grid-template-columns:repeat(3,1fr);}
+    .ribbon-cell{padding:24px 28px;}
+    .ribbon-cell:nth-child(1){background:var(--orange);}
+    .ribbon-cell:nth-child(2){background:var(--orange-dk);}
+    .ribbon-cell:nth-child(3){background:var(--ink);}
+    .ribbon-label{font-family:"Space Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.6);margin-bottom:8px;}
+    .ribbon-text{font-family:"Barlow Condensed",sans-serif;font-size:1.3rem;font-weight:700;color:#fff;line-height:1.2;}
+
+    /* ARTICLES */
+    .articles-section{max-width:1140px;margin:0 auto;padding:64px clamp(24px,5vw,60px);}
+    .section-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:32px;border-bottom:2px solid var(--ink);padding-bottom:12px;}
+    .section-label{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:1.8rem;text-transform:uppercase;letter-spacing:.02em;}
+    .section-label em{font-style:normal;color:var(--orange);}
+    .all-link{font-size:13px;font-weight:700;color:var(--orange);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;}
+    .all-link::after{content:" →";}
+    .articles-list{display:flex;flex-direction:column;gap:0;}
+    .article-row{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:start;padding:24px 0;border-bottom:1px solid var(--border);}
+    .article-num{font-family:"Space Mono",monospace;font-size:11px;color:var(--muted);padding-top:4px;min-width:24px;}
+    .article-tag{font-family:"Space Mono",monospace;font-size:10px;color:var(--orange);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
+    .article-row h3{font-size:1.15rem;font-weight:700;line-height:1.3;margin-bottom:6px;}
+    .article-row p{font-size:14px;color:var(--muted);line-height:1.5;}
+    .article-row-link{align-self:center;}
+    .article-row-link a{font-size:12px;font-weight:700;color:var(--orange);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;}
+
+    /* CTA BLOCK */
+    .cta-block{background:var(--surface);border-top:4px solid var(--orange);border-bottom:4px solid var(--orange);padding:64px clamp(24px,5vw,60px);}
+    .cta-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+    .cta-block h2{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:clamp(2rem,4vw,3.5rem);text-transform:uppercase;letter-spacing:-.01em;line-height:.95;}
+    .cta-block h2 span{color:var(--orange);}
+    .cta-block p{margin-top:12px;font-size:1rem;color:var(--muted);max-width:50ch;line-height:1.6;}
+    .cta-btn{background:var(--orange);color:#fff;padding:16px 28px;text-decoration:none;font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.06em;font-family:"Barlow Condensed",sans-serif;white-space:nowrap;}
+
+    /* SOLUTIONS */
+    .solutions{max-width:1140px;margin:0 auto;padding:64px clamp(24px,5vw,60px);}
+    .solutions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:32px;}
+    .sol-card{background:var(--surface);padding:32px 28px;}
+    .sol-card:hover{background:var(--ink);color:#fff;}
+    .sol-card:hover .sol-desc{color:rgba(255,255,255,.65);}
+    .sol-num{font-family:"Space Mono",monospace;font-size:10px;color:var(--orange);letter-spacing:.1em;margin-bottom:16px;}
+    .sol-card h3{font-family:"Barlow Condensed",sans-serif;font-size:1.6rem;font-weight:800;text-transform:uppercase;margin-bottom:10px;}
+    .sol-desc{font-size:14px;color:var(--muted);line-height:1.55;}
+
+    /* FOOTER */
+    footer{background:var(--ink);color:rgba(232,244,246,.6);padding:32px clamp(24px,5vw,60px);display:flex;justify-content:space-between;align-items:center;border-top:4px solid var(--orange);}
+    .footer-brand{font-family:"Barlow Condensed",sans-serif;font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:18px;color:#fff;}
+    .footer-brand em{font-style:normal;color:var(--orange);}
+    .footer-links{display:flex;gap:20px;}
+    .footer-links a{color:rgba(232,244,246,.5);text-decoration:none;font-size:12px;text-transform:uppercase;letter-spacing:.08em;}
+
+    @media(max-width:900px){.hero-inner,.cta-inner{grid-template-columns:1fr;}.hero-featured{display:none;}.ribbon{grid-template-columns:1fr;}.solutions-grid{grid-template-columns:1fr;}.section-header{flex-direction:column;gap:8px;}.article-row{grid-template-columns:auto 1fr;}.article-row-link{display:none;}}
   </style>
 </head>
 <body>
-  <div class="shell" data-section="hero">
-    <header>
-      <div class="wrap brand">
-        <div class="logo">OPS<span>INVENTOR</span></div>
-        <nav>
-          <a href="#">Insights</a>
-          <a href="#">Capabilities</a>
-          <a href="#">Case Perspectives</a>
-          <a href="#">Contact</a>
-        </nav>
-      </div>
-    </header>
-    <section class="wrap hero">
-      <div>
-        <div class="eyebrow">Strategic Engineering Advisory</div>
-        <h1>Bright ideas, grounded execution, and insights designed to unlock real delivery outcomes.</h1>
-        <p class="dek">OpsInventor helps leadership teams turn architecture complexity into strategic momentum. Every article is shaped like a solution brief: clear framing, decisive options, and practical next moves.</p>
-        <div class="actions">
-          <a class="cta" href="#">Start a strategic consult</a>
-          <a class="cta secondary" href="#">See solution pathways</a>
-        </div>
-        <div class="signal-strip">
-          <div class="signal"><strong>42%</strong><span>faster alignment cycles</span></div>
-          <div class="signal"><strong>18+</strong><span>platform rescue programs</span></div>
-          <div class="signal"><strong>245</strong><span>insights in the knowledge base</span></div>
-        </div>
-      </div>
-      <aside class="panel">
-        <h2>Insight-to-solution engine</h2>
-        <p>From technical signal to actionable path, each publication now supports decision-making velocity.</p>
-        <ul>
-          <li>Diagnose delivery friction in under two weeks</li>
-          <li>Map modernization bets to business outcomes</li>
-          <li>Scale execution with lean governance patterns</li>
-        </ul>
-      </aside>
-    </section>
-  </div>
-  <main class="wrap" data-section="insights">
-    <h2 class="section-title">Featured Insights</h2>
-    <p class="subline">An energetic consultancy front should still feel deeply thoughtful. These pieces highlight clarity, urgency, and practical direction.</p>
-    <section class="grid">
-      <article class="card">
-        <div class="meta">AEM Delivery Systems • 9 min</div>
-        <h3>What consultation-ready architecture looks like in modern AEM programs</h3>
-        <p>A practical framing of governance, speed, and resilience decisions that executive sponsors actually care about.</p>
-        <a href="#">Read insight</a>
-      </article>
-      <article class="card">
-        <div class="meta">Operations Strategy • 7 min</div>
-        <h3>How to evaluate technical debt without losing modernization speed</h3>
-        <p>A decision map for teams balancing pressure, migration risk, and momentum with solution-first focus.</p>
-        <a href="#">Read insight</a>
-      </article>
-      <article class="card">
-        <div class="meta">Engineering Leadership • 11 min</div>
-        <h3>Speaking of Engineering: why signal-rich communication wins executive trust</h3>
-        <p>Consultancy credibility compounds when bold framing, real evidence, and implementation detail stay aligned.</p>
-        <a href="#">Read insight</a>
-      </article>
-    </section>
 
-    <section class="solutions">
-      <h2 class="section-title">Solution Pathways</h2>
-      <div class="solution-grid">
-        <article class="solution">
-          <b>Modernization Sprint</b>
-          <p>Rapidly surface architecture constraints and define the highest-value intervention sequence.</p>
-        </article>
-        <article class="solution">
-          <b>Advisory Blueprint</b>
-          <p>Convert strategic priorities into an operating model your engineering teams can execute confidently.</p>
-        </article>
-        <article class="solution">
-          <b>Delivery Enablement</b>
-          <p>Embed practical governance, quality signals, and capability growth into day-to-day flow.</p>
-        </article>
+<div class="announce">New article: AEM Infrastructure &amp; Personnel Strategy — <a href="#">Read now →</a></div>
+
+<nav class="nav">
+  <div class="logo">OPS<em>INVENTOR</em></div>
+  <ul class="nav-links"><li><a href="#">Insights</a></li><li><a href="#">Solutions</a></li><li><a href="#">Advisory</a></li></ul>
+  <a href="#" class="nav-cta">Get in touch</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-kicker">Engineering leadership intelligence</div>
+      <h1>Solve hard<br/>AEM problems<br/><span class="accent">fast.</span></h1>
+      <p class="hero-dek">Tactical insight for engineering leaders who need answers, not more documentation. OpsInventor is where AEM experts come to cut through the noise.</p>
+      <div class="hero-actions">
+        <a href="#" class="primary">Read the latest</a>
+        <a href="#" class="secondary">What we do</a>
       </div>
-    </section>
-  </main>
+    </div>
+    <div class="hero-featured">
+      <div class="feat-label">Featured article</div>
+      <div class="feat-title">AEM Infrastructure &amp; Personnel Strategy: A Talk with Tom Johnson of Hirobe</div>
+      <p class="feat-excerpt">What it actually takes to move a large-scale AEM deployment to cloud-native — staffing, tooling, and the decisions nobody warns you about.</p>
+      <a href="#" class="feat-link">Read article</a>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon">
+  <div class="ribbon-cell"><div class="ribbon-label">Problem</div><div class="ribbon-text">AEM complexity is slowing your team down</div></div>
+  <div class="ribbon-cell"><div class="ribbon-label">Reality</div><div class="ribbon-text">Most migration advice misses the hard parts</div></div>
+  <div class="ribbon-cell"><div class="ribbon-label">OpsInventor</div><div class="ribbon-text">Straight answers from people who've done it</div></div>
+</div>
+
+<div class="articles-section">
+  <div class="section-header">
+    <div class="section-label">Latest <em>Insights</em></div>
+    <a href="#" class="all-link">View all</a>
+  </div>
+  <div class="articles-list">
+    <div class="article-row">
+      <div class="article-num">01</div>
+      <div><div class="article-tag">AEM Cloud · Interview</div><h3>AEM Infrastructure and Personnel Strategy: A Talk with Tom Johnson of Hirobe</h3><p>Cloud-native readiness, staffing strategy, and the decisions that actually matter when you're migrating at scale.</p></div>
+      <div class="article-row-link"><a href="#">Read →</a></div>
+    </div>
+    <div class="article-row">
+      <div class="article-num">02</div>
+      <div><div class="article-tag">AEM 6.5 · Operations</div><h3>Replacing an SSL Certificate on AEM 6.5</h3><p>Step-by-step, no ambiguity. Including the parts that break and the reasons they break.</p></div>
+      <div class="article-row-link"><a href="#">Read →</a></div>
+    </div>
+    <div class="article-row">
+      <div class="article-num">03</div>
+      <div><div class="article-tag">Strategy · Staffing</div><h3>In-House AEM vs. Managed Services: The Real Tradeoffs</h3><p>What experienced engineering leaders have learned about cost, control, and capability over time.</p></div>
+      <div class="article-row-link"><a href="#">Read →</a></div>
+    </div>
+    <div class="article-row">
+      <div class="article-num">04</div>
+      <div><div class="article-tag">Performance · Dispatcher</div><h3>Dispatcher Tuning That Actually Moves the Needle</h3><p>The configuration changes most teams never make — and why they matter under production load.</p></div>
+      <div class="article-row-link"><a href="#">Read →</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-block">
+  <div class="cta-inner">
+    <div>
+      <h2>Your deadline<br/>doesn't care<br/><span>about complexity.</span></h2>
+      <p>OpsInventor advisory gets you answers fast. Direct engagement, no preamble, no slides.</p>
+    </div>
+    <a href="#" class="cta-btn">Start a conversation</a>
+  </div>
+</div>
+
+<div class="solutions">
+  <div class="section-header">
+    <div class="section-label">What We <em>Solve</em></div>
+  </div>
+  <div class="solutions-grid">
+    <div class="sol-card"><div class="sol-num">01</div><h3>Cloud Migration</h3><p class="sol-desc">AEMaaCS readiness, BPA triage, migration execution. Zero guesswork on the other side.</p></div>
+    <div class="sol-card"><div class="sol-num">02</div><h3>Performance &amp; Ops</h3><p class="sol-desc">Dispatcher, replication, Sling architecture — systems that hold up under real production load.</p></div>
+    <div class="sol-card"><div class="sol-num">03</div><h3>Team Design</h3><p class="sol-desc">Staffing models, skills assessment, org structures that scale with your platform demands.</p></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">OPS<em>INVENTOR</em></div>
+  <div class="footer-links"><a href="#">Insights</a><a href="#">Solutions</a><a href="#">Advisory</a><a href="#">Contact</a></div>
+</footer>
+
 </body>
 </html>
