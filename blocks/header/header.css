@@ -283,8 +283,13 @@ header .mega-menu ul {
   }
 
   /* Hide the mobile-only "Toggle menu" link on desktop */
-  header .brand-section a[href*="/tools/widgets/toggle"] {
+  header .brand-section a[href*="/tools/widgets/toggle"],
+  header .brand-section .action-wrapper.more {
     display: none;
+  }
+
+  header .main-nav-link {
+    white-space: nowrap;
   }
 }
 

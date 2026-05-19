@@ -127,7 +127,7 @@ function decorateMegaMenu(li) {
 
 function decorateNavItem(li) {
   li.classList.add('main-nav-item');
-  const link = li.querySelector(':scope > p > a');
+  const link = li.querySelector(':scope > p > a, :scope > a');
   if (link) link.classList.add('main-nav-link');
   const menu = decorateMegaMenu(li) || decorateMenu(li);
   if (!(menu || link)) return;
@@ -186,6 +186,8 @@ function decorateNavSection(section) {
 
 async function decorateActionSection(section) {
   section.classList.add('actions-section');
+  const cta = section.querySelector('a:not([href*="/tools/widgets/"])');
+  if (cta) cta.classList.add('btn-accent');
 }
 
 async function decorateHeader(fragment) {

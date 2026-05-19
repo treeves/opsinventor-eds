@@ -28,6 +28,12 @@ const ARTICLES = [
     hlxPath: '',
   },
   {
+    slug: 'nav',
+    src: 'fragments/nav/header.plain.html',
+    daPath: '/fragments/nav/header.html',
+    hlxPath: 'fragments/nav/header',
+  },
+  {
     slug: 'tailing-and-viewing-adobe-cloud-manager-build-logs',
     src: 'en/tailing-and-viewing-adobe-cloud-manager-build-logs/index.plain.html',
   },
