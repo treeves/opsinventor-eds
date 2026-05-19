@@ -1,0 +1,56 @@
+/* Ticker — animated mono marquee with orange dots. */
+
+.ticker-section {
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.ticker {
+  background: var(--ink-2, #0f1c23);
+  color: var(--white);
+  border-top: 3px solid var(--orange);
+  border-bottom: 3px solid var(--orange);
+  overflow: hidden;
+  padding: 18px 0;
+}
+
+.ticker-track {
+  display: flex;
+  gap: 48px;
+  white-space: nowrap;
+  animation: ticker-scroll 22s linear infinite;
+  font-family: var(--mono-font-family);
+  font-size: 0.82rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.ticker-track > span {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  flex-shrink: 0;
+}
+
+.ticker-item {
+  font-style: normal;
+}
+
+.ticker-dot {
+  font-style: normal;
+  color: var(--orange);
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}

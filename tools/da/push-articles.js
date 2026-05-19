@@ -22,6 +22,12 @@ const HLX_API = 'https://admin.hlx.page';
 
 const ARTICLES = [
   {
+    slug: 'home',
+    src: 'index.plain.html',
+    daPath: '/index.html',
+    hlxPath: '',
+  },
+  {
     slug: 'tailing-and-viewing-adobe-cloud-manager-build-logs',
     src: 'en/tailing-and-viewing-adobe-cloud-manager-build-logs/index.plain.html',
   },
@@ -45,7 +51,8 @@ if (!token) {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
 
-async function uploadDoc(slug, srcPath) {
+async function uploadDoc(article) {
+  const { slug, src: srcPath } = article;
   const fullSrc = path.resolve(repoRoot, srcPath);
   if (!fs.existsSync(fullSrc)) {
     console.error(`  ✗ missing source file: ${fullSrc}`);
@@ -55,7 +62,7 @@ async function uploadDoc(slug, srcPath) {
   // Wrap with the DA document shell DA expects.
   const html = `<body>\n  <header></header>\n  <main>\n${inner}\n  </main>\n  <footer></footer>\n</body>`;
 
-  const daPath = `/en/${slug}.html`;
+  const daPath = article.daPath || `/en/${slug}.html`;
   const url = `${DA_API}/${ORG}/${SITE}${daPath}`;
 
   const form = new FormData();
@@ -76,8 +83,9 @@ async function uploadDoc(slug, srcPath) {
   return true;
 }
 
-async function hlxAction(action, slug) {
-  const url = `${HLX_API}/${action}/${ORG}/${SITE}/${BRANCH}/en/${slug}`;
+async function hlxAction(action, article) {
+  const hlxPath = article.hlxPath !== undefined ? article.hlxPath : `en/${article.slug}`;
+  const url = `${HLX_API}/${action}/${ORG}/${SITE}/${BRANCH}/${hlxPath}`;
   console.log(`→ ${action.padEnd(7)} ${url}`);
   const res = await fetch(url, {
     method: 'POST',
@@ -99,11 +107,11 @@ async function hlxAction(action, slug) {
 
 async function pushOne(article) {
   console.log(`\n=== ${article.slug} ===`);
-  const ok = await uploadDoc(article.slug, article.src);
+  const ok = await uploadDoc(article);
   if (!ok) return false;
-  await hlxAction('preview', article.slug);
+  await hlxAction('preview', article);
   // publish is the second action — call only if preview worked, but don't fail on errors
-  // await hlxAction('live', article.slug); // uncomment to publish
+  // await hlxAction('live', article); // uncomment to publish
   return true;
 }
 

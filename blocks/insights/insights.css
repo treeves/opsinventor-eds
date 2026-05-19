@@ -1,0 +1,102 @@
+/* Insights — dark band with 3-up article cards. */
+
+.insights-section {
+  background: var(--ink);
+  color: var(--white);
+  padding: 88px clamp(24px, 5vw, 60px) !important;
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.insights-section > .default-content {
+  max-width: 1180px;
+  margin-inline: auto;
+}
+
+.insights-section > .default-content > p:first-child {
+  font-family: var(--mono-font-family);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #39aab5;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.insights-section > .default-content h2 {
+  font-family: var(--display-font-family);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+  color: var(--white);
+  padding-bottom: 18px;
+  border-bottom: 3px solid var(--orange);
+}
+
+.insights-section > .default-content h2::before {
+  display: none;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1180px;
+  margin: 36px auto 0;
+}
+
+.insights-card {
+  background: var(--ink-2);
+  border: 1px solid var(--ink-3);
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.15s ease, border-left-color 0.15s ease;
+  border-left: 4px solid transparent;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.insights-card:hover {
+  border-left-color: var(--orange);
+  background: #162932;
+}
+
+.insights-tag {
+  font-family: var(--mono-font-family);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #39aab5;
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+
+.insights-title {
+  font-family: var(--display-font-family);
+  font-size: 1.55rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin: 0 0 14px;
+  font-weight: 400;
+}
+
+.insights-dek {
+  color: #b9c7cd;
+  font-size: 0.96rem;
+  margin-bottom: 22px;
+  flex: 1;
+  line-height: 1.55;
+}
+
+.insights-link {
+  font-family: var(--mono-font-family);
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--orange);
+  font-weight: 700;
+}

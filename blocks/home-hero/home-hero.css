@@ -1,0 +1,314 @@
+/* Home Hero — ink/orange split with crossfade carousel + Rapid Drop panel. */
+
+.home-hero-section {
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.home-hero {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  min-height: 640px;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.home-hero-left {
+  position: relative;
+  padding: 64px clamp(28px, 4vw, 72px);
+  color: var(--white);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-hero-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.home-hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: home-hero-cycle 18s infinite;
+  filter: saturate(0.9) contrast(1.05);
+}
+
+@keyframes home-hero-cycle {
+  0% { opacity: 0; transform: scale(1.04); }
+  5%, 33% { opacity: 1; transform: scale(1); }
+  38%, 100% { opacity: 0; transform: scale(1); }
+}
+
+.home-hero-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgb(11 17 21 / 93%) 0%, rgb(11 17 21 / 78%) 55%, rgb(11 17 21 / 55%) 100%);
+  z-index: 1;
+}
+
+.home-hero-dots {
+  position: absolute;
+  bottom: 22px;
+  left: clamp(28px, 4vw, 72px);
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+}
+
+.home-hero-dots span {
+  width: 28px;
+  height: 3px;
+  background: rgb(255 255 255 / 25%);
+}
+
+.home-hero-dots span.on {
+  background: var(--orange);
+}
+
+.home-hero-left > *:not(.home-hero-stage):not(.home-hero-dots) {
+  position: relative;
+  z-index: 2;
+}
+
+.home-hero-kicker {
+  font-family: var(--mono-font-family);
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 24px;
+}
+
+.home-hero-h1 {
+  font-family: var(--display-font-family);
+  font-size: clamp(3.4rem, 8vw, 6.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  margin-bottom: 22px;
+  color: var(--white);
+}
+
+.home-hero-dek {
+  font-size: 1.15rem;
+  max-width: 540px;
+  color: #cfd9de;
+  margin-bottom: 34px;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.home-hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.home-hero-chip {
+  font-family: var(--mono-font-family);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 8px 12px;
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  background: rgb(206 91 18 / 8%);
+  font-weight: 700;
+}
+
+.home-hero-chip--alt {
+  border-color: #39aab5;
+  color: #39aab5;
+  background: rgb(57 170 181 / 8%);
+}
+
+.home-hero-ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.home-hero-btn {
+  font-family: var(--mono-font-family);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 22px;
+  border: 2px solid;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  line-height: 1;
+}
+
+.home-hero-btn--primary {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--white);
+}
+
+.home-hero-btn--primary:hover {
+  background: transparent;
+  color: var(--orange);
+}
+
+.home-hero-btn--ghost {
+  background: transparent;
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.home-hero-btn--ghost:hover {
+  background: var(--white);
+  color: var(--ink);
+}
+
+/* === Rapid Drop panel === */
+.home-hero-right {
+  background: var(--orange);
+  color: var(--white);
+  padding: 64px clamp(28px, 4vw, 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.home-hero-right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1400&q=80");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.15);
+  z-index: 0;
+}
+
+.home-hero-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--ink);
+  z-index: 2;
+}
+
+.home-hero-right > * {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero-drop-badge {
+  font-family: var(--mono-font-family);
+  font-size: 0.74rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--white);
+  padding: 8px 14px;
+  width: max-content;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+.home-hero-drop-title {
+  font-family: var(--display-font-family);
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+  color: var(--white);
+}
+
+.home-hero-drop-dek {
+  font-size: 1.05rem;
+  max-width: 460px;
+  margin-bottom: 28px;
+  color: rgb(255 255 255 / 92%);
+  line-height: 1.55;
+}
+
+.home-hero-drop-platforms {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.home-hero-drop-platforms span {
+  font-family: var(--mono-font-family);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  background: rgb(11 17 21 / 18%);
+  border: 1px solid rgb(255 255 255 / 40%);
+  font-weight: 700;
+}
+
+.home-hero-drop-form {
+  display: flex;
+  gap: 0;
+  max-width: 440px;
+}
+
+.home-hero-drop-form input {
+  flex: 1;
+  border: 2px solid var(--ink);
+  background: var(--white);
+  color: var(--ink);
+  padding: 12px 14px;
+  font-family: var(--body-font-family);
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.home-hero-drop-form button {
+  background: var(--ink);
+  color: var(--white);
+  border: 2px solid var(--ink);
+  padding: 12px 18px;
+  font-family: var(--mono-font-family);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.home-hero-drop-form button:hover {
+  background: var(--white);
+  color: var(--ink);
+}
+
+@media (width <= 880px) {
+  .home-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero-left {
+    min-height: 520px;
+  }
+}
