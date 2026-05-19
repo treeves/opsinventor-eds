@@ -9,17 +9,31 @@
   width: 100%;
 }
 
-/* Article body column constrained to readable width */
-.blog-template main .section {
+/* Article body column constrained to readable width.
+   Full-bleed variants (hero, key-points, related, cta-band) opt out so they
+   span the viewport with their own internal padding + max-width. */
+.blog-template main .section:not(.has-bph-bg, .key-points, .related, .cta-band) {
   max-width: var(--blog-content-width);
   width: var(--grid-container-width);
   margin: 0 auto;
-  padding: 0 0 var(--spacing-l);
+  padding: var(--spacing-m) 0 var(--spacing-l);
 }
 
-/* First section sits flush against article hero / breadcrumb when present */
-.blog-template main .section:nth-of-type(1) {
-  padding-top: var(--spacing-xl);
+/* Full-bleed sections: span viewport, internal padding handled per-variant */
+.blog-template main .section.has-bph-bg,
+.blog-template main .section.key-points,
+.blog-template main .section.related,
+.blog-template main .section.cta-band {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+}
+
+/* Center inner content of full-bleed variants */
+.blog-template main .section.key-points > .default-content,
+.blog-template main .section.related > .default-content,
+.blog-template main .section.cta-band > .default-content {
+  margin-inline: auto;
 }
 
 .blog-template .default-content p {

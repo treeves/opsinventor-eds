@@ -25,6 +25,14 @@ const ARTICLES = [
     slug: 'tailing-and-viewing-adobe-cloud-manager-build-logs',
     src: 'en/tailing-and-viewing-adobe-cloud-manager-build-logs/index.plain.html',
   },
+  {
+    slug: 'testing-geo-seo-with-adobe-llm-optimizer',
+    src: 'en/testing-geo-seo-with-adobe-llm-optimizer/index.plain.html',
+  },
+  {
+    slug: 'aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe',
+    src: 'en/aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe/index.plain.html',
+  },
 ];
 
 const token = process.env.DA_TOKEN || process.argv[3];

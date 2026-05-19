@@ -178,3 +178,42 @@
   color: var(--ink);
   border-color: var(--white);
 }
+
+/* Eyebrow label: leading <em> in the first paragraph (e.g. "// Direct Line") */
+/* stylelint-disable-next-line no-descending-specificity */
+.section.cta-band > .default-content > p:first-child {
+  font-family: var(--mono-font-family);
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+
+.section.cta-band > .default-content > p:first-child em {
+  font-style: normal;
+}
+
+/* Auto-button: a paragraph containing only a link renders as a dark CTA button */
+.section.cta-band > .default-content > p:has(> a:only-child) > a {
+  display: inline-block;
+  font-family: var(--mono-font-family);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  padding: 14px 22px;
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--white);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.section.cta-band > .default-content > p:has(> a:only-child) > a:hover {
+  background: var(--white);
+  color: var(--ink);
+  border-color: var(--white);
+}
