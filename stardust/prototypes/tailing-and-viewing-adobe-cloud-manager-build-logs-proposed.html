@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- stardust:provenance writtenBy: stardust:prototype writtenAt: 2026-05-19T00:00:00Z revision: 1 sourceUrl: https://www.opsinventor.com/tailing-and-viewing-adobe-cloud-manager-build-logs/ -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tailing Cloud Manager Build Logs — Tad Reeves / OpsInventor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1115;--ink-2:#0F1C23;--ink-3:#162932;
+  --orange:#CE5B12;--orange-dk:#92470D;
+  --teal:#39AAB5;--teal-dk:#17828D;
+  --surface:#F6FAFB;--white:#fff;
+  --text:#0E1B22;--muted:#35525C;--border:#BFD5DB;
+  --display:"Archivo Black","Inter",sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.65}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.eyebrow{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.18em}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:var(--ink);border-bottom:1px solid #1c2b33}
+.nav-row{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,40px);color:#fff;max-width:1240px;margin-inline:auto}
+.brand{display:flex;align-items:baseline;gap:14px;font-family:var(--display);letter-spacing:-.02em}
+.brand-name{font-size:1.25rem;color:#fff}
+.brand-imprint{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.2em;color:var(--orange);text-transform:uppercase}
+.nav-links{display:flex;gap:30px;align-items:center;font-size:.92rem;font-weight:500;list-style:none}
+.nav-links a{color:#cdd6da}
+.nav-links a:hover{color:#fff}
+.nav-cta{font-family:var(--mono);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;background:var(--orange);color:#fff;padding:11px 18px;border:2px solid var(--orange);transition:.15s ease}
+.nav-cta:hover{background:transparent;color:var(--orange)}
+
+/* ARTICLE HERO */
+.article-hero{background:var(--ink);color:#fff;position:relative;overflow:hidden;padding:80px clamp(24px,5vw,60px) 56px}
+.article-hero::before{content:"";position:absolute;inset:0;background-image:url("https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2022/03/Screenshot-from-2022-03-08-17-24-27-e1646789126268.png?resize=1800%2C1000&ssl=1");background-size:cover;background-position:center;opacity:.18;filter:grayscale(.5) contrast(1.05)}
+.article-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,17,21,.82) 0%,rgba(11,17,21,.95) 70%,var(--ink) 100%)}
+.article-hero > *{position:relative;z-index:1}
+.article-hero .inner{max-width:820px;margin-inline:auto}
+.breadcrumb{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:22px}
+.breadcrumb a{color:var(--orange)}
+.article-tags{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.tag{background:var(--orange);color:#fff;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 11px;font-weight:700}
+.tag--ghost{background:transparent;border:1px solid var(--teal);color:var(--teal)}
+h1.article-title{font-family:var(--display);font-size:clamp(2.2rem,5vw,4rem);line-height:.98;letter-spacing:-.028em;color:#fff;margin-bottom:22px;max-width:22ch}
+.article-dek{font-size:1.15rem;color:#cfd9de;max-width:60ch;margin-bottom:36px}
+.byline{display:flex;align-items:center;gap:18px;padding-top:24px;border-top:3px solid var(--orange);max-width:max-content}
+.avatar{width:48px;height:48px;background:var(--orange);color:#fff;font-family:var(--display);font-size:1rem;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.byline-name{font-weight:700;font-size:.98rem;color:#fff}
+.byline-meta{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:3px}
+
+/* KEY POINTS */
+.key-points{background:var(--orange);color:#fff;padding:28px clamp(24px,5vw,60px);border-top:6px solid var(--ink);border-bottom:6px solid var(--ink)}
+.key-points-inner{max-width:820px;margin-inline:auto;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start}
+.key-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.8);padding-top:6px;white-space:nowrap}
+.key-list{display:flex;gap:8px;flex-wrap:wrap}
+.key-item{background:rgba(11,17,21,.22);border:1px solid rgba(255,255,255,.35);color:#fff;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;font-weight:700}
+
+/* ARTICLE BODY */
+.article-body{padding:64px clamp(24px,5vw,60px)}
+.article-body .inner{max-width:820px;margin-inline:auto}
+.article-body p{font-size:1.075rem;line-height:1.78;margin-bottom:26px;color:var(--text)}
+.article-body p:first-of-type::first-letter{font-family:var(--display);font-size:3.2em;float:left;line-height:.85;margin:6px 12px 0 0;color:var(--orange)}
+.article-body h2{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.05;letter-spacing:-.025em;margin:56px 0 20px;color:var(--ink)}
+.article-body h2::before{content:"";display:block;width:48px;height:5px;background:var(--orange);margin-bottom:16px}
+.article-body h3{font-weight:800;font-size:1.15rem;margin:30px 0 12px;color:var(--ink)}
+.article-body a{color:var(--orange-dk);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.article-body a:hover{color:var(--orange);text-decoration-thickness:2px}
+.article-body strong{color:var(--ink);font-weight:700}
+.article-body ul{margin:0 0 26px 0;padding-left:0;list-style:none}
+.article-body ul li{position:relative;padding-left:28px;margin-bottom:10px;font-size:1.05rem;line-height:1.75}
+.article-body ul li::before{content:"▸";position:absolute;left:0;top:0;color:var(--orange);font-weight:700;font-size:1.05em}
+
+/* INLINE CODE */
+.article-body p code,.article-body li code{font-family:var(--mono);font-size:.86em;background:rgba(206,91,18,.08);border:1px solid rgba(206,91,18,.25);padding:2px 7px;color:var(--orange-dk);word-break:break-word}
+
+/* STEP HEADER */
+.step{display:flex;gap:20px;align-items:baseline;margin:60px 0 18px}
+.step-num{font-family:var(--display);font-size:2.4rem;letter-spacing:-.04em;color:var(--orange);line-height:.9;min-width:64px}
+.step h2{margin:0;padding:0;flex:1}
+.step h2::before{display:none}
+
+/* CODE BLOCK (terminal) */
+.code-block{margin:28px 0;background:#08101a;border-left:5px solid var(--orange);color:#e8eef0;overflow:hidden;box-shadow:0 0 0 1px #0f1c23 inset}
+.code-block .bar{background:#0F1C23;border-bottom:1px solid #1c2b33;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:#7fa0aa}
+.code-block .bar strong{color:var(--orange);font-weight:700}
+.code-block .bar .kind{color:var(--teal)}
+.code-block pre{margin:0;padding:18px 22px;overflow-x:auto;font-family:var(--mono);font-size:.86rem;line-height:1.6;color:#e8eef0;white-space:pre;tab-size:2}
+.code-block pre .prompt{color:#7fcf85;user-select:none;font-weight:700}
+.code-block pre .out{color:#a8b4b9}
+.code-block pre .key{color:var(--teal)}
+.code-block pre .str{color:#f0c476}
+.code-block pre .ok{color:#7fcf85}
+.code-block pre .num{color:#f0c476}
+.code-block pre .dim{color:#5d6f78}
+.code-block--single pre{font-size:.92rem}
+.code-block--single .bar{padding:8px 18px}
+
+/* CALLOUT */
+.callout{background:var(--ink);color:#fff;padding:32px clamp(24px,4vw,40px);margin:48px 0;border-left:6px solid var(--orange);position:relative}
+.callout-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;font-weight:700;display:flex;gap:10px;align-items:center}
+.callout-tag::before{content:"!";font-family:var(--display);background:var(--orange);color:var(--ink);width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:1rem}
+.callout h3{font-family:var(--display);font-size:clamp(1.2rem,2vw,1.5rem);line-height:1.1;letter-spacing:-.02em;color:#fff;margin-bottom:16px}
+.callout p{color:#cfd9de;font-size:1rem;line-height:1.7;margin-bottom:14px}
+.callout p:last-child{margin-bottom:0}
+.callout ul{margin-top:14px;padding-left:0;list-style:none}
+.callout ul li{position:relative;padding-left:24px;color:#cfd9de;margin-bottom:10px;line-height:1.65}
+.callout ul li::before{content:"▸";position:absolute;left:0;color:var(--orange);font-weight:700}
+.callout ul li strong{color:#fff}
+
+/* MTB MOTIF CARD (cover photo note) */
+.mtb-card{background:var(--surface);border:1px solid var(--border);border-left:6px solid var(--teal);margin:48px 0;padding:0;display:grid;grid-template-columns:5fr 7fr;gap:0;overflow:hidden}
+.mtb-card .photo{background:url("https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=80") center/cover;min-height:200px}
+.mtb-card .copy{padding:28px 30px}
+.mtb-card .copy .eyebrow{color:var(--teal-dk);margin-bottom:10px}
+.mtb-card .copy h4{font-family:var(--display);font-size:1.2rem;letter-spacing:-.015em;color:var(--ink);margin-bottom:12px;line-height:1.15}
+.mtb-card .copy p{color:var(--muted);font-size:.98rem;line-height:1.65;margin-bottom:0}
+@media (max-width:700px){.mtb-card{grid-template-columns:1fr}.mtb-card .photo{min-height:180px}}
+
+/* RELATED + CTA + FOOTER */
+.related{background:var(--surface);border-top:3px solid var(--ink);padding:64px clamp(24px,5vw,60px)}
+.related-inner{max-width:820px;margin-inline:auto}
+.related-label{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:24px;font-weight:700}
+.related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.related-card{background:var(--white);border:1px solid var(--border);border-top:4px solid transparent;padding:22px;transition:.15s ease;display:flex;flex-direction:column;gap:10px}
+.related-card:hover{border-top-color:var(--orange);transform:translateY(-2px)}
+.related-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-dk)}
+.related-card h3{font-family:var(--display);font-size:1.15rem;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
+.related-card .read{margin-top:auto;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);font-weight:700}
+@media (max-width:700px){.related-grid{grid-template-columns:1fr}.key-points-inner{grid-template-columns:1fr}}
+
+.cta-band{background:var(--orange);color:#fff;padding:80px clamp(24px,5vw,60px);border-top:6px solid var(--ink);border-bottom:6px solid var(--ink);position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background-image:url("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1800&q=80");background-size:cover;background-position:center;opacity:.18;mix-blend-mode:multiply}
+.cta-inner{position:relative;max-width:1140px;margin-inline:auto;display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:center}
+.cta-inner h2{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.8rem);line-height:.98;letter-spacing:-.025em;margin-bottom:14px}
+.cta-inner p{font-size:1.05rem;max-width:54ch;color:rgba(255,255,255,.94)}
+.btn{font-family:var(--mono);font-weight:700;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;padding:16px 24px;border:2px solid;transition:.15s ease;display:inline-flex;align-items:center;gap:8px;background:var(--ink);border-color:var(--ink);color:#fff;white-space:nowrap}
+.btn:hover{background:#fff;color:var(--ink)}
+.cta-side{display:flex;justify-content:flex-end}
+@media (max-width:820px){.cta-inner{grid-template-columns:1fr}.cta-side{justify-content:flex-start}}
+
+.foot{background:var(--ink);color:#9bafb6;padding:48px clamp(24px,5vw,60px) 24px;border-top:4px solid var(--orange)}
+.foot-inner{max-width:1140px;margin-inline:auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot .brand{align-items:baseline}
+.foot .brand-name{color:#fff}
+.foot-links{display:flex;gap:24px;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+.foot-links a:hover{color:var(--orange)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-row">
+    <a class="brand" href="/home.html">
+      <span class="brand-name">TAD REEVES</span>
+      <span class="brand-imprint">// OPSINVENTOR</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/home.html#speaking">Speaking</a></li>
+      <li><a href="/home.html#insights">Insights</a></li>
+      <li><a href="/home.html#rapid-drop">The Rapid Drop</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Hard Problems →</a>
+  </div>
+</header>
+
+<section class="article-hero">
+  <div class="inner">
+    <div class="breadcrumb"><a href="/home.html#insights">Insights</a> / Field Notes</div>
+    <div class="article-tags">
+      <span class="tag">Runbook</span>
+      <span class="tag tag--ghost">AEMaaCS</span>
+      <span class="tag tag--ghost">Cloud Manager</span>
+      <span class="tag tag--ghost">DevOps</span>
+    </div>
+    <h1 class="article-title">Tailing Cloud Manager build logs.</h1>
+    <p class="article-dek">Get faster, deeper feedback from Adobe Cloud Manager builds on AEMaaCS and AMS — straight from your terminal, no UI polling, no waiting on the dashboard to catch up.</p>
+    <div class="byline">
+      <div class="avatar">TR</div>
+      <div>
+        <div class="byline-name">Tad Reeves</div>
+        <div class="byline-meta">// March 9, 2022 · 7 min read</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="key-points">
+  <div class="key-points-inner">
+    <div class="key-label">// What you'll learn</div>
+    <div class="key-list">
+      <span class="key-item">aio-cli setup</span>
+      <span class="key-item">JWT auth config</span>
+      <span class="key-item">Pipeline + execution IDs</span>
+      <span class="key-item">Live log tail</span>
+    </div>
+  </div>
+</div>
+
+<section class="article-body">
+  <div class="inner">
+
+    <p>If you're using Adobe Experience Manager on Adobe's AEM Managed Services infrastructure — or on AEM as a Cloud Service — all software releases and web-tier configuration updates flow through Adobe's Cloud Manager CI/CD pipeline. The UI is fine for the happy path. But when you need to actually <em>see</em> what your build is doing in real time — or pull logs that are no longer in the dashboard — you reach for <code>aio-cli</code>.</p>
+
+    <h2>Why would you want this?</h2>
+    <p>Two reasons, mostly:</p>
+    <ul>
+      <li><strong>Logs older than the most-recent few builds disappear from the UI.</strong> If you want to compare today's failing build against one from three weeks ago, the CLI is your only path.</li>
+      <li><strong>The UI doesn't show live output.</strong> Tailing the build step in your terminal gets you faster feedback when something is wrong, instead of refreshing a dashboard.</li>
+    </ul>
+
+    <!-- STEP 1 -->
+    <div class="step"><div class="step-num">01</div><h2>Install aio-cli</h2></div>
+    <p>Install the Adobe I/O CLI globally via npm:</p>
+    <div class="code-block code-block--single">
+      <div class="bar"><span><strong>bash</strong> · install</span><span class="kind">shell</span></div>
+<pre><span class="prompt">$</span> npm install -g @adobe/aio-cli</pre>
+    </div>
+    <p>Confirm the install:</p>
+    <div class="code-block">
+      <div class="bar"><span><strong>bash</strong> · version check</span><span class="kind">shell</span></div>
+<pre><span class="prompt">$</span> aio -v
+<span class="out">@adobe/aio-cli/3.5.0 win32-x64 node-v12.18.0</span></pre>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step"><div class="step-num">02</div><h2>Create a Cloud Manager API integration</h2></div>
+    <p>In the Adobe I/O Developer Console, create a new project (or use an existing one) and add the <strong>Cloud Manager</strong> API with a JWT credential. Adobe's docs cover this end-to-end — what you need on the way out is a downloaded <code>config.json</code> plus a private key. Stash both somewhere you can reference by absolute path.</p>
+
+    <!-- STEP 3 -->
+    <div class="step"><div class="step-num">03</div><h2>Configure aio-cli with your credentials</h2></div>
+    <p>The <code>config.json</code> from the console should look something like this:</p>
+    <div class="code-block">
+      <div class="bar"><span><strong>config.json</strong> · jwt credentials</span><span class="kind">json</span></div>
+<pre>{
+  <span class="key">"client_id"</span>: <span class="str">"value from your CLI integration (String)"</span>,
+  <span class="key">"client_secret"</span>: <span class="str">"value from your CLI integration (String)"</span>,
+  <span class="key">"jwt_payload"</span>: { value from your CLI integration (JSON Object Literal) },
+  <span class="key">"token_exchange_url"</span>: <span class="str">"https://ims-na1.adobelogin.com/ims/exchange/jwt"</span>
+}</pre>
+    </div>
+    <p>Load it into aio-cli's config under the <code>jwt-auth</code> namespace:</p>
+    <div class="code-block code-block--single">
+      <div class="bar"><span><strong>bash</strong> · load jwt config</span><span class="kind">shell</span></div>
+<pre><span class="prompt">$</span> aio config:set jwt-auth PATH_TO_CONFIG_JSON_FILE --file --json</pre>
+    </div>
+    <p>Then load the private key:</p>
+    <div class="code-block code-block--single">
+      <div class="bar"><span><strong>bash</strong> · load private key</span><span class="kind">shell</span></div>
+<pre><span class="prompt">$</span> aio config:set jwt-auth.jwt_private_key PATH_TO_PRIVATE_KEY_FILE --file</pre>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step"><div class="step-num">04</div><h2>Set your Cloud Manager program ID</h2></div>
+    <p>Find your program ID in Cloud Manager (it's the numeric ID in the URL when you're inside a program) and set it as a default:</p>
+    <div class="code-block code-block--single">
+      <div class="bar"><span><strong>bash</strong> · set program id</span><span class="kind">shell</span></div>
+<pre><span class="prompt">$</span> aio config:set cloudmanager_programid 1234</pre>
+    </div>
+    <p>You only set this once per shell session (or persistently, with <code>--global</code>).</p>
+
+    <!-- STEP 5 -->
+    <div class="step"><div class="step-num">05</div><h2>List your pipelines</h2></div>
+    <p>List every pipeline in the program so you can pick the one you want to monitor:</p>
+    <div class="code-block">
+      <div class="bar"><span><strong>bash</strong> · list pipelines</span><span class="kind">cloudmanager</span></div>
+<pre><span class="prompt">tad@tad-Precision-7750:~/OneDrive/ICF/aio/config$</span> aio cloudmanager:program:list-pipelines
+<span class="dim"> Pipeline Id   Name                                       Status </span>
+<span class="dim"> ───────────   ────────────────────────────────────────   ────── </span>
+ <span class="num">7239327</span>       Web-Tier Only                              <span class="ok">BUSY</span>
+ <span class="num">4042555</span>       Non-Production Pipeline                    IDLE
+ <span class="num">3984112</span>       Production Pipeline                        IDLE</pre>
+    </div>
+    <p>Grab the pipeline ID you care about — you'll feed it to the next two commands.</p>
+
+    <!-- STEP 6 -->
+    <div class="step"><div class="step-num">06</div><h2>Kick off (or attach to) an execution</h2></div>
+    <p>To start a new execution:</p>
+    <div class="code-block">
+      <div class="bar"><span><strong>bash</strong> · create execution</span><span class="kind">cloudmanager</span></div>
+<pre><span class="prompt">tad@tad-Precision-7750:~/OneDrive/ICF/aio/config$</span> aio cloudmanager:pipeline:create-execution 4042555
+<span class="out">starting execution... started execution ID</span> <span class="num">4042555</span></pre>
+    </div>
+    <p>If you already kicked off a build from the Cloud Manager UI, skip this — just grab the execution ID from the dashboard.</p>
+
+    <!-- STEP 7 -->
+    <div class="step"><div class="step-num">07</div><h2>Tail the build log</h2></div>
+    <p>The payoff. Tail the live build output:</p>
+    <div class="code-block">
+      <div class="bar"><span><strong>bash</strong> · tail live build log</span><span class="kind">cloudmanager</span></div>
+<pre><span class="prompt">$</span> aio cloudmanager:pipeline:tail-build-log 4042555
+<span class="dim">2022-03-09T00:15:38+0000</span> The following build artifacts were reused from the prior execution 1132597
+<span class="dim">2022-03-09T00:15:38+0000</span> [INFO]   - all
+<span class="dim">2022-03-09T00:15:38+0000</span> [INFO]   - core
+<span class="dim">2022-03-09T00:15:38+0000</span> [INFO]   - ui.apps
+<span class="dim">2022-03-09T00:15:38+0000</span> [INFO]   - ui.content
+<span class="dim">2022-03-09T00:15:38+0000</span> [INFO]   - ui.tests
+<span class="dim">2022-03-09T00:15:38+0000</span> Running additional tests...
+<span class="dim">2022-03-09T00:16:02+0000</span> <span class="ok">[INFO] BUILD SUCCESS</span></pre>
+    </div>
+    <p>And that's the loop: terminal feedback, no dashboard polling, full history available later via <code>aio cloudmanager:pipeline:list-executions</code>.</p>
+
+    <!-- CALLOUT -->
+    <div class="callout">
+      <div class="callout-tag">// Important · Logging caveats &amp; limitations</div>
+      <h3>Two things to know before you live in this command</h3>
+      <ul>
+        <li><strong>You can only tail the "Build &amp; Unit Testing" step.</strong> The CLI surfaces Maven/build output. Deploy, security scans, and the rest of the pipeline aren't tail-able — you check those separately.</li>
+        <li><strong>Logs aren't shipped to Splunk.</strong> If your org's centralized log search is the source of truth, you won't find Cloud Manager build logs there. Pull them through <code>aio</code> or download via the dashboard while they're still hot.</li>
+      </ul>
+    </div>
+
+    <h2>About the cover photo</h2>
+    <div class="mtb-card">
+      <div class="photo" role="img" aria-label="Mountain bike trail in Mt. Hood National Forest at sunrise"></div>
+      <div class="copy">
+        <div class="eyebrow">// Sandy Ridge · Mt. Hood</div>
+        <h4>Being in the woods at sunrise is a downright spiritual experience.</h4>
+        <p>This was taken at the Sandy Ridge Mountain Bike Park in Mt. Hood National Forest on an early-morning ride. There's a reason a lot of the hardest problems I've solved got worked out on the trail — your brain unsticks once your hands are busy.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="related">
+  <div class="related-inner">
+    <div class="related-label">// Related reading</div>
+    <div class="related-grid">
+      <a class="related-card" href="/testing-geo-seo-with-adobe-llm-optimizer-proposed.html">
+        <span class="related-tag">Field Experiment · LLM</span>
+        <h3>Testing GEO/SEO with Adobe LLM Optimizer.</h3>
+        <span class="read">Read the experiment →</span>
+      </a>
+      <a class="related-card" href="/__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe-proposed.html">
+        <span class="related-tag">Interview · AEMaaCS</span>
+        <h3>AEM infrastructure and personnel strategy — a talk with Tom Johnson of Hirobe.</h3>
+        <span class="read">Read the conversation →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta">
+  <div class="cta-inner">
+    <div>
+      <div class="eyebrow" style="color:#fff;opacity:.85;margin-bottom:14px">// Direct Line</div>
+      <h2>Got a build pipeline<br>that won't behave?</h2>
+      <p>Bring me the hard part. I do scoped advisory engagements for engineering leaders who need a real answer — not a slide deck, not discovery theater.</p>
+    </div>
+    <div class="cta-side">
+      <a class="btn" href="mailto:tad@opsinventor.com">Start a conversation →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <a class="brand" href="/home.html">
+      <span class="brand-name">TAD REEVES</span>
+      <span class="brand-imprint">// OPSINVENTOR</span>
+    </a>
+    <div class="foot-links">
+      <a href="/home.html#speaking">Speaking</a>
+      <a href="/home.html#insights">Insights</a>
+      <a href="/home.html#rapid-drop">Rapid Drop</a>
+      <a href="mailto:tad@opsinventor.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

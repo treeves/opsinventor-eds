@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- stardust:provenance writtenBy: stardust:prototype writtenAt: 2026-05-19T00:00:00Z revision: 1 sourceUrl: https://www.opsinventor.com/testing-geo-seo-with-adobe-llm-optimizer/ -->
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Testing GEO/SEO with Adobe LLM Optimizer — Tad Reeves / OpsInventor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1115;--ink-2:#0F1C23;--ink-3:#162932;
+  --orange:#CE5B12;--orange-dk:#92470D;
+  --teal:#39AAB5;--teal-dk:#17828D;
+  --surface:#F6FAFB;--white:#fff;
+  --text:#0E1B22;--muted:#35525C;--border:#BFD5DB;
+  --display:"Archivo Black","Inter",sans-serif;
+  --body:"Inter",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.65}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.eyebrow{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.18em}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:var(--ink);border-bottom:1px solid #1c2b33}
+.nav-row{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,5vw,40px);color:#fff;max-width:1240px;margin-inline:auto}
+.brand{display:flex;align-items:baseline;gap:14px;font-family:var(--display);letter-spacing:-.02em}
+.brand-name{font-size:1.25rem;color:#fff}
+.brand-imprint{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.2em;color:var(--orange);text-transform:uppercase}
+.nav-links{display:flex;gap:30px;align-items:center;font-size:.92rem;font-weight:500;list-style:none}
+.nav-links a{color:#cdd6da}
+.nav-links a:hover{color:#fff}
+.nav-cta{font-family:var(--mono);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;background:var(--orange);color:#fff;padding:11px 18px;border:2px solid var(--orange);transition:.15s ease}
+.nav-cta:hover{background:transparent;color:var(--orange)}
+
+/* ARTICLE HERO */
+.article-hero{background:var(--ink);color:#fff;position:relative;overflow:hidden;padding:80px clamp(24px,5vw,60px) 56px}
+.article-hero::before{content:"";position:absolute;inset:0;background-image:url("https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image.png?resize=1800%2C1000&ssl=1");background-size:cover;background-position:center;opacity:.22;filter:grayscale(.4) contrast(1.05)}
+.article-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,17,21,.78) 0%,rgba(11,17,21,.94) 70%,var(--ink) 100%)}
+.article-hero > *{position:relative;z-index:1}
+.article-hero .inner{max-width:820px;margin-inline:auto}
+.breadcrumb{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:22px}
+.breadcrumb a{color:var(--orange)}
+.article-tags{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.tag{background:var(--orange);color:#fff;font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;padding:6px 11px;font-weight:700}
+.tag--ghost{background:transparent;border:1px solid var(--teal);color:var(--teal)}
+.tag--live{background:#7fcf85;color:var(--ink)}
+h1.article-title{font-family:var(--display);font-size:clamp(2.2rem,5vw,4rem);line-height:.98;letter-spacing:-.028em;color:#fff;margin-bottom:22px;max-width:22ch}
+.article-dek{font-size:1.15rem;color:#cfd9de;max-width:60ch;margin-bottom:36px}
+.byline{display:flex;align-items:center;gap:18px;padding-top:24px;border-top:3px solid var(--orange);max-width:max-content}
+.avatar{width:48px;height:48px;background:var(--orange);color:#fff;font-family:var(--display);font-size:1rem;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+.byline-name{font-weight:700;font-size:.98rem;color:#fff}
+.byline-meta{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:3px}
+
+/* KEY POINTS */
+.key-points{background:var(--orange);color:#fff;padding:28px clamp(24px,5vw,60px);border-top:6px solid var(--ink);border-bottom:6px solid var(--ink)}
+.key-points-inner{max-width:820px;margin-inline:auto;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start}
+.key-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.8);padding-top:6px;white-space:nowrap}
+.key-list{display:flex;gap:8px;flex-wrap:wrap}
+.key-item{background:rgba(11,17,21,.22);border:1px solid rgba(255,255,255,.35);color:#fff;font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;font-weight:700}
+
+/* ARTICLE BODY */
+.article-body{padding:64px clamp(24px,5vw,60px)}
+.article-body .inner{max-width:820px;margin-inline:auto}
+.article-body p{font-size:1.075rem;line-height:1.78;margin-bottom:26px;color:var(--text)}
+.article-body p:first-of-type::first-letter{font-family:var(--display);font-size:3.2em;float:left;line-height:.85;margin:6px 12px 0 0;color:var(--orange)}
+.article-body h2{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.05;letter-spacing:-.025em;margin:56px 0 20px;color:var(--ink)}
+.article-body h2::before{content:"";display:block;width:48px;height:5px;background:var(--orange);margin-bottom:16px}
+.article-body h3{font-weight:800;font-size:1.15rem;margin:30px 0 12px;color:var(--ink)}
+.article-body a{color:var(--orange-dk);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.article-body a:hover{color:var(--orange);text-decoration-thickness:2px}
+.article-body strong{color:var(--ink);font-weight:700}
+.article-body code{font-family:var(--mono);font-size:.88em;background:rgba(206,91,18,.08);border:1px solid rgba(206,91,18,.25);padding:2px 7px;color:var(--orange-dk)}
+
+/* FIGURE (screenshot block) */
+.figure{margin:40px 0;background:var(--ink);padding:4px;border-left:5px solid var(--orange);position:relative}
+.figure img{width:100%;display:block;background:#fff}
+.figure figcaption{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#8eafb8;padding:14px 20px 12px;background:var(--ink);display:flex;align-items:center;gap:12px}
+.figure figcaption::before{content:"FIG";font-weight:700;color:var(--orange);letter-spacing:.16em}
+.figure figcaption .num{color:var(--orange);font-weight:700}
+.figure--wide{margin-inline:calc(min(820px,92vw)/2 - 50vw + clamp(24px,5vw,60px));max-width:none}
+@media (max-width:1000px){.figure--wide{margin-inline:0}}
+
+/* UPDATE BLOCK */
+.update{background:var(--ink);color:#fff;padding:36px clamp(24px,4vw,40px);margin:48px 0;border-left:6px solid var(--teal);position:relative}
+.update-tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;font-weight:700;display:flex;gap:10px;align-items:center}
+.update-tag::before{content:"●";color:var(--teal);font-size:.7em}
+.update h3{font-family:var(--display);font-size:clamp(1.3rem,2vw,1.6rem);line-height:1.1;letter-spacing:-.02em;color:#fff;margin-bottom:18px}
+.update p{color:#cfd9de;font-size:1.02rem;line-height:1.7;margin-bottom:18px}
+.update p:last-child{margin-bottom:0}
+.update a{color:var(--orange);text-decoration:underline}
+.update--success{border-left-color:#7fcf85}
+.update--success .update-tag{color:#7fcf85}
+.update--success .update-tag::before{color:#7fcf85}
+
+/* RELATED + CTA + FOOTER (shared with other prototypes) */
+.related{background:var(--surface);border-top:3px solid var(--ink);padding:64px clamp(24px,5vw,60px)}
+.related-inner{max-width:820px;margin-inline:auto}
+.related-label{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:24px;font-weight:700}
+.related-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.related-card{background:var(--white);border:1px solid var(--border);border-top:4px solid transparent;padding:22px;transition:.15s ease;display:flex;flex-direction:column;gap:10px}
+.related-card:hover{border-top-color:var(--orange);transform:translateY(-2px)}
+.related-tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-dk)}
+.related-card h3{font-family:var(--display);font-size:1.15rem;line-height:1.15;letter-spacing:-.015em;color:var(--ink)}
+.related-card .read{margin-top:auto;font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);font-weight:700}
+@media (max-width:700px){.related-grid{grid-template-columns:1fr}.key-points-inner{grid-template-columns:1fr}}
+
+.cta-band{background:var(--orange);color:#fff;padding:80px clamp(24px,5vw,60px);border-top:6px solid var(--ink);border-bottom:6px solid var(--ink);position:relative;overflow:hidden}
+.cta-band::before{content:"";position:absolute;inset:0;background-image:url("https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1800&q=80");background-size:cover;background-position:center;opacity:.18;mix-blend-mode:multiply}
+.cta-inner{position:relative;max-width:1140px;margin-inline:auto;display:grid;grid-template-columns:2fr 1fr;gap:40px;align-items:center}
+.cta-inner h2{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.8rem);line-height:.98;letter-spacing:-.025em;margin-bottom:14px}
+.cta-inner p{font-size:1.05rem;max-width:54ch;color:rgba(255,255,255,.94)}
+.btn{font-family:var(--mono);font-weight:700;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;padding:16px 24px;border:2px solid;transition:.15s ease;display:inline-flex;align-items:center;gap:8px;background:var(--ink);border-color:var(--ink);color:#fff;white-space:nowrap}
+.btn:hover{background:#fff;color:var(--ink)}
+.cta-side{display:flex;justify-content:flex-end}
+@media (max-width:820px){.cta-inner{grid-template-columns:1fr}.cta-side{justify-content:flex-start}}
+
+.foot{background:var(--ink);color:#9bafb6;padding:48px clamp(24px,5vw,60px) 24px;border-top:4px solid var(--orange)}
+.foot-inner{max-width:1140px;margin-inline:auto;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot .brand{align-items:baseline}
+.foot .brand-name{color:#fff}
+.foot-links{display:flex;gap:24px;font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+.foot-links a:hover{color:var(--orange)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-row">
+    <a class="brand" href="/home.html">
+      <span class="brand-name">TAD REEVES</span>
+      <span class="brand-imprint">// OPSINVENTOR</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/home.html#speaking">Speaking</a></li>
+      <li><a href="/home.html#insights">Insights</a></li>
+      <li><a href="/home.html#rapid-drop">The Rapid Drop</a></li>
+    </ul>
+    <a href="#cta" class="nav-cta">Hard Problems →</a>
+  </div>
+</header>
+
+<section class="article-hero">
+  <div class="inner">
+    <div class="breadcrumb"><a href="/home.html#insights">Insights</a> / Field Experiment</div>
+    <div class="article-tags">
+      <span class="tag">Field Experiment</span>
+      <span class="tag tag--ghost">Adobe LLM Optimizer</span>
+      <span class="tag tag--ghost">GEO / SEO</span>
+      <span class="tag tag--live">Live · 3 updates</span>
+    </div>
+    <h1 class="article-title">Testing GEO/SEO with Adobe LLM Optimizer.</h1>
+    <p class="article-dek">A running experiment to find out what it actually takes to get ChatGPT, Perplexity, Grok and Gemini to surface non-server-rendered content — and whether Adobe's LLM Optimizer can rescue client-side text from invisibility.</p>
+    <div class="byline">
+      <div class="avatar">TR</div>
+      <div>
+        <div class="byline-name">Tad Reeves</div>
+        <div class="byline-meta">// Feb 24, 2026 · Updated Feb 26, 2026 · 8 min read</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="key-points">
+  <div class="key-points-inner">
+    <div class="key-label">// What we're testing</div>
+    <div class="key-list">
+      <span class="key-item">Client-side text crawling</span>
+      <span class="key-item">Adobe LLMO Optimize-at-Edge</span>
+      <span class="key-item">PDF discoverability</span>
+      <span class="key-item">Live LLM citation</span>
+    </div>
+  </div>
+</div>
+
+<section class="article-body">
+  <div class="inner">
+
+    <p>I'm running a test here to see what it actually takes to get LLMs — ChatGPT, Perplexity, Grok, Gemini — to pull non-server-rendered text off a page and cite it in their responses. The hypothesis is that most of the citation-worthy content on modern Edge Delivery / AEM sites is hidden from crawlers, and that <a href="https://business.adobe.com/products/llm-optimizer.html">Adobe LLM Optimizer</a> can close that gap.</p>
+
+    <figure class="figure">
+      <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image.png?ssl=1" alt="Adobe LLM Optimizer dashboard">
+      <figcaption><span class="num">01</span>Adobe LLM Optimizer dashboard — the testbed for this experiment</figcaption>
+    </figure>
+
+    <h2>The testbed</h2>
+
+    <p>I recently wrote <a href="https://blog.arborydigital.com/en/blog/eds-cdn-architecture-advanced-search-aem-meetup-cary-nc">this post on our AEM Meetup in NC</a>, and in that post I have a section "PDF resources from the event" which uses an Edge Delivery block that generates a list of related PDFs from the AEM Cloud Service DAM. The PDFs are AEM/EDS architecture diagrams — exactly the kind of artifact an LLM should love to cite. But right now, despite solid traditional SEO, zero LLMs are surfacing them.</p>
+
+    <p>I built the block intentionally: the juiciest part of the data — the PDF titles, descriptions, and links — is <strong>client-side rendered</strong>, which makes it (theoretically) invisible to most crawlers. Forty-eight hours after publishing, zero LLMs — Gemini, ChatGPT, Grok, Copilot — could give me a link to the PDF, even when I pointed them at the exact page.</p>
+
+    <figure class="figure">
+      <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-4.png?ssl=1" alt="LLM unable to find PDF links">
+      <figcaption><span class="num">02</span>Forty-eight hours in — none of the major LLMs can find the PDFs</figcaption>
+    </figure>
+
+    <p>The test prompt:</p>
+
+    <p><code>Find me a PDF document on blog.arborydigital.com with the description "Diagram of an example Edge Delivery Services / DA / AEMaaCS implementation, showing authentication, authorization, SSO and configuration auth workflows"</code></p>
+
+    <p>Given this testbed, I'm measuring how well a few prompt variations get the article or PDFs cited, using <a href="https://experienceleague.adobe.com/en/docs/llm-optimizer/using/resources/optimize-at-edge/overview">Adobe LLMO's Optimize-at-Edge</a> tech to generate pre-hydrated HTML specifically for the LLMs.</p>
+
+    <figure class="figure">
+      <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-1.png?ssl=1" alt="Prompt variations and visibility scoring in LLM Optimizer">
+      <figcaption><span class="num">03</span>Prompt variations and per-LLM visibility scoring in the LLM Optimizer UI</figcaption>
+    </figure>
+
+    <p>Experiment kicked off today (2/24/26) — we'll see where this goes.</p>
+
+    <!-- UPDATE 1 -->
+    <div class="update">
+      <div class="update-tag">// Update · Feb 25, 2026</div>
+      <h3>Implemented Adobe LLMO Optimize-at-Edge</h3>
+      <p>As of today the LLMO Optimize-at-Edge routing is enabled on our CDN for Adobe LLM Optimizer. A custom version of the site is now hosted-in-parallel by Adobe gear, creating a pre-hydrated, LLM- and crawler-friendly version that should start to surface the text we're after.</p>
+      <figure class="figure" style="margin-top:8px">
+        <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-2.png?ssl=1" alt="LLMO routing configuration">
+        <figcaption><span class="num">04</span>Optimize-at-Edge routing enabled on the CDN</figcaption>
+      </figure>
+      <p>As of last night, asking an LLM to "find me a diagram on blog.arborydigital.com which is a diagram of an example Edge Delivery Services / DA / AEMaaCS implementation" — zero of them could find it, even pointed at the page. The JS-rendered text was still invisible. Once edge optimizations finish hydrating, I'll update again.</p>
+    </div>
+
+    <!-- UPDATE 2 -->
+    <div class="update">
+      <div class="update-tag">// Update · Feb 26, 2026 (AM)</div>
+      <h3>Deployed pre-render</h3>
+      <p>Traffic routing was complete, but there were manual configs on the Adobe side before the UI accepted configurations. All domain URLs are now onboarded in pre-render.</p>
+      <figure class="figure" style="margin-top:8px">
+        <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-5.png?ssl=1" alt="Domain URLs onboarded">
+        <figcaption><span class="num">05</span>All domain URLs onboarded into pre-render</figcaption>
+      </figure>
+      <p>LLM-friendly summaries were also added:</p>
+      <figure class="figure" style="margin-top:8px">
+        <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-6.png?ssl=1" alt="LLM-friendly summaries added">
+        <figcaption><span class="num">06</span>LLM-friendly summaries staged for crawler ingestion</figcaption>
+      </figure>
+      <p>Waiting now for these to kick in and start being pulled — then we'll update PDF readability results.</p>
+    </div>
+
+    <!-- UPDATE 3 - SUCCESS -->
+    <div class="update update--success">
+      <div class="update-tag">// Update · Feb 26, 2026 (PM) — Result</div>
+      <h3>Success: some LLMs are immediately finding the PDF URLs</h3>
+      <p>One hour after deploying the edge optimization on LLM Optimizer, I re-ran the PDF searches. Previously <strong>zero</strong> LLMs could find a link to the PDFs. Now we're already getting results — first from those LLMs that do a live fan-out search and pull live URLs (rather than just cached search results).</p>
+      <p>ChatGPT pulled the exact PDF URL — which was in client-side JS, now being fed pre-rendered to the LLM by Adobe LLM Edge Optimization:</p>
+      <figure class="figure" style="margin-top:8px">
+        <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-7.png?ssl=1" alt="ChatGPT returning the exact PDF URL">
+        <figcaption><span class="num">07</span>ChatGPT returning the exact, previously-invisible PDF URL</figcaption>
+      </figure>
+      <p>Grok was also able to pull the exact PDF URL:</p>
+      <figure class="figure" style="margin-top:8px">
+        <img src="https://i0.wp.com/www.opsinventor.com/wp-content/uploads/2026/02/image-8.png?ssl=1" alt="Grok also surfacing the PDF URL">
+        <figcaption><span class="num">08</span>Grok independently surfacing the same PDF URL</figcaption>
+      </figure>
+      <p>Copilot and Google AI Mode still aren't finding the PDFs themselves (just the HTML heading that already existed). Perplexity can pull the JS-rendered text but can't find the link. Still — one hour in, and we've already recovered meaningful visibility.</p>
+    </div>
+
+    <h2>What this means</h2>
+    <p>The premise — that client-side rendered content is effectively invisible to LLM crawlers — held up. So did the premise that Adobe's LLMO Optimize-at-Edge meaningfully changes that, at least for the LLMs doing live fan-out retrieval. I'll keep this article live as the test progresses and update with results as more LLMs catch up.</p>
+
+  </div>
+</section>
+
+<section class="related">
+  <div class="related-inner">
+    <div class="related-label">// Related reading</div>
+    <div class="related-grid">
+      <a class="related-card" href="/__aem-infrastructure-and-personnel-strategy-a-talk-with-tom-johnson-of-hirobe-proposed.html">
+        <span class="related-tag">Interview · AEMaaCS</span>
+        <h3>AEM infrastructure and personnel strategy — a talk with Tom Johnson of Hirobe.</h3>
+        <span class="read">Read the conversation →</span>
+      </a>
+      <a class="related-card" href="/tailing-and-viewing-adobe-cloud-manager-build-logs-proposed.html">
+        <span class="related-tag">Field Notes · DevOps</span>
+        <h3>Tailing and viewing Adobe Cloud Manager build logs.</h3>
+        <span class="read">Read the runbook →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band" id="cta">
+  <div class="cta-inner">
+    <div>
+      <div class="eyebrow" style="color:#fff;opacity:.85;margin-bottom:14px">// Direct Line</div>
+      <h2>Got a content visibility<br>problem of your own?</h2>
+      <p>Bring me the hard part. I do scoped advisory engagements for engineering leaders who need a real answer — not a slide deck, not discovery theater.</p>
+    </div>
+    <div class="cta-side">
+      <a class="btn" href="mailto:tad@opsinventor.com">Start a conversation →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <a class="brand" href="/home.html">
+      <span class="brand-name">TAD REEVES</span>
+      <span class="brand-imprint">// OPSINVENTOR</span>
+    </a>
+    <div class="foot-links">
+      <a href="/home.html#speaking">Speaking</a>
+      <a href="/home.html#insights">Insights</a>
+      <a href="/home.html#rapid-drop">Rapid Drop</a>
+      <a href="mailto:tad@opsinventor.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
