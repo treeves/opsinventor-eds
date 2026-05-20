@@ -1,5 +1,7 @@
 {
   "type": "da",
   "contentHostUrl": "https://content.da.live/treeves/opsinventor-eds/",
-  "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+  "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json",
+  "previewOrg": "treeves",
+  "previewSite": "opsinventor-eds"
 }
