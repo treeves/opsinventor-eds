@@ -167,17 +167,17 @@ header {
     font-size: 0.78rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    background: var(--orange);
+    background: var(--teal-dk);
     color: var(--white);
     padding: var(--header-cta-padding);
-    border: 2px solid var(--orange);
+    border: 2px solid var(--teal-dk);
     white-space: nowrap;
     transition: background-color 0.15s ease, color 0.15s ease;
   }
 
   .actions-section .btn-accent:hover {
     background: transparent;
-    color: var(--orange);
+    color: var(--teal-dk);
   }
 
   /* Action widgets (scheme, language) when present — small icon buttons */

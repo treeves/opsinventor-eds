@@ -156,14 +156,14 @@
 }
 
 .home-hero-btn--primary {
-  background: var(--orange);
-  border-color: var(--orange);
+  background: var(--teal-dk);
+  border-color: var(--teal-dk);
   color: var(--white);
 }
 
 .home-hero-btn--primary:hover {
   background: transparent;
-  color: var(--orange);
+  color: var(--teal-dk);
 }
 
 .home-hero-btn--ghost {

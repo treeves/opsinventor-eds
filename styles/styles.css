@@ -11,8 +11,8 @@
   --ink-3: #1c2b33;        /* dark borders / hairlines */
   --orange: #ce5b12;       /* primary accent */
   --orange-dk: #a8460a;    /* accent hover / link rest */
-  --teal: #4ba89a;         /* secondary accent */
-  --teal-dk: #2d7e72;      /* teal hover */
+  --teal: #39aab5;         /* secondary accent */
+  --teal-dk: #17828d;      /* teal hover */
   --surface: #f5efe7;      /* light cream surface */
   --text: #2b2b2b;         /* body text on light */
   --muted: #6a6a6a;        /* secondary text */
@@ -165,14 +165,14 @@ a.btn {
 .btn-accent,
 a.btn-accent {
   color: var(--white);
-  background: var(--orange);
-  border-color: var(--orange);
+  background: var(--teal-dk);
+  border-color: var(--teal-dk);
 }
 
 .btn-accent:hover,
 a.btn-accent:hover {
   background: transparent;
-  color: var(--orange);
+  color: var(--teal-dk);
 }
 
 .btn-primary,
@@ -206,7 +206,7 @@ a.btn-secondary:hover {
 }
 
 .btn-outline.btn-accent {
-  color: var(--orange);
+  color: var(--teal-dk);
 }
 
 .btn-outline.btn-primary {

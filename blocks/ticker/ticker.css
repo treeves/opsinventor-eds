@@ -10,8 +10,8 @@
 .ticker {
   background: var(--ink-2, #0f1c23);
   color: var(--white);
-  border-top: 3px solid var(--orange);
-  border-bottom: 3px solid var(--orange);
+  border-top: 3px solid var(--teal-dk);
+  border-bottom: 3px solid var(--teal-dk);
   overflow: hidden;
   padding: 18px 0;
 }
@@ -41,7 +41,7 @@
 
 .ticker-dot {
   font-style: normal;
-  color: var(--orange);
+  color: var(--teal);
 }
 
 @keyframes ticker-scroll {
