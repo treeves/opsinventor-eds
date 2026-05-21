@@ -20,6 +20,7 @@
   display: flex;
   gap: 48px;
   white-space: nowrap;
+  width: max-content;
   animation: ticker-scroll 22s linear infinite;
   font-family: var(--mono-font-family);
   font-size: 0.82rem;
