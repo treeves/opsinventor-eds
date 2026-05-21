@@ -81,6 +81,62 @@ async function loadBrands(path) {
   const html = await resp.text();
   const doc = new DOMParser().parseFromString(html, 'text/html');
 
+  const tableRows = [...doc.querySelectorAll('main table tr')];
+  if (tableRows.length) {
+    return tableRows
+      .map((row) => {
+        const cells = [...row.children];
+        if (cells.length < 2) return null;
+
+        const name = getCellText(cells[0]);
+        if (!name || name.toLowerCase() === 'brand') return null;
+
+        const logoImg = cells[1].querySelector('picture img, img');
+        if (logoImg) {
+          return {
+            name,
+            logo: resolveUrl(logoImg.getAttribute('src') || ''),
+          };
+        }
+
+        const logoLink = cells[1].querySelector('a[href]');
+        const href = logoLink?.getAttribute('href') || '';
+        return {
+          name,
+          logo: href ? resolveUrl(href) : '',
+        };
+      })
+      .filter(Boolean);
+  }
+
+  const brandRows = [...doc.querySelectorAll('main .brand > div')];
+  if (brandRows.length) {
+    return brandRows
+      .map((row) => {
+        const cells = [...row.children];
+        if (cells.length < 2) return null;
+
+        const name = getCellText(cells[0]);
+        if (!name) return null;
+
+        const logoImg = cells[1].querySelector('picture img, img');
+        if (logoImg) {
+          return {
+            name,
+            logo: resolveUrl(logoImg.getAttribute('src') || ''),
+          };
+        }
+
+        const logoLink = cells[1].querySelector('a[href]');
+        const href = logoLink?.getAttribute('href') || '';
+        return {
+          name,
+          logo: href ? resolveUrl(href) : '',
+        };
+      })
+      .filter(Boolean);
+  }
+
   const rows = [...doc.querySelectorAll('main > div > div')];
   return rows
     .map((row) => {
