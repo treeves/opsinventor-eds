@@ -1,34 +1,417 @@
-/* Home Hero — ink/orange split with crossfade carousel + Rapid Drop panel.
-   Authored as a near-empty block; content is intentionally baked in here so
-   the home page stays a one-line author surface and visual updates happen
-   via code review. Authors can override slide URLs by adding rows of the
-   form: | slide | https://… | */
+/* Home Hero — all user-facing content is authored in the document.
+  Supports two authoring shapes:
+  1) key/value rows (explicit tokens like slides, chip, rapid-title)
+  2) two-column semantic content (preferred for DA): left hero / right rapid */
 
-const SLIDES = [
-  'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1600&h=900&q=80',
-  'https://images.unsplash.com/photo-1544191696-15693072e0b5?auto=format&fit=crop&w=1600&h=900&q=80',
-  'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&h=900&q=80',
-];
+function getRowText(el) {
+  return el?.textContent?.trim() || '';
+}
 
-const CHIPS = [
-  { label: 'Adobe AEM Champion' },
-  { label: 'Featured Speaker', alt: true },
-  { label: 'Principal Architect' },
-  { label: '15+ Years', alt: true },
-];
+function normalizeKey(key) {
+  return key
+    .toLowerCase()
+    .trim()
+    .replace(/[\s_]+/g, '-')
+    .replace(/[^a-z0-9-]/g, '');
+}
 
-const PLATFORMS = ['YouTube', 'Instagram', 'LinkedIn', 'TikTok'];
+function getCellMedia(cell) {
+  if (!cell) return null;
+  const picture = cell.querySelector('picture');
+  if (picture) return picture.cloneNode(true);
 
-function readAuthoredSlides(block) {
+  const img = cell.querySelector('img');
+  return img ? img.cloneNode(true) : null;
+}
+
+function collectMedia(container) {
+  if (!container) return [];
+
+  const pictures = [...container.querySelectorAll('picture')].map((p) => p.cloneNode(true));
+  const standaloneImages = [...container.querySelectorAll('img')]
+    .filter((img) => !img.closest('picture'))
+    .map((img) => img.cloneNode(true));
+
+  return [...pictures, ...standaloneImages];
+}
+
+function getCellUrl(cell) {
+  const link = cell?.querySelector('a[href]');
+  if (link) return link.getAttribute('href');
+
+  const text = getRowText(cell);
+  return /^https?:\/\//.test(text) ? text : '';
+}
+
+function getCellUrls(cell) {
+  if (!cell) return [];
+
+  const urls = [...cell.querySelectorAll('a[href]')]
+    .map((a) => a.getAttribute('href') || '')
+    .filter((href) => /^https?:\/\//.test(href));
+
+  const textUrls = getRowText(cell)
+    .split(/\s+/)
+    .filter((token) => /^https?:\/\//.test(token));
+
+  return [...urls, ...textUrls];
+}
+
+function getPlatformEntries(cell) {
+  if (!cell) return [];
+
+  const entries = [];
+
+  const listItems = [...cell.querySelectorAll('li')];
+  if (listItems.length) {
+    listItems.forEach((li) => {
+      const link = li.querySelector('a[href]');
+      if (link) {
+        entries.push({ label: getRowText(link), href: link.getAttribute('href') || '' });
+      } else {
+        entries.push({ label: getRowText(li), href: '' });
+      }
+    });
+    return entries.filter((entry) => entry.label);
+  }
+
+  const paragraphs = [...cell.querySelectorAll(':scope > p')];
+  if (paragraphs.length) {
+    paragraphs.forEach((p) => {
+      const link = p.querySelector('a[href]');
+      if (link) {
+        entries.push({ label: getRowText(link), href: link.getAttribute('href') || '' });
+      } else {
+        const text = getRowText(p);
+        if (text) entries.push({ label: text, href: '' });
+      }
+    });
+    return entries.filter((entry) => entry.label);
+  }
+
+  const links = [...cell.querySelectorAll('a[href]')];
+  if (links.length) {
+    links.forEach((link) => {
+      entries.push({ label: getRowText(link), href: link.getAttribute('href') || '' });
+    });
+    return entries.filter((entry) => entry.label);
+  }
+
+  const textLines = (cell.innerText || '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (textLines.length) {
+    textLines.forEach((line) => entries.push({ label: line, href: '' }));
+    return entries;
+  }
+
+  const fallback = getRowText(cell);
+  if (fallback) entries.push({ label: fallback, href: '' });
+  return entries;
+}
+
+function getCta(cell) {
+  const link = cell?.querySelector('a[href]');
+  if (!link) return null;
+
+  const label = getRowText(link);
+  const href = link.getAttribute('href') || '#';
+  if (!label) return null;
+
+  return { label, href };
+}
+
+function parseModel(block) {
+  const model = {
+    kicker: '',
+    heading: '',
+    dek: '',
+    chips: [],
+    chipsAlt: [],
+    primaryCta: null,
+    secondaryCta: null,
+    slides: [],
+    rapidId: 'rapid-drop',
+    rapidBadge: '',
+    rapidTitle: '',
+    rapidDek: '',
+    platforms: [],
+    notifyPlaceholder: '',
+    notifyAria: '',
+    notifyButton: '',
+    rapidBgMedia: null,
+    rapidBgUrl: '',
+  };
+
   const rows = [...block.querySelectorAll(':scope > div')];
-  const slideRows = rows
-    .map((r) => r.textContent.trim())
-    .filter((t) => /^https?:\/\//.test(t));
-  return slideRows.length ? slideRows : SLIDES;
+  rows.forEach((row) => {
+    const cells = [...row.children];
+    const keyCell = cells[0] || null;
+    const valueCell = cells[1] || keyCell;
+    if (!keyCell) return;
+
+    // Back-compat: legacy one-cell rows that contain only a slide URL.
+    if (cells.length === 1) {
+      const legacyUrl = getRowText(keyCell);
+      if (/^https?:\/\//.test(legacyUrl)) {
+        model.slides.push({ media: null, url: legacyUrl });
+        return;
+      }
+    }
+
+    const key = normalizeKey(getRowText(keyCell));
+    const value = getRowText(valueCell);
+
+    switch (key) {
+      case 'kicker':
+      case 'hero-kicker':
+        model.kicker = value;
+        break;
+      case 'heading':
+      case 'title':
+      case 'hero-title':
+        model.heading = value;
+        break;
+      case 'dek':
+      case 'description':
+      case 'hero-dek':
+        model.dek = value;
+        break;
+      case 'chip':
+        if (value) model.chips.push(value);
+        break;
+      case 'chip-alt':
+      case 'chip-secondary':
+        if (value) model.chipsAlt.push(value);
+        break;
+      case 'primary-cta':
+      case 'cta-primary':
+        model.primaryCta = getCta(valueCell);
+        break;
+      case 'secondary-cta':
+      case 'cta-secondary':
+        model.secondaryCta = getCta(valueCell);
+        break;
+      case 'slides':
+      case 'slide':
+      case 'hero-slide': {
+        const medias = collectMedia(valueCell);
+        medias.forEach((media) => model.slides.push({ media, url: '' }));
+
+        if (medias.length) break;
+
+        const media = getCellMedia(valueCell);
+        const url = getCellUrl(valueCell);
+        if (media || url) model.slides.push({ media, url });
+
+        if (!media && !url) {
+          const urls = getCellUrls(valueCell);
+          urls.forEach((href) => model.slides.push({ media: null, url: href }));
+        }
+        break;
+      }
+      case 'rapid-id':
+      case 'drop-id':
+        model.rapidId = value || model.rapidId;
+        break;
+      case 'rapid-badge':
+      case 'drop-badge':
+        model.rapidBadge = value;
+        break;
+      case 'rapid-title':
+      case 'drop-title':
+        model.rapidTitle = value;
+        break;
+      case 'rapid-dek':
+      case 'drop-dek':
+      case 'rapid-description':
+        model.rapidDek = value;
+        break;
+      case 'platforms':
+      case 'platform':
+      case 'rapid-platform':
+        model.platforms.push(...getPlatformEntries(valueCell));
+        break;
+      case 'notify-placeholder':
+      case 'email-placeholder':
+        model.notifyPlaceholder = value;
+        break;
+      case 'notify-aria':
+      case 'email-aria':
+        model.notifyAria = value;
+        break;
+      case 'notify-button':
+      case 'notify-label':
+      case 'email-button':
+        model.notifyButton = value;
+        break;
+      case 'rapid-bg':
+      case 'drop-bg':
+      case 'rapid-image': {
+        model.rapidBgMedia = getCellMedia(valueCell);
+        model.rapidBgUrl = getCellUrl(valueCell);
+        break;
+      }
+      default:
+        break;
+    }
+  });
+
+  return model;
+}
+
+function getParagraphText(paragraph) {
+  return getRowText(paragraph).replace(/\s+/g, ' ').trim();
+}
+
+function parseTwoColumnModel(block) {
+  const model = {
+    kicker: '',
+    heading: '',
+    dek: '',
+    chips: [],
+    chipsAlt: [],
+    primaryCta: null,
+    secondaryCta: null,
+    slides: [],
+    rapidId: 'rapid-drop',
+    rapidBadge: '',
+    rapidTitle: '',
+    rapidDek: '',
+    platforms: [],
+    notifyPlaceholder: '',
+    notifyAria: '',
+    notifyButton: '',
+    rapidBgMedia: null,
+    rapidBgUrl: '',
+  };
+
+  const firstRow = block.querySelector(':scope > div');
+  const columns = firstRow ? [...firstRow.children] : [];
+  const leftCol = columns[0] || null;
+  const rightCol = columns[1] || null;
+  if (!leftCol || !rightCol) return model;
+
+  model.slides = collectMedia(leftCol).map((media) => ({ media, url: '' }));
+
+  model.kicker = getRowText(leftCol.querySelector('em'));
+  model.heading = getRowText(leftCol.querySelector('h1, h2, h3'));
+
+  const leftParagraphs = [...leftCol.querySelectorAll(':scope > p')]
+    .filter((p) => !p.querySelector('a') && !p.querySelector('picture, img') && !p.querySelector('em'));
+  model.dek = getParagraphText(leftParagraphs[0]);
+
+  model.chips = [...leftCol.querySelectorAll(':scope > ul li')]
+    .map((li) => getRowText(li))
+    .filter(Boolean);
+
+  const leftLinks = [...leftCol.querySelectorAll(':scope > p a[href], :scope > a[href]')];
+  if (leftLinks[0]) {
+    model.primaryCta = {
+      label: getRowText(leftLinks[0]),
+      href: leftLinks[0].getAttribute('href') || '#',
+    };
+  }
+  if (leftLinks[1]) {
+    model.secondaryCta = {
+      label: getRowText(leftLinks[1]),
+      href: leftLinks[1].getAttribute('href') || '#',
+    };
+  }
+
+  const rapidMedia = collectMedia(rightCol)[0] || null;
+  if (rapidMedia) model.rapidBgMedia = rapidMedia;
+
+  model.rapidBadge = getRowText(rightCol.querySelector('em'));
+  const rightHeading = rightCol.querySelector('h1, h2, h3');
+  model.rapidTitle = getRowText(rightHeading);
+  if (rightHeading?.id) model.rapidId = rightHeading.id;
+
+  const rightParagraphs = [...rightCol.querySelectorAll(':scope > p')];
+  const rightDekParagraph = rightParagraphs.find((p) => !p.querySelector('a') && !p.querySelector('picture, img') && !p.querySelector('em'));
+  model.rapidDek = getParagraphText(rightDekParagraph);
+
+  model.platforms = [...rightCol.querySelectorAll(':scope > ul li')]
+    .map((li) => {
+      const link = li.querySelector('a[href]');
+      if (link) {
+        return { label: getRowText(link), href: link.getAttribute('href') || '' };
+      }
+      return { label: getRowText(li), href: '' };
+    })
+    .filter((entry) => entry.label);
+
+  const notifyCandidates = rightParagraphs
+    .filter((p) => !p.querySelector('a') && !p.querySelector('picture, img') && !p.querySelector('em'))
+    .map((p) => getParagraphText(p))
+    .filter(Boolean);
+  if (notifyCandidates.length >= 2) {
+    model.notifyPlaceholder = notifyCandidates[notifyCandidates.length - 2];
+    model.notifyButton = notifyCandidates[notifyCandidates.length - 1];
+  }
+
+  return model;
+}
+
+function mergeModels(primary, fallback) {
+  return {
+    ...primary,
+    kicker: primary.kicker || fallback.kicker,
+    heading: primary.heading || fallback.heading,
+    dek: primary.dek || fallback.dek,
+    chips: primary.chips.length ? primary.chips : fallback.chips,
+    chipsAlt: primary.chipsAlt.length ? primary.chipsAlt : fallback.chipsAlt,
+    primaryCta: primary.primaryCta || fallback.primaryCta,
+    secondaryCta: primary.secondaryCta || fallback.secondaryCta,
+    slides: primary.slides.length ? primary.slides : fallback.slides,
+    rapidId: primary.rapidId || fallback.rapidId,
+    rapidBadge: primary.rapidBadge || fallback.rapidBadge,
+    rapidTitle: primary.rapidTitle || fallback.rapidTitle,
+    rapidDek: primary.rapidDek || fallback.rapidDek,
+    platforms: primary.platforms.length ? primary.platforms : fallback.platforms,
+    notifyPlaceholder: primary.notifyPlaceholder || fallback.notifyPlaceholder,
+    notifyAria: primary.notifyAria || fallback.notifyAria,
+    notifyButton: primary.notifyButton || fallback.notifyButton,
+    rapidBgMedia: primary.rapidBgMedia || fallback.rapidBgMedia,
+    rapidBgUrl: primary.rapidBgUrl || fallback.rapidBgUrl,
+  };
+}
+
+function appendTextElement(parent, tagName, className, text) {
+  if (!text) return null;
+  const el = document.createElement(tagName);
+  el.className = className;
+  el.textContent = text;
+  parent.appendChild(el);
+  return el;
+}
+
+function createCtaLink(cta, className) {
+  if (!cta?.label || !cta?.href) return null;
+  const link = document.createElement('a');
+  link.className = className;
+  link.href = cta.href;
+  link.textContent = cta.label;
+  return link;
+}
+
+function createSlideMedia(slide) {
+  if (slide.media) return slide.media.cloneNode(true);
+  if (!slide.url) return null;
+
+  const img = document.createElement('img');
+  img.src = slide.url;
+  img.alt = '';
+  img.loading = 'lazy';
+  return img;
 }
 
 export default function decorate(block) {
-  const slides = readAuthoredSlides(block);
+  const keyValueModel = parseModel(block);
+  const twoColumnModel = parseTwoColumnModel(block);
+  const model = mergeModels(keyValueModel, twoColumnModel);
   block.innerHTML = '';
 
   const left = document.createElement('div');
@@ -37,11 +420,15 @@ export default function decorate(block) {
   const stage = document.createElement('div');
   stage.className = 'home-hero-stage';
   stage.setAttribute('aria-hidden', 'true');
-  slides.forEach((src, i) => {
+
+  model.slides.forEach((slide, i) => {
     const s = document.createElement('div');
     s.className = 'home-hero-slide';
-    s.style.backgroundImage = `url('${src}')`;
     s.style.animationDelay = `${i * 6}s`;
+
+    const media = createSlideMedia(slide);
+    if (media) s.appendChild(media);
+
     stage.appendChild(s);
   });
   left.appendChild(stage);
@@ -49,44 +436,103 @@ export default function decorate(block) {
   const dots = document.createElement('div');
   dots.className = 'home-hero-dots';
   dots.setAttribute('aria-hidden', 'true');
-  slides.forEach((_, i) => {
+  model.slides.forEach((_, i) => {
     const d = document.createElement('span');
     if (i === 0) d.classList.add('on');
     dots.appendChild(d);
   });
   left.appendChild(dots);
 
-  left.insertAdjacentHTML('beforeend', `
-    <div class="home-hero-kicker">// AEM Champion · Principal Architect · 15+ Years</div>
-    <h1 class="home-hero-h1">Tad<br>Reeves.</h1>
-    <p class="home-hero-dek">I architect Adobe Experience Manager systems that actually hold up — through Edge Delivery rollouts, 6.5 LTS migrations, AEMaaCS cutovers, and the gnarly edge cases nobody warned you about.</p>
-    <div class="home-hero-chips">
-      ${CHIPS.map((c) => `<span class="home-hero-chip${c.alt ? ' home-hero-chip--alt' : ''}">${c.label}</span>`).join('')}
-    </div>
-    <div class="home-hero-ctas">
-      <a class="home-hero-btn home-hero-btn--primary" href="#contact">Bring me a hard problem →</a>
-      <a class="home-hero-btn home-hero-btn--ghost" href="#insights">Read the work</a>
-    </div>
-  `);
+  appendTextElement(left, 'div', 'home-hero-kicker', model.kicker);
+  appendTextElement(left, 'h1', 'home-hero-h1', model.heading);
+  appendTextElement(left, 'p', 'home-hero-dek', model.dek);
+
+  const hasChips = model.chips.length || model.chipsAlt.length;
+  if (hasChips) {
+    const chips = document.createElement('div');
+    chips.className = 'home-hero-chips';
+    model.chips.forEach((label) => {
+      const chip = document.createElement('span');
+      chip.className = 'home-hero-chip';
+      chip.textContent = label;
+      chips.appendChild(chip);
+    });
+    model.chipsAlt.forEach((label) => {
+      const chip = document.createElement('span');
+      chip.className = 'home-hero-chip home-hero-chip--alt';
+      chip.textContent = label;
+      chips.appendChild(chip);
+    });
+    left.appendChild(chips);
+  }
+
+  const primaryCta = createCtaLink(model.primaryCta, 'home-hero-btn home-hero-btn--primary');
+  const secondaryCta = createCtaLink(model.secondaryCta, 'home-hero-btn home-hero-btn--ghost');
+  if (primaryCta || secondaryCta) {
+    const ctas = document.createElement('div');
+    ctas.className = 'home-hero-ctas';
+    if (primaryCta) ctas.appendChild(primaryCta);
+    if (secondaryCta) ctas.appendChild(secondaryCta);
+    left.appendChild(ctas);
+  }
 
   const right = document.createElement('div');
   right.className = 'home-hero-right';
-  right.id = 'rapid-drop';
-  right.innerHTML = `
-    <div class="home-hero-drop-badge">// Launching Soon</div>
-    <h2 class="home-hero-drop-title">The Rapid Drop.</h2>
-    <p class="home-hero-drop-dek">60-second AEM and martech term definitions. One concept, one drop, one hard truth — syndicated across every channel you actually use.</p>
-    <div class="home-hero-drop-platforms">
-      ${PLATFORMS.map((p) => `<span>${p}</span>`).join('')}
-    </div>
-    <form class="home-hero-drop-form" novalidate>
-      <input type="email" placeholder="you@company.com" aria-label="Email">
-      <button type="submit">Notify me</button>
-    </form>
-  `;
+  right.id = model.rapidId;
+
+  const rightBg = document.createElement('div');
+  rightBg.className = 'home-hero-right-bg';
+  if (model.rapidBgMedia) {
+    rightBg.appendChild(model.rapidBgMedia.cloneNode(true));
+  } else if (model.rapidBgUrl) {
+    const img = document.createElement('img');
+    img.src = model.rapidBgUrl;
+    img.alt = '';
+    img.loading = 'lazy';
+    rightBg.appendChild(img);
+  }
+  right.appendChild(rightBg);
+
+  appendTextElement(right, 'div', 'home-hero-drop-badge', model.rapidBadge);
+  appendTextElement(right, 'h2', 'home-hero-drop-title', model.rapidTitle);
+  appendTextElement(right, 'p', 'home-hero-drop-dek', model.rapidDek);
+
+  if (model.platforms.length) {
+    const platforms = document.createElement('div');
+    platforms.className = 'home-hero-drop-platforms';
+    model.platforms.forEach((platformItem) => {
+      const platform = platformItem.href ? document.createElement('a') : document.createElement('span');
+      platform.textContent = platformItem.label;
+      if (platformItem.href) {
+        platform.href = platformItem.href;
+        platform.target = '_blank';
+        platform.rel = 'noopener noreferrer';
+      }
+      platforms.appendChild(platform);
+    });
+    right.appendChild(platforms);
+  }
+
+  if (model.notifyButton) {
+    const form = document.createElement('form');
+    form.className = 'home-hero-drop-form';
+    form.setAttribute('novalidate', '');
+
+    const input = document.createElement('input');
+    input.type = 'email';
+    input.placeholder = model.notifyPlaceholder;
+    input.setAttribute('aria-label', model.notifyAria || model.notifyPlaceholder || 'Email');
+
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.textContent = model.notifyButton;
+
+    form.append(input, button);
+    right.appendChild(form);
+  }
 
   // Styled placeholder: no real submit.
-  right.querySelector('form').addEventListener('submit', (e) => e.preventDefault());
+  right.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
 
   block.appendChild(left);
   block.appendChild(right);
