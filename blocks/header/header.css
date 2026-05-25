@@ -33,7 +33,9 @@ header {
   .header-content {
     display: grid;
     grid-template:
-      "brand actions" var(--header-height) "nav nav" auto / 1fr auto;
+      "brand toggle" var(--header-height)
+      "nav nav" auto
+      "actions actions" auto / 1fr auto;
     align-items: center;
     max-width: var(--grid-content-width);
     width: var(--grid-container-width);
@@ -63,11 +65,6 @@ header {
     margin: 0;
     display: flex;
     align-items: center;
-  }
-
-  /* The "Toggle menu" link in brand section becomes the mobile burger */
-  .brand-section .default-content p:nth-of-type(2) {
-    margin-left: auto;
   }
 
   .brand-section a[href="/"] {
@@ -138,14 +135,15 @@ header {
     color: var(--white);
   }
 
-  /* ACTIONS SECTION (right — Hard Problems CTA + mobile toggle) */
+  /* ACTIONS SECTION (right on desktop, inside drawer on mobile) */
   .actions-section {
     grid-area: actions;
-    display: flex;
+    display: none; /* hidden in top bar on mobile; shown in drawer when open */
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 10px;
-    height: var(--header-height);
+    padding: 0 0 var(--spacing-s);
+    background-color: var(--ink-2);
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
@@ -217,29 +215,77 @@ header {
     clip-path: inset(50%);
   }
 
-  /* Mobile burger toggle — the "Toggle menu" link in brand section */
-  .brand-section a[href*="/tools/widgets/toggle"] {
+  /* Mobile hamburger toggle — top-level grid cell, right of brand */
+  .mobile-toggle {
+    grid-area: toggle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--header-height);
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .mobile-toggle button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 44px;
     height: 44px;
+    padding: 0;
+    margin-right: -8px;
+    background: transparent;
     color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: color 0.15s ease;
   }
 
-  .brand-section a[href*="/tools/widgets/toggle"] .icon {
-    width: 22px;
-    height: 22px;
+  .mobile-toggle button:hover,
+  .mobile-toggle button:focus-visible {
+    color: var(--orange);
+  }
+
+  .mobile-toggle .icon {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+  }
+
+  .mobile-toggle .icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 2;
+    stroke-linecap: square;
+    transition: transform 0.2s ease;
+  }
+
+  .mobile-toggle .text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 }
 
 /* Mobile open state — nav drawer drops down under header */
 header.is-mobile-open {
   max-height: 100vh;
+  overflow-y: auto;
 }
 
 header.is-mobile-open .main-nav-section {
   display: block;
+}
+
+header.is-mobile-open .actions-section {
+  display: flex;
+}
+
+header.is-mobile-open .mobile-toggle .icon svg {
+  transform: rotate(90deg);
 }
 
 /* Mega-menu (existing infrastructure preserved, restyled) */
@@ -298,19 +344,20 @@ header .mega-menu ul {
   header .main-nav-link {
     padding: 0;
     font-size: 0.92rem;
+    white-space: nowrap;
   }
 
-  /* Hide the mobile-only "Toggle menu" link on desktop */
-  header .brand-section a[href*="/tools/widgets/toggle"],
-  header .brand-section .action-wrapper.more {
+  /* Hide the mobile-only hamburger toggle on desktop */
+  header .mobile-toggle {
     display: none;
   }
 
-  header .main-nav-link {
-    white-space: nowrap;
+  /* Restore actions section to the right on desktop */
+  header .actions-section {
+    display: flex;
+    justify-content: flex-end;
+    height: var(--header-height);
+    padding: 0;
+    background: transparent;
   }
-}
-
-header.is-mobile-open .brand-section a[href*="/tools/widgets/toggle"] .icon {
-  transform: rotate(90deg);
 }

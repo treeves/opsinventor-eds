@@ -82,7 +82,9 @@ function decorateScheme(btn) {
 function decorateNavToggle(btn) {
   btn.addEventListener('click', () => {
     const header = document.body.querySelector('header');
-    if (header) header.classList.toggle('is-mobile-open');
+    if (!header) return;
+    const isOpen = header.classList.toggle('is-mobile-open');
+    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
   });
 }
 
@@ -90,20 +92,45 @@ async function decorateAction(header, pattern) {
   const link = header.querySelector(`[href*="${pattern}"]`);
   if (!link) return;
 
-  const icon = link.querySelector('.icon');
-  const text = link.textContent;
+  let icon = link.querySelector('.icon');
+  const text = link.textContent.trim();
   const btn = document.createElement('button');
+  btn.type = 'button';
+
+  // The toggle widget comes from DA without an icon span — inject a hamburger SVG.
+  if (pattern === '/tools/widgets/toggle' && !icon) {
+    icon = document.createElement('span');
+    icon.className = 'icon icon-burger';
+    icon.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>';
+  }
+
   if (icon) btn.append(icon);
   if (text) {
     const textSpan = document.createElement('span');
     textSpan.className = 'text';
     textSpan.textContent = text;
     btn.append(textSpan);
+    btn.setAttribute('aria-label', text);
   }
+
+  const variant = icon ? (icon.classList[1] || '').replace('icon-', '') : pattern.split('/').pop();
   const wrapper = document.createElement('div');
-  wrapper.className = `action-wrapper ${icon.classList[1].replace('icon-', '')}`;
+  wrapper.className = `action-wrapper ${variant}`.trim();
   wrapper.append(btn);
-  link.parentElement.parentElement.replaceChild(wrapper, link.parentElement);
+
+  if (pattern === '/tools/widgets/toggle') {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'main-nav');
+    // Lift the toggle out of the brand section so it can be its own grid cell.
+    const headerContent = header.classList.contains('header-content')
+      ? header
+      : header.querySelector('.header-content') || link.closest('.header-content');
+    link.parentElement.remove();
+    (headerContent || link.closest('header') || link.parentElement.parentElement).append(wrapper);
+    wrapper.classList.add('mobile-toggle');
+  } else {
+    link.parentElement.parentElement.replaceChild(wrapper, link.parentElement);
+  }
 
   if (pattern === '/tools/widgets/language') decorateLanguage(btn);
   if (pattern === '/tools/widgets/scheme') decorateScheme(btn);
@@ -180,6 +207,7 @@ function decorateNavSection(section) {
   navList.classList.add('main-nav-list');
 
   const nav = document.createElement('nav');
+  nav.id = 'main-nav';
   nav.append(navList);
   navContent.append(nav);
 
