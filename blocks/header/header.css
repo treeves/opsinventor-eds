@@ -275,10 +275,10 @@ header {
   }
 }
 
-/* Mobile open state — nav drawer drops down under header */
+/* Mobile open state — nav drawer drops down under header (overlay, no inner scroll) */
 header.is-mobile-open {
-  max-height: 100vh;
-  overflow-y: auto;
+  max-height: none;
+  overflow: visible;
 }
 
 header.is-mobile-open .main-nav-section {
