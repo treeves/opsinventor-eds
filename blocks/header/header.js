@@ -80,12 +80,15 @@ function decorateScheme(btn) {
 }
 
 function decorateNavToggle(btn) {
-  btn.addEventListener('click', () => {
+  const handler = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const header = document.body.querySelector('header');
     if (!header) return;
     const isOpen = header.classList.toggle('is-mobile-open');
     btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-  });
+  };
+  btn.addEventListener('click', handler);
 }
 
 async function decorateAction(header, pattern) {

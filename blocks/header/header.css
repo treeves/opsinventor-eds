@@ -58,6 +58,8 @@ header {
     align-items: center;
     gap: 14px;
     height: var(--header-height);
+    min-width: 0; /* allow brand to shrink so toggle cell isn't covered */
+    overflow: hidden;
   }
 
   .brand-section .default-content,
@@ -96,6 +98,7 @@ header {
     color: var(--orange);
     margin-left: 4px;
     text-transform: uppercase;
+    display: none; /* hidden on mobile, shown at desktop breakpoint */
   }
 
   /* NAV SECTION */
@@ -218,6 +221,8 @@ header {
   /* Mobile hamburger toggle — top-level grid cell, right of brand */
   .mobile-toggle {
     grid-area: toggle;
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -350,6 +355,11 @@ header .mega-menu ul {
   /* Hide the mobile-only hamburger toggle on desktop */
   header .mobile-toggle {
     display: none;
+  }
+
+  /* Bring back the // OPSINVENTOR imprint at desktop */
+  header .brand-text::after {
+    display: inline;
   }
 
   /* Restore actions section to the right on desktop */
