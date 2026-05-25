@@ -163,7 +163,12 @@ function decorateBrandSection(section) {
   const [, text] = brandLink.childNodes;
   const span = document.createElement('span');
   span.className = 'brand-text';
-  span.append(text);
+  if (text) {
+    span.append(text);
+  } else {
+    span.textContent = brandLink.textContent.trim();
+    brandLink.textContent = '';
+  }
   brandLink.append(span);
 }
 

@@ -1,14 +1,20 @@
-/* Insights — dark 3-up article cards, dynamically loaded from the query index.
+/* Insights — dynamic article cards loaded from the query index.
 
-   Defaults: 9 cards initially, 9 more per "More Articles" click.
+   Variants (applied as block class via authoring, e.g. `Insights (images-large)`):
+   - default / `text`        : 3-up text cards (tag, title, dek, CTA). No image.
+   - `images-small`          : 3-up cards with image on top.
+   - `images-large`          : 2-up cards with large image on top.
+
+   Optional authored config rows (key | value):
+   - limit   | 6                       (cards per page, default 9)
+   - index   | /opsinventor-en.json    (query index path)
+
    Sort: by `date` descending.
-
-   Optional authored config (first row, single cell): query index path.
-   If absent, defaults to /en/query-index.json.
 */
 
 const DEFAULT_INDEX = '/opsinventor-en.json';
-const PAGE_SIZE = 9;
+const DEFAULT_PAGE_SIZE = 9;
+const DA_HOST = 'https://content.da.live';
 
 function deriveTag(article) {
   if (article.category && article.category.trim()) return `// ${article.category.trim()}`;
@@ -33,10 +39,37 @@ function deriveTag(article) {
   return first ? `// ${first}` : '// Field Notes';
 }
 
-function buildCard(article) {
+function resolveImage(src) {
+  if (!src) return '';
+  if (/^https?:\/\//i.test(src)) return src;
+  // DA-hosted asset paths like /treeves/opsinventor-eds/en/... need the content.da.live host
+  if (src.startsWith('/treeves/')) return `${DA_HOST}${src}`;
+  return src;
+}
+
+function buildCard(article, withImage) {
   const card = document.createElement('a');
   card.className = 'insights-card';
   card.href = article.path;
+
+  if (withImage) {
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'insights-card-image';
+    const src = resolveImage(article.image);
+    if (src) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = article.title || '';
+      img.loading = 'lazy';
+      imgWrap.appendChild(img);
+    } else {
+      imgWrap.classList.add('insights-card-image-empty');
+    }
+    card.appendChild(imgWrap);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'insights-card-body';
 
   const tag = document.createElement('div');
   tag.className = 'insights-tag';
@@ -54,24 +87,49 @@ function buildCard(article) {
   link.className = 'insights-link';
   link.textContent = 'Read more →';
 
-  card.append(tag, title, dek, link);
+  body.append(tag, title, dek, link);
+  card.appendChild(body);
   return card;
 }
 
-export default async function decorate(block) {
+function readConfig(block) {
+  const config = { limit: DEFAULT_PAGE_SIZE, index: DEFAULT_INDEX };
   const rows = [...block.querySelectorAll(':scope > div')];
-  const configCell = rows[0]?.querySelector(':scope > div');
-  const configText = (configCell?.textContent || '').trim();
-  const indexPath = configText && configText.startsWith('/') ? configText : DEFAULT_INDEX;
+  rows.forEach((row) => {
+    const cells = [...row.children];
+    if (cells.length < 2) return;
+    const key = (cells[0].textContent || '').trim().toLowerCase();
+    const val = (cells[1].textContent || '').trim();
+    if (!key || !val) return;
+    if (key === 'limit' || key === 'count' || key === 'page-size') {
+      const n = parseInt(val, 10);
+      if (Number.isFinite(n) && n > 0) config.limit = n;
+    } else if (key === 'index' || key === 'index-path') {
+      if (val.startsWith('/')) config.index = val;
+    }
+  });
+  return config;
+}
 
-  // Promote the section to the dark band styling immediately so the layout is stable
+function resolveVariant(block) {
+  if (block.classList.contains('images-large')) return 'images-large';
+  if (block.classList.contains('images-small')) return 'images-small';
+  return 'text';
+}
+
+export default async function decorate(block) {
+  const { limit, index } = readConfig(block);
+  const variant = resolveVariant(block);
+  const withImage = variant !== 'text';
+
   const section = block.closest('.section');
   if (section) section.classList.add('insights-section');
 
   block.innerHTML = '';
+  block.classList.add(`insights-variant-${variant}`);
 
   const grid = document.createElement('div');
-  grid.className = 'insights-grid';
+  grid.className = `insights-grid insights-grid-${variant}`;
   block.appendChild(grid);
 
   const moreWrap = document.createElement('div');
@@ -87,15 +145,15 @@ export default async function decorate(block) {
   let cursor = 0;
 
   function renderNext() {
-    const slice = articles.slice(cursor, cursor + PAGE_SIZE);
-    slice.forEach((a) => grid.appendChild(buildCard(a)));
+    const slice = articles.slice(cursor, cursor + limit);
+    slice.forEach((a) => grid.appendChild(buildCard(a, withImage)));
     cursor += slice.length;
     if (cursor >= articles.length) moreWrap.style.display = 'none';
   }
 
   try {
-    const resp = await fetch(indexPath);
-    if (!resp.ok) throw new Error(`Failed to fetch ${indexPath} (${resp.status})`);
+    const resp = await fetch(index);
+    if (!resp.ok) throw new Error(`Failed to fetch ${index} (${resp.status})`);
     const json = await resp.json();
     articles = (json.data || [])
       .filter((a) => a.path
