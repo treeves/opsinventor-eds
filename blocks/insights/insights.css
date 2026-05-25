@@ -100,3 +100,37 @@
   color: var(--orange);
   font-weight: 700;
 }
+
+.insights-more-wrap {
+  max-width: 1180px;
+  margin: 36px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.insights-more {
+  font-family: var(--mono-font-family);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid var(--orange);
+  padding: 14px 28px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.insights-more:hover {
+  background: var(--orange);
+  color: var(--ink);
+}
+
+.insights-error {
+  max-width: 1180px;
+  margin: 24px auto 0;
+  color: #b9c7cd;
+  font-family: var(--mono-font-family);
+  font-size: 0.9rem;
+}
