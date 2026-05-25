@@ -1,0 +1,285 @@
+main .carousel {
+  margin: 32px 0;
+  color: var(--text);
+}
+
+main .carousel .carousel-shell {
+  border-top: 3px solid var(--ink);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0 10px;
+}
+
+main .carousel .carousel-item {
+  margin: 0;
+}
+
+main .carousel .carousel-media-button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  line-height: 0;
+}
+
+main .carousel .carousel-media-button picture,
+main .carousel .carousel-media-button img {
+  display: block;
+  width: 100%;
+}
+
+main .carousel .carousel-media-button img {
+  object-fit: cover;
+}
+
+main .carousel .carousel-caption {
+  margin-top: 8px;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+main .carousel .carousel-caption :is(p, ul, ol) {
+  margin: 0;
+}
+
+main .carousel .carousel-caption a {
+  color: var(--teal-dk);
+}
+
+main .carousel:not(.collage) .carousel-shell {
+  padding-top: 0;
+}
+
+main .carousel:not(.collage) .carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+main .carousel:not(.collage) .carousel-nav-button {
+  margin: 0;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--mono-font-family);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  min-width: 112px;
+}
+
+main .carousel:not(.collage) .carousel-nav-button:hover,
+main .carousel:not(.collage) .carousel-nav-button:focus-visible {
+  background: transparent;
+  color: var(--ink);
+}
+
+main .carousel:not(.collage) .carousel-rail {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+main .carousel:not(.collage) .carousel-rail::-webkit-scrollbar {
+  display: none;
+}
+
+main .carousel:not(.collage) .carousel-slide-wrap {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+
+main .carousel:not(.collage) .carousel-slide picture,
+main .carousel:not(.collage) .carousel-slide img {
+  width: 100%;
+  height: auto;
+}
+
+main .carousel:not(.collage) .carousel-indicators {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+main .carousel:not(.collage) .carousel-indicator {
+  width: 24px;
+  height: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(13 20 24 / 25%);
+}
+
+main .carousel:not(.collage) .carousel-indicator[aria-current='true'] {
+  background: var(--orange);
+}
+
+main .carousel.collage .carousel-collage {
+  columns: 1;
+  column-gap: 18px;
+}
+
+main .carousel.collage .carousel-collage > .carousel-item {
+  break-inside: avoid;
+  margin-bottom: 18px;
+  display: inline-block;
+  width: 100%;
+}
+
+main .carousel.collage .carousel-media-button {
+  overflow: hidden;
+  background: var(--ink);
+}
+
+main .carousel.collage .carousel-item--feature .carousel-media-button {
+  aspect-ratio: 4 / 5;
+}
+
+main .carousel.collage .carousel-item--portrait .carousel-media-button {
+  aspect-ratio: 3 / 4;
+}
+
+main .carousel.collage .carousel-item--landscape .carousel-media-button {
+  aspect-ratio: 4 / 3;
+}
+
+main .carousel.collage .carousel-item--square .carousel-media-button {
+  aspect-ratio: 1 / 1;
+}
+
+main .carousel.collage .carousel-item--wide .carousel-media-button {
+  aspect-ratio: 16 / 9;
+}
+
+main .carousel.collage .carousel-media-button picture,
+main .carousel.collage .carousel-media-button img {
+  width: 100%;
+  height: 100%;
+}
+
+@media (width >= 700px) {
+  main .carousel.collage .carousel-collage {
+    columns: 2;
+  }
+}
+
+@media (width >= 1024px) {
+  main .carousel.collage .carousel-collage {
+    columns: 3;
+  }
+}
+
+body.carousel-lightbox-open {
+  overflow: hidden;
+}
+
+main .carousel .carousel-lightbox {
+  width: min(96vw, 1120px);
+  max-width: min(96vw, 1120px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+main .carousel .carousel-lightbox::backdrop {
+  background: rgb(11 17 21 / 88%);
+  backdrop-filter: blur(4px);
+}
+
+main .carousel .carousel-lightbox-shell {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  background: var(--ink);
+  color: var(--white);
+  border: 1px solid rgb(255 255 255 / 10%);
+  box-shadow: 0 28px 100px rgb(0 0 0 / 45%);
+}
+
+main .carousel .carousel-lightbox-close,
+main .carousel .carousel-lightbox-nav {
+  margin: 0;
+  border: 1px solid rgb(255 255 255 / 18%);
+  background: transparent;
+  color: var(--white);
+  font-family: var(--mono-font-family);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+}
+
+main .carousel .carousel-lightbox-close:hover,
+main .carousel .carousel-lightbox-close:focus-visible,
+main .carousel .carousel-lightbox-nav:hover,
+main .carousel .carousel-lightbox-nav:focus-visible {
+  background: var(--white);
+  color: var(--ink);
+}
+
+main .carousel .carousel-lightbox-counter {
+  font-family: var(--mono-font-family);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 72%);
+}
+
+main .carousel .carousel-lightbox-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(60vh, 640px);
+}
+
+main .carousel .carousel-lightbox-image picture,
+main .carousel .carousel-lightbox-image img {
+  display: block;
+  max-width: 100%;
+  max-height: min(72vh, 780px);
+}
+
+main .carousel .carousel-lightbox-image img {
+  object-fit: contain;
+}
+
+main .carousel .carousel-lightbox-caption {
+  font-size: var(--body-font-size-s);
+  line-height: 1.6;
+  color: #d8e1e5;
+}
+
+main .carousel .carousel-lightbox-caption :is(p, ul, ol) {
+  margin: 0;
+}
+
+main .carousel .carousel-lightbox-navs {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+@media (width >= 900px) {
+  main .carousel:not(.collage) .carousel-nav-button {
+    min-width: 136px;
+  }
+
+  main .carousel .carousel-lightbox-shell {
+    padding: 24px;
+  }
+
+  main .carousel .carousel-lightbox-navs {
+    justify-content: flex-start;
+  }
+}
