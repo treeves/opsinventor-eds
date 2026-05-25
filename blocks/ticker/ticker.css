@@ -20,12 +20,18 @@
   display: flex;
   gap: 48px;
   white-space: nowrap;
+  width: max-content;
   animation: ticker-scroll 22s linear infinite;
   font-family: var(--mono-font-family);
   font-size: 0.82rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 700;
+}
+
+.ticker--logos .ticker-track {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .ticker-track > span {
@@ -37,6 +43,23 @@
 
 .ticker-item {
   font-style: normal;
+}
+
+.ticker-logo-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  background: var(--white);
+  border: 1px solid rgb(255 255 255 / 25%);
+}
+
+.ticker-logo {
+  height: 20px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
 }
 
 .ticker-dot {
