@@ -19,6 +19,23 @@ function readTime(words) {
   return `${m} min read`;
 }
 
+function normalizeHeroImage(raw) {
+  if (!raw) return '';
+  try {
+    const url = new URL(raw, window.location.origin);
+    const width = parseInt(url.searchParams.get('width') || '', 10);
+    if (Number.isFinite(width) && width < 2200) {
+      url.searchParams.set('width', '2400');
+    }
+    if (url.origin === window.location.origin) {
+      return `${url.pathname}${url.search}`;
+    }
+    return url.toString();
+  } catch (e) {
+    return raw;
+  }
+}
+
 export default function decorate(block) {
   const section = block.closest('.section');
   const title = getMetadata('og:title') || document.querySelector('h1')?.textContent || '';
@@ -27,7 +44,13 @@ export default function decorate(block) {
   const author = getMetadata('author') || 'Tad Reeves';
   const date = getMetadata('date') || getMetadata('article:date') || '';
   const category = getMetadata('category') || 'Insights';
-  const heroImg = getMetadata('image') || getMetadata('og:image') || '';
+  const heroImg = normalizeHeroImage(
+    getMetadata('hero-image')
+      || getMetadata('heroimage')
+      || getMetadata('image')
+      || getMetadata('og:image')
+      || '',
+  );
 
   // word count for read-time estimate
   const wordCount = document.body.textContent.split(/\s+/).filter(Boolean).length;

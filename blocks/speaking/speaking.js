@@ -67,6 +67,49 @@ function readFeedConfig(rows) {
   return config;
 }
 
+function resolveFeedCandidates(source) {
+  const candidates = [];
+  const push = (value) => {
+    if (value && !candidates.includes(value)) candidates.push(value);
+  };
+
+  if (source) {
+    push(source);
+    try {
+      const url = new URL(source, window.location.origin);
+      const isAemHost = /\.aem\.(live|page)$/i.test(url.hostname);
+      if (isAemHost && url.pathname.endsWith('.json')) {
+        push(url.pathname);
+      }
+    } catch (e) {
+      // If source isn't a valid URL, keep using it as-is.
+    }
+  }
+
+  push('/speaking.json');
+  return candidates;
+}
+
+async function fetchFeedData(source) {
+  const candidates = resolveFeedCandidates(source);
+  let lastError = null;
+
+  for (const candidate of candidates) {
+    try {
+      const resp = await fetch(candidate);
+      if (!resp.ok) {
+        lastError = new Error(`Failed to fetch ${candidate} (${resp.status})`);
+      } else {
+        return await resp.json();
+      }
+    } catch (e) {
+      lastError = e;
+    }
+  }
+
+  throw lastError || new Error('Unable to fetch speaking feed');
+}
+
 function buildCard(event, title, url, thumb) {
   const card = document.createElement('a');
   card.className = 'speaking-card';
@@ -95,9 +138,7 @@ export default async function decorate(block) {
 
   if (source) {
     try {
-      const resp = await fetch(source);
-      if (!resp.ok) throw new Error(`Failed to fetch ${source} (${resp.status})`);
-      const json = await resp.json();
+      const json = await fetchFeedData(source);
       const data = (json.data || []).filter((item) => {
         if (!category) return true;
         return (item.category || '').trim().toLowerCase() === category.trim().toLowerCase();
