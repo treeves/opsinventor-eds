@@ -29,40 +29,116 @@ function resolveUrl(cell) {
   return cell.textContent.trim();
 }
 
-export default function decorate(block) {
+async function fetchOgImage(url) {
+  const oembed = [
+    `https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`,
+    `https://noembed.com/embed?url=${encodeURIComponent(url)}`,
+  ];
+
+  for (const endpoint of oembed) {
+    try {
+      const resp = await fetch(endpoint);
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data?.thumbnail_url) return data.thumbnail_url;
+      }
+    } catch (e) {
+      // Ignore provider failures and continue through fallbacks.
+    }
+  }
+
+  const id = videoId(url);
+  return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : '';
+}
+
+function readFeedConfig(rows) {
+  const config = { source: '', category: '' };
+
+  rows.forEach((row) => {
+    const cells = [...row.querySelectorAll(':scope > div')];
+    if (cells.length < 2) return;
+    const key = (cells[0]?.textContent || '').trim().toLowerCase();
+    const value = (cells[1]?.textContent || '').trim();
+    if (!key || !value) return;
+    if (key === 'source' || key === 'feed' || key === 'index') config.source = value;
+    if (key === 'category') config.category = value;
+  });
+
+  return config;
+}
+
+function buildCard(event, title, url, thumb) {
+  const card = document.createElement('a');
+  card.className = 'speaking-card';
+  card.href = url;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.innerHTML = `
+    <div class="speaking-thumb">
+      ${thumb ? `<img src="${thumb}" alt="" loading="lazy">` : ''}
+    </div>
+    <div class="speaking-body">
+      <div class="speaking-event">${event}</div>
+      <div class="speaking-title">${title}</div>
+      <span class="speaking-link">Watch on YouTube →</span>
+    </div>
+  `;
+  return card;
+}
+
+export default async function decorate(block) {
   const rows = [...block.querySelectorAll(':scope > div')];
+  const { source, category } = readFeedConfig(rows);
 
   const grid = document.createElement('div');
   grid.className = 'speaking-grid';
 
-  rows.forEach((row) => {
-    const cells = [...row.querySelectorAll(':scope > div')];
-    const event = (cells[0]?.textContent || '').trim();
-    const title = (cells[1]?.textContent || '').trim();
-    const url = resolveUrl(cells[2]);
-    if (!url) return;
+  if (source) {
+    try {
+      const resp = await fetch(source);
+      if (!resp.ok) throw new Error(`Failed to fetch ${source} (${resp.status})`);
+      const json = await resp.json();
+      const data = (json.data || []).filter((item) => {
+        if (!category) return true;
+        return (item.category || '').trim().toLowerCase() === category.trim().toLowerCase();
+      });
 
-    const id = videoId(url);
-    const watchUrl = id ? `https://www.youtube.com/watch?v=${id}` : url;
-    const thumb = id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : '';
+      const cards = await Promise.all(data.map(async (item) => {
+        const url = (item.url || '').trim();
+        if (!url) return null;
+        const thumb = await fetchOgImage(url);
+        const event = (item.tag || item.category || 'Speaking').replace(/-/g, ' ');
+        const title = (item.title || item.description || '').trim();
+        const description = (item.description || '').trim();
+        const cardTitle = description ? `${title} - ${description}` : title;
+        return buildCard(event, cardTitle, url, thumb);
+      }));
 
-    const card = document.createElement('a');
-    card.className = 'speaking-card';
-    card.href = watchUrl;
-    card.target = '_blank';
-    card.rel = 'noopener';
-    card.innerHTML = `
-      <div class="speaking-thumb">
-        ${thumb ? `<img src="${thumb}" alt="" loading="lazy">` : ''}
-      </div>
-      <div class="speaking-body">
-        <div class="speaking-event">${event}</div>
-        <div class="speaking-title">${title}</div>
-        <span class="speaking-link">Watch on YouTube →</span>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+      cards.filter(Boolean).forEach((card) => grid.append(card));
+    } catch (e) {
+      const error = document.createElement('p');
+      error.className = 'speaking-error';
+      error.textContent = 'Unable to load speaking entries.';
+      block.innerHTML = '';
+      block.append(error);
+      const section = block.closest('.section');
+      if (section) section.classList.add('speaking-section');
+      return;
+    }
+  } else {
+    rows.forEach((row) => {
+      const cells = [...row.querySelectorAll(':scope > div')];
+      const event = (cells[0]?.textContent || '').trim();
+      const title = (cells[1]?.textContent || '').trim();
+      const url = resolveUrl(cells[2]);
+      if (!url) return;
+
+      const id = videoId(url);
+      const watchUrl = id ? `https://www.youtube.com/watch?v=${id}` : url;
+      const thumb = id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : '';
+      grid.append(buildCard(event, title, watchUrl, thumb));
+    });
+  }
 
   block.innerHTML = '';
   block.appendChild(grid);

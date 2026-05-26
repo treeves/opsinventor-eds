@@ -121,6 +121,13 @@
   flex: 1;
 }
 
+.speaking-error {
+  max-width: 1180px;
+  margin: 0 auto;
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .speaking-link {
   font-family: var(--mono-font-family);
   font-size: 0.74rem;
