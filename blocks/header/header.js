@@ -161,6 +161,9 @@ function decorateNavItem(li) {
   if (link) link.classList.add('main-nav-link');
   const menu = decorateMegaMenu(li) || decorateMenu(li);
   if (!(menu || link)) return;
+  // Only intercept top-level link clicks when the item controls a menu.
+  // Plain links should keep native navigation behavior.
+  if (!menu || !link) return;
   link.addEventListener('click', (e) => {
     e.preventDefault();
     toggleMenu(li);
