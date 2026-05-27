@@ -12,6 +12,7 @@ async function loadSidekick() {
 (function loadLazy() {
   import('./utils/lazyhash.js');
   import('./utils/favicon.js');
+  import('./utils/image-lightbox.js');
   import('./utils/footer.js').then(({ default: footer }) => footer());
   import('./utils/analytics.js');
 
