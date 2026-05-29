@@ -1,7 +1,13 @@
 /* Home Hero — all user-facing content is authored in the document.
   Supports two authoring shapes:
   1) key/value rows (explicit tokens like slides, chip, rapid-title)
-  2) two-column semantic content (preferred for DA): left hero / right rapid */
+  2) two-column semantic content (preferred for DA): left hero / right rapid
+
+  The right-hand "Rapid Drop" panel is externalized into a fragment and rendered
+  by the standalone `rapid-drop` block. Reference it with a `rapid-fragment` row. */
+
+import { loadFragment } from '../fragment/fragment.js';
+import { loadStyle, getConfig } from '../../scripts/ak.js';
 
 function getRowText(el) {
   return el?.textContent?.trim() || '';
@@ -133,6 +139,7 @@ function parseModel(block) {
     primaryCta: null,
     secondaryCta: null,
     slides: [],
+    rapidFragment: '',
     rapidId: 'rapid-drop',
     rapidBadge: '',
     rapidTitle: '',
@@ -212,6 +219,11 @@ function parseModel(block) {
         }
         break;
       }
+      case 'rapid-fragment':
+      case 'fragment':
+      case 'drop-fragment':
+        model.rapidFragment = getCellUrl(valueCell) || value;
+        break;
       case 'rapid-id':
       case 'drop-id':
         model.rapidId = value || model.rapidId;
@@ -276,6 +288,7 @@ function parseTwoColumnModel(block) {
     primaryCta: null,
     secondaryCta: null,
     slides: [],
+    rapidFragment: '',
     rapidId: 'rapid-drop',
     rapidBadge: '',
     rapidTitle: '',
@@ -366,6 +379,7 @@ function mergeModels(primary, fallback) {
     primaryCta: primary.primaryCta || fallback.primaryCta,
     secondaryCta: primary.secondaryCta || fallback.secondaryCta,
     slides: primary.slides.length ? primary.slides : fallback.slides,
+    rapidFragment: primary.rapidFragment || fallback.rapidFragment,
     rapidId: primary.rapidId || fallback.rapidId,
     rapidBadge: primary.rapidBadge || fallback.rapidBadge,
     rapidTitle: primary.rapidTitle || fallback.rapidTitle,
@@ -408,7 +422,91 @@ function createSlideMedia(slide) {
   return img;
 }
 
-export default function decorate(block) {
+function buildLegacyRight(model) {
+  const hasContent = model.rapidBadge || model.rapidTitle || model.rapidDek
+    || model.platforms.length || model.notifyButton || model.rapidBgMedia || model.rapidBgUrl;
+  if (!hasContent) return null;
+
+  const right = document.createElement('div');
+  right.className = 'rapid-drop';
+  if (model.rapidId) right.id = model.rapidId;
+
+  const rightBg = document.createElement('div');
+  rightBg.className = 'rapid-drop-bg';
+  if (model.rapidBgMedia) {
+    rightBg.appendChild(model.rapidBgMedia.cloneNode(true));
+  } else if (model.rapidBgUrl) {
+    const img = document.createElement('img');
+    img.src = model.rapidBgUrl;
+    img.alt = '';
+    img.loading = 'lazy';
+    rightBg.appendChild(img);
+  }
+  right.appendChild(rightBg);
+
+  appendTextElement(right, 'div', 'rapid-drop-badge', model.rapidBadge);
+  appendTextElement(right, 'h2', 'rapid-drop-title', model.rapidTitle);
+  appendTextElement(right, 'p', 'rapid-drop-dek', model.rapidDek);
+
+  if (model.platforms.length) {
+    const platforms = document.createElement('div');
+    platforms.className = 'rapid-drop-platforms';
+    model.platforms.forEach((platformItem) => {
+      const platform = platformItem.href ? document.createElement('a') : document.createElement('span');
+      platform.textContent = platformItem.label;
+      if (platformItem.href) {
+        platform.href = platformItem.href;
+        platform.target = '_blank';
+        platform.rel = 'noopener noreferrer';
+      }
+      platforms.appendChild(platform);
+    });
+    right.appendChild(platforms);
+  }
+
+  if (model.notifyButton) {
+    const form = document.createElement('form');
+    form.className = 'rapid-drop-form';
+    form.setAttribute('novalidate', '');
+
+    const input = document.createElement('input');
+    input.type = 'email';
+    input.placeholder = model.notifyPlaceholder;
+    input.setAttribute('aria-label', model.notifyAria || model.notifyPlaceholder || 'Email');
+
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.textContent = model.notifyButton;
+
+    form.append(input, button);
+    right.appendChild(form);
+
+    // Styled placeholder: no real submit.
+    form.addEventListener('submit', (e) => e.preventDefault());
+  }
+
+  return right;
+}
+
+async function buildRight(model) {
+  let right = null;
+  if (model.rapidFragment) {
+    try {
+      const fragment = await loadFragment(model.rapidFragment);
+      const panel = fragment?.querySelector('.rapid-drop');
+      if (panel) right = panel;
+    } catch {
+      // Fall back to legacy inline rendering below.
+    }
+  }
+  if (!right) right = buildLegacyRight(model);
+  // The right panel reuses the standalone `rapid-drop` block styles. When the
+  // panel is rendered inline (legacy) the block's CSS would not otherwise load.
+  if (right) loadStyle(`${getConfig().codeBase}/blocks/rapid-drop/rapid-drop.css`);
+  return right;
+}
+
+export default async function decorate(block) {
   const keyValueModel = parseModel(block);
   const twoColumnModel = parseTwoColumnModel(block);
   const model = mergeModels(keyValueModel, twoColumnModel);
@@ -476,66 +574,10 @@ export default function decorate(block) {
     left.appendChild(ctas);
   }
 
-  const right = document.createElement('div');
-  right.className = 'home-hero-right';
-  right.id = model.rapidId;
-
-  const rightBg = document.createElement('div');
-  rightBg.className = 'home-hero-right-bg';
-  if (model.rapidBgMedia) {
-    rightBg.appendChild(model.rapidBgMedia.cloneNode(true));
-  } else if (model.rapidBgUrl) {
-    const img = document.createElement('img');
-    img.src = model.rapidBgUrl;
-    img.alt = '';
-    img.loading = 'lazy';
-    rightBg.appendChild(img);
-  }
-  right.appendChild(rightBg);
-
-  appendTextElement(right, 'div', 'home-hero-drop-badge', model.rapidBadge);
-  appendTextElement(right, 'h2', 'home-hero-drop-title', model.rapidTitle);
-  appendTextElement(right, 'p', 'home-hero-drop-dek', model.rapidDek);
-
-  if (model.platforms.length) {
-    const platforms = document.createElement('div');
-    platforms.className = 'home-hero-drop-platforms';
-    model.platforms.forEach((platformItem) => {
-      const platform = platformItem.href ? document.createElement('a') : document.createElement('span');
-      platform.textContent = platformItem.label;
-      if (platformItem.href) {
-        platform.href = platformItem.href;
-        platform.target = '_blank';
-        platform.rel = 'noopener noreferrer';
-      }
-      platforms.appendChild(platform);
-    });
-    right.appendChild(platforms);
-  }
-
-  if (model.notifyButton) {
-    const form = document.createElement('form');
-    form.className = 'home-hero-drop-form';
-    form.setAttribute('novalidate', '');
-
-    const input = document.createElement('input');
-    input.type = 'email';
-    input.placeholder = model.notifyPlaceholder;
-    input.setAttribute('aria-label', model.notifyAria || model.notifyPlaceholder || 'Email');
-
-    const button = document.createElement('button');
-    button.type = 'submit';
-    button.textContent = model.notifyButton;
-
-    form.append(input, button);
-    right.appendChild(form);
-  }
-
-  // Styled placeholder: no real submit.
-  right.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
+  const right = await buildRight(model);
 
   block.appendChild(left);
-  block.appendChild(right);
+  if (right) block.appendChild(right);
 
   // Section opts in to full-bleed via the home-template CSS hooks.
   const section = block.closest('.section');
