@@ -119,3 +119,42 @@ light, dark
 
 ---
 _Test commit - 2026-04-05_
+
+## Daily Popular Articles (GA4)
+
+This repo includes an automated workflow to generate a daily top-10 popular articles list from GA4 and publish it in two formats:
+
+- JSON for feed/index consumers: `data/popular-articles.json`
+- Static fragment source for SEO/reuse: `fragments/brands/popular-articles.plain.html`
+
+Workflow file:
+
+- `.github/workflows/daily-popular-articles.yml`
+
+### Required GitHub Secrets
+
+- `GA4_PROPERTY_ID`: GA4 numeric property ID.
+- `GA4_SERVICE_ACCOUNT_JSON`: Full JSON for a Google service account with `analytics.readonly` access.
+
+Optional secret for DA publish (Phase 2):
+
+- `DA_TOKEN`: Token used to upload to DA and trigger preview/live publish.
+
+### Optional GitHub Variables
+
+- `POPULAR_LOOKBACK_DAYS` (default: `1`)
+- `POPULAR_LIMIT` (default: `10`)
+- `POPULAR_INCLUDE_REGEX` (default: `^/en/`)
+- `POPULAR_EXCLUDE_REGEX` (default excludes fragments, drafts, index, and utility paths)
+
+### Manual Run
+
+Use workflow dispatch in GitHub Actions and optionally set:
+
+- `lookback_days`
+- `limit`
+
+### Local Commands
+
+- Generate outputs: `npm run popular:generate`
+- Publish generated fragment to DA: `npm run popular:publish`
