@@ -1,11 +1,5 @@
 import { getMetadata } from '../../scripts/ak.js';
-
-function fmtDate(raw) {
-  if (!raw) return '';
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw;
-  return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
+import { formatDate as fmtDate } from '../../scripts/utils/date.js';
 
 function avatarFor(name) {
   if (!name) return 'TR';

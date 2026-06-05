@@ -2,23 +2,16 @@
  * Article Feed block — fetches posts from the query index and renders cards.
  *
  * Configuration via block content:
- * - Row 1: query index path (e.g. /en/query-index.json)
+ * - Row 1: query index path (e.g. /opsinventor-en.json)
  * - Row 2 (optional): limit (default 10)
  *
  * The locale-specific index path makes this block reusable across locales:
- *   /en/query-index.json, /de/query-index.json, etc.
+ *   /opsinventor-en.json, /opsinventor-de.json, etc.
+ *
+ * Index `date` fields are ISO `yyyy-mm-dd`; see scripts/utils/date.js.
  */
 
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-}
+import { formatDate, dateValue } from '../../scripts/utils/date.js';
 
 function createCard(article, featured = false) {
   const card = document.createElement('article');
@@ -85,11 +78,7 @@ async function loadArticles(indexPath) {
   const articles = (json.data || [])
     .filter((a) => a.pagetype !== 'page' && !a.path.endsWith('/index'));
 
-  articles.sort((a, b) => {
-    const da = new Date(a.date || 0);
-    const db = new Date(b.date || 0);
-    return db - da;
-  });
+  articles.sort((a, b) => dateValue(b.date) - dateValue(a.date));
 
   return articles;
 }
@@ -100,7 +89,7 @@ async function loadArticles(indexPath) {
  */
 function parseRapidConfig(rows) {
   const config = {
-    indexPath: '/en/query-index.json',
+    indexPath: '/opsinventor-en.json',
     limit: 4,
     badge: '// Featured Reads',
     title: 'Latest drops.',
@@ -238,7 +227,7 @@ export default async function init(el) {
   }
 
   const rows = el.querySelectorAll(':scope > div');
-  const indexPath = rows[0]?.textContent?.trim() || '/en/query-index.json';
+  const indexPath = rows[0]?.textContent?.trim() || '/opsinventor-en.json';
   const limit = parseInt(rows[1]?.textContent?.trim(), 10) || 0;
 
   el.innerHTML = '';
