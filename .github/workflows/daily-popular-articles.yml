@@ -1,0 +1,76 @@
+name: Daily Popular Articles
+
+on:
+  schedule:
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: Lookback window in days
+        required: false
+        default: '1'
+      limit:
+        description: Max number of popular articles to publish
+        required: false
+        default: '10'
+
+permissions:
+  contents: write
+
+jobs:
+  popular-articles:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate popular articles (GA4)
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+          POPULAR_LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days || vars.POPULAR_LOOKBACK_DAYS || '1' }}
+          POPULAR_LIMIT: ${{ github.event.inputs.limit || vars.POPULAR_LIMIT || '10' }}
+          POPULAR_INCLUDE_REGEX: ${{ vars.POPULAR_INCLUDE_REGEX || '^/en/' }}
+          POPULAR_EXCLUDE_REGEX: ${{ vars.POPULAR_EXCLUDE_REGEX || '/fragments/|/drafts/|/404$|/robots\\.txt$|/query-index\\.json$|^/$|/index$' }}
+          POPULAR_OUTPUT_JSON: data/popular-articles.json
+          POPULAR_OUTPUT_PLAIN: fragments/brands/popular-articles.plain.html
+        run: node tools/analytics/generate-popular-articles.mjs
+
+      - name: Detect generated changes
+        id: changes
+        run: |
+          set -euo pipefail
+          changed_files=$(git status --porcelain -- data/popular-articles.json fragments/brands/popular-articles.plain.html)
+          if [[ -n "$changed_files" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "$changed_files"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No generated file changes detected."
+          fi
+
+      - name: Commit generated files
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/popular-articles.json fragments/brands/popular-articles.plain.html
+          git commit -m "chore(popular): update daily popular articles"
+          git push
+
+      - name: Publish fragment to DA (Phase 2)
+        if: steps.changes.outputs.changed == 'true' && secrets.DA_TOKEN != ''
+        env:
+          DA_TOKEN: ${{ secrets.DA_TOKEN }}
+          POPULAR_OUTPUT_PLAIN: fragments/brands/popular-articles.plain.html
+          POPULAR_DA_PATH: /fragments/brands/popular-articles.html
+          POPULAR_HLX_PATH: fragments/brands/popular-articles
+          POPULAR_PUBLISH_LIVE: 'true'
+        run: node tools/da/push-popular-articles.js

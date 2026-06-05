@@ -12,6 +12,8 @@
    Sort: by `date` descending.
 */
 
+import { dateValue } from '../../scripts/utils/date.js';
+
 const DEFAULT_INDEX = '/opsinventor-en.json';
 const DEFAULT_PAGE_SIZE = 9;
 const DA_HOST = 'https://content.da.live';
@@ -160,11 +162,7 @@ export default async function decorate(block) {
         && !a.path.endsWith('/index')
         && !a.redirectTarget
         && (!a.template || a.template === 'blog'))
-      .sort((a, b) => {
-        const da = Number(a.date) || new Date(a.date || 0).getTime() || 0;
-        const db = Number(b.date) || new Date(b.date || 0).getTime() || 0;
-        return db - da;
-      });
+      .sort((a, b) => dateValue(b.date) - dateValue(a.date));
   } catch (e) {
     const err = document.createElement('p');
     err.className = 'insights-error';
