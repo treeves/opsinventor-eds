@@ -69,10 +69,10 @@ header {
     align-items: center;
   }
 
-  .brand-section a[href="/"] {
+  .brand-section .brand-lockup {
     display: inline-flex;
     align-items: baseline;
-    gap: 12px;
+    gap: 4px;
     font-family: var(--display-font-family);
     font-size: 1.2rem;
     letter-spacing: -0.02em;
@@ -88,15 +88,13 @@ header {
     white-space: nowrap;
   }
 
-  /* Append "// OPSINVENTOR" imprint via pseudo — keeps fragment content simple */
-  .brand-text::after {
-    content: " // OPSINVENTOR";
+  /* "// OPSINVENTOR" imprint — a real anchor (links home) styled like the old pseudo */
+  .brand-section .brand-imprint {
     font-family: var(--mono-font-family);
     font-weight: 700;
     font-size: 0.72rem;
     letter-spacing: 0.2em;
     color: var(--orange);
-    margin-left: 4px;
     text-transform: uppercase;
     display: none; /* hidden on mobile, shown at desktop breakpoint */
   }
@@ -358,7 +356,7 @@ header .mega-menu ul {
   }
 
   /* Bring back the // OPSINVENTOR imprint at desktop */
-  header .brand-text::after {
+  header .brand-imprint {
     display: inline;
   }
 

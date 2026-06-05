@@ -99,9 +99,9 @@ export default function decorate(block) {
   const byline = document.createElement('div');
   byline.className = 'bph-byline';
   byline.innerHTML = `
-    <div class="bph-avatar">${avatarFor(author)}</div>
+    <a class="bph-avatar" href="/en/about-me">${avatarFor(author)}</a>
     <div>
-      <div class="bph-byline-name">${author}</div>
+      <div class="bph-byline-name"><a href="/en/about-me">${author}</a></div>
       <div class="bph-byline-meta">// ${fmtDate(date)}${date ? ' · ' : ''}${readTime(wordCount)}</div>
     </div>
   `;

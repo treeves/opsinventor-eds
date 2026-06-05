@@ -120,12 +120,22 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--white);
+  text-decoration: none;
 }
 
 .bph-byline-name {
   font-weight: 700;
   font-size: 0.98rem;
   color: var(--white);
+}
+
+.bph-byline-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bph-byline-name a:hover {
+  text-decoration: underline;
 }
 
 .bph-byline-meta {
