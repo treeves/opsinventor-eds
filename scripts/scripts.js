@@ -17,6 +17,7 @@ const linkBlocks = [
   { schedule: '/schedules/' },
   { youtube: 'https://www.youtube' },
   { youtube: 'https://youtu.be' },
+  { spotify: 'https://open.spotify.com' },
 ];
 
 // Blocks with self-managed styles
