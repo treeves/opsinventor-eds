@@ -120,6 +120,16 @@ function resolveVariant(block) {
 }
 
 export default async function decorate(block) {
+  // Static/SEO mode: the page was pre-rendered by tools/insights/generate-insights-page.mjs
+  // with crawlable cards already in the markup. Keep them — only apply the section styling,
+  // and skip the wipe + client-side fetch + "More Articles" button.
+  if (block.querySelector('.insights-grid')) {
+    const staticSection = block.closest('.section');
+    if (staticSection) staticSection.classList.add('insights-section');
+    block.classList.add('insights-variant-text');
+    return;
+  }
+
   const { limit, index } = readConfig(block);
   const variant = resolveVariant(block);
   const withImage = variant !== 'text';
