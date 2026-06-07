@@ -56,8 +56,9 @@ jobs:
           git push
 
       - name: Publish page to DA + live
-        if: steps.changes.outputs.changed == 'true' && secrets.AEM_ADMIN_TOKEN != ''
+        if: steps.changes.outputs.changed == 'true' && secrets.DA_TOKEN != '' && secrets.AEM_ADMIN_TOKEN != ''
         env:
+          DA_TOKEN: ${{ secrets.DA_TOKEN }}
           AEM_ADMIN_TOKEN: ${{ secrets.AEM_ADMIN_TOKEN }}
           INSIGHTS_OUTPUT: en/insights.plain.html
           INSIGHTS_DA_PATH: /en/insights.html

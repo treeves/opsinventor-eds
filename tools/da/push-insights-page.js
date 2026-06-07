@@ -7,9 +7,10 @@
  * Usage:
  *   AEM_ADMIN_TOKEN=... node tools/da/push-insights-page.js
  *
- * Auth: a single long-lived AEM Admin Service token authorizes both the DA
- * upload and the hlx publish. Resolution order: AEM_ADMIN_TOKEN env, DA_TOKEN
- * env, first CLI arg, then ~/today-da-token.txt (local dev).
+ * Auth uses two tokens (which may be the same long-lived service token):
+ *   - DA upload (admin.da.live):  DA_TOKEN env, else ~/today-da-token.txt
+ *   - hlx publish (admin.hlx.page): AEM_ADMIN_TOKEN env, else ~/today-auth-token.txt
+ * These default to the 24h testing tokens on disk; in CI both come from secrets.
  */
 
 import fs from 'fs';
@@ -28,14 +29,19 @@ const DA_PATH = process.env.INSIGHTS_DA_PATH || '/en/insights.html';
 const HLX_PATH = process.env.INSIGHTS_HLX_PATH || 'en/insights';
 const SHOULD_PUBLISH_LIVE = `${process.env.INSIGHTS_PUBLISH_LIVE || 'true'}`.toLowerCase() !== 'false';
 
-const defaultTokenFile = path.join(os.homedir(), 'today-da-token.txt');
-const tokenFromFile = fs.existsSync(defaultTokenFile)
-  ? fs.readFileSync(defaultTokenFile, 'utf8').trim()
-  : '';
-const token = process.env.AEM_ADMIN_TOKEN
-  || process.env.DA_TOKEN || process.argv[2] || tokenFromFile;
-if (!token) {
-  console.error('Error: AEM_ADMIN_TOKEN, DA_TOKEN, first arg, or ~/today-da-token.txt is required.');
+function readTokenFile(fileName) {
+  const file = path.join(os.homedir(), fileName);
+  return fs.existsSync(file) ? fs.readFileSync(file, 'utf8').trim() : '';
+}
+
+const daToken = process.env.DA_TOKEN || readTokenFile('today-da-token.txt');
+const adminToken = process.env.AEM_ADMIN_TOKEN || readTokenFile('today-auth-token.txt');
+if (!daToken) {
+  console.error('Error: DA_TOKEN env or ~/today-da-token.txt is required (DA upload).');
+  process.exit(1);
+}
+if (!adminToken) {
+  console.error('Error: AEM_ADMIN_TOKEN env or ~/today-auth-token.txt is required (hlx publish).');
   process.exit(1);
 }
 
@@ -61,7 +67,7 @@ async function upload() {
   const url = `${DA_API}/${ORG}/${SITE}${DA_PATH}`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { Authorization: `Bearer ${daToken}` },
     body: form,
   });
 
@@ -77,7 +83,7 @@ async function hlxAction(action) {
   const url = `${HLX_API}/${action}/${ORG}/${SITE}/${BRANCH}/${HLX_PATH}`;
   const response = await fetch(url, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
+    headers: { 'x-auth-token': adminToken },
   });
 
   const body = await response.text();
