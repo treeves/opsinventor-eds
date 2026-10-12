@@ -2,6 +2,8 @@ indices:
   en:
     include:
       - /en/**
+    exclude:
+      - /en/drafts/**
     target: /en/query-index.json
     properties:
       title:
