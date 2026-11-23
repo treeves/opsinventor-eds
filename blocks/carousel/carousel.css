@@ -49,11 +49,11 @@ main .carousel .carousel-caption a {
   color: var(--teal-dk);
 }
 
-main .carousel:not(.collage) .carousel-shell {
+main .carousel:not(.collage, .cover-flow) .carousel-shell {
   padding-top: 0;
 }
 
-main .carousel:not(.collage) .carousel-nav {
+main .carousel:not(.collage, .cover-flow) .carousel-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -61,7 +61,7 @@ main .carousel:not(.collage) .carousel-nav {
   margin-bottom: 14px;
 }
 
-main .carousel:not(.collage) .carousel-nav-button {
+main .carousel:not(.collage, .cover-flow) .carousel-nav-button {
   margin: 0;
   border: 1px solid var(--ink);
   background: var(--ink);
@@ -74,13 +74,13 @@ main .carousel:not(.collage) .carousel-nav-button {
   min-width: 112px;
 }
 
-main .carousel:not(.collage) .carousel-nav-button:hover,
-main .carousel:not(.collage) .carousel-nav-button:focus-visible {
+main .carousel:not(.collage, .cover-flow) .carousel-nav-button:hover,
+main .carousel:not(.collage, .cover-flow) .carousel-nav-button:focus-visible {
   background: transparent;
   color: var(--ink);
 }
 
-main .carousel:not(.collage) .carousel-rail {
+main .carousel:not(.collage, .cover-flow) .carousel-rail {
   display: flex;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -88,31 +88,31 @@ main .carousel:not(.collage) .carousel-rail {
   scrollbar-width: none;
 }
 
-main .carousel:not(.collage) .carousel-rail::-webkit-scrollbar {
+main .carousel:not(.collage, .cover-flow) .carousel-rail::-webkit-scrollbar {
   display: none;
 }
 
-main .carousel:not(.collage) .carousel-slide-wrap {
+main .carousel:not(.collage, .cover-flow) .carousel-slide-wrap {
   flex: 0 0 100%;
   scroll-snap-align: start;
   padding-right: 16px;
   box-sizing: border-box;
 }
 
-main .carousel:not(.collage) .carousel-slide picture,
-main .carousel:not(.collage) .carousel-slide img {
+main .carousel:not(.collage, .cover-flow) .carousel-slide picture,
+main .carousel:not(.collage, .cover-flow) .carousel-slide img {
   width: 100%;
   height: auto;
 }
 
-main .carousel:not(.collage) .carousel-indicators {
+main .carousel:not(.collage, .cover-flow) .carousel-indicators {
   display: flex;
   gap: 8px;
   justify-content: center;
   margin-top: 12px;
 }
 
-main .carousel:not(.collage) .carousel-indicator {
+main .carousel:not(.collage, .cover-flow) .carousel-indicator {
   width: 24px;
   height: 4px;
   margin: 0;
@@ -121,7 +121,7 @@ main .carousel:not(.collage) .carousel-indicator {
   background: rgb(13 20 24 / 25%);
 }
 
-main .carousel:not(.collage) .carousel-indicator[aria-current='true'] {
+main .carousel:not(.collage, .cover-flow) .carousel-indicator[aria-current='true'] {
   background: var(--orange);
 }
 
@@ -305,8 +305,164 @@ body.carousel-lightbox-open {
   align-self: end;
 }
 
+/* stylelint-disable no-descending-specificity -- cover-flow is mutually exclusive with default carousel selectors */
+main .carousel.cover-flow .carousel-shell {
+  padding: 18px 0 14px;
+  background:
+    radial-gradient(ellipse at 50% 38%, rgb(40 58 68 / 90%), transparent 62%),
+    linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 72%, var(--ink) 100%);
+  overflow: hidden;
+}
+
+main .carousel.cover-flow .carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 0 16px;
+}
+
+main .carousel.cover-flow .carousel-nav-button {
+  margin: 0;
+  border: 1px solid rgb(255 255 255 / 45%);
+  background: transparent;
+  color: var(--white);
+  font-family: var(--mono-font-family);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  min-width: 112px;
+}
+
+main .carousel.cover-flow .carousel-nav-button:hover,
+main .carousel.cover-flow .carousel-nav-button:focus-visible {
+  background: var(--white);
+  color: var(--ink);
+}
+
+main .carousel.cover-flow .carousel-nav-button:disabled {
+  opacity: 0.35;
+}
+
+main .carousel.cover-flow .carousel-coverflow-stage {
+  position: relative;
+  height: 320px;
+  margin: 8px 0 4px;
+  perspective: 1100px;
+  perspective-origin: 50% 42%;
+  touch-action: pan-y;
+  outline: none;
+}
+
+main .carousel.cover-flow .carousel-coverflow-stage:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: -6px;
+}
+
+main .carousel.cover-flow .carousel-cover-slide {
+  --offset: 0;
+
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: min(48vw, 156px);
+  margin: 0;
+  transform:
+    translateX(-50%)
+    translateX(calc(var(--offset) * 96px))
+    translateZ(calc(abs(var(--offset)) * -70px))
+    rotateY(calc(var(--offset) * -42deg))
+    scale(calc(1 - (min(abs(var(--offset)), 3) * 0.04)));
+  transform-style: preserve-3d;
+  transition: transform 0.48s cubic-bezier(0.22, 0.7, 0.3, 1);
+  z-index: calc(12 - abs(var(--offset)));
+}
+
+main .carousel.cover-flow .carousel-cover-slide.is-active {
+  z-index: 20;
+}
+
+main .carousel.cover-flow .carousel-cover-slide .carousel-media-button {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--ink-3);
+  box-shadow:
+    0 16px 28px rgb(0 0 0 / 45%),
+    0 0 0 1px rgb(255 255 255 / 12%);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-box-reflect: below 12px linear-gradient(transparent 42%, rgb(0 0 0 / 38%));
+}
+
+main .carousel.cover-flow .carousel-cover-slide .carousel-media-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+main .carousel.cover-flow .carousel-coverflow-caption {
+  min-height: 1.5em;
+  margin: 4px 16px 0;
+  text-align: center;
+  color: rgb(255 255 255 / 86%);
+  font-size: var(--body-font-size-s);
+}
+
+main .carousel.cover-flow .carousel-coverflow-caption :is(p, ul, ol) {
+  margin: 0;
+}
+
+main .carousel.cover-flow .carousel-indicators {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+main .carousel.cover-flow .carousel-indicator {
+  width: 24px;
+  height: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(255 255 255 / 28%);
+}
+
+main .carousel.cover-flow .carousel-indicator[aria-current='true'] {
+  background: var(--orange);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main .carousel.cover-flow .carousel-cover-slide {
+    transition: none;
+  }
+}
+
+@media (width >= 700px) {
+  main .carousel.cover-flow .carousel-coverflow-stage {
+    height: 420px;
+  }
+
+  main .carousel.cover-flow .carousel-cover-slide {
+    top: 36px;
+    width: 210px;
+    transform:
+      translateX(-50%)
+      translateX(calc(var(--offset) * 150px))
+      translateZ(calc(abs(var(--offset)) * -90px))
+      rotateY(calc(var(--offset) * -45deg))
+      scale(calc(1 - (min(abs(var(--offset)), 3) * 0.04)));
+  }
+
+}
+
+/* stylelint-enable no-descending-specificity */
+
 @media (width >= 900px) {
-  main .carousel:not(.collage) .carousel-nav-button {
+  main .carousel:not(.collage, .cover-flow) .carousel-nav-button,
+  main .carousel.cover-flow .carousel-nav-button {
     min-width: 136px;
   }
 

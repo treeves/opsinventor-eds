@@ -159,6 +159,7 @@ function createLightbox(items) {
   document.body.append(dialog);
 
   return {
+    dialog,
     open(index) {
       if (!items.length) return;
       render(index);
@@ -166,6 +167,222 @@ function createLightbox(items) {
       dialog.showModal();
     },
   };
+}
+
+function createCoverFlow(block, items, lightbox) {
+  const AUTO_MS = 2000;
+  const shell = document.createElement('div');
+  shell.className = 'carousel-shell carousel-coverflow';
+
+  const stage = document.createElement('div');
+  stage.className = 'carousel-coverflow-stage';
+  stage.tabIndex = 0;
+  stage.setAttribute('role', 'region');
+  stage.setAttribute('aria-roledescription', 'carousel');
+  stage.setAttribute('aria-label', 'Cover flow');
+
+  const caption = document.createElement('div');
+  caption.className = 'carousel-coverflow-caption';
+  caption.setAttribute('aria-live', 'polite');
+
+  const indicators = document.createElement('div');
+  indicators.className = 'carousel-indicators';
+
+  const nav = document.createElement('div');
+  nav.className = 'carousel-nav';
+
+  const prev = document.createElement('button');
+  prev.type = 'button';
+  prev.className = 'carousel-nav-button carousel-nav-button-prev';
+  prev.setAttribute('aria-label', 'Previous photo');
+  prev.textContent = 'Previous';
+
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'carousel-nav-button carousel-nav-button-next';
+  next.setAttribute('aria-label', 'Next photo');
+  next.textContent = 'Next';
+
+  nav.append(prev, next);
+
+  const slides = [];
+  let activeIndex = 0;
+  let pointerStart = null;
+  let swiped = false;
+  let autoplayTimer = null;
+  let autoplayPaused = false;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const stopAutoplay = () => {
+    if (autoplayTimer) window.clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  };
+
+  const setActive = (index) => {
+    const total = items.length;
+    if (!total) return;
+    activeIndex = ((index % total) + total) % total;
+
+    slides.forEach((slide, idx) => {
+      const offset = idx - activeIndex;
+      slide.style.setProperty('--offset', String(offset));
+      slide.classList.toggle('is-active', offset === 0);
+      slide.hidden = Math.abs(offset) > 5;
+      const button = slide.querySelector('button');
+      if (button) {
+        button.tabIndex = offset === 0 ? 0 : -1;
+        button.setAttribute('aria-label', `Open photo ${button.dataset.label}`);
+      }
+    });
+
+    [...indicators.children].forEach((button, idx) => {
+      if (idx === activeIndex) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+      button.disabled = idx === activeIndex;
+    });
+
+    const item = items[activeIndex];
+    caption.replaceChildren();
+    if (item.captionText && item.captionNode) {
+      caption.innerHTML = item.captionNode.innerHTML;
+      caption.hidden = false;
+    } else {
+      caption.hidden = true;
+    }
+  };
+
+  const startAutoplay = () => {
+    stopAutoplay();
+    if (reduceMotion || autoplayPaused || items.length < 2) return;
+    if (lightbox.dialog?.open || document.hidden) return;
+    autoplayTimer = window.setInterval(() => {
+      setActive(activeIndex + 1);
+    }, AUTO_MS);
+  };
+
+  const pauseAutoplay = () => {
+    autoplayPaused = true;
+    stopAutoplay();
+  };
+
+  const resumeAutoplay = () => {
+    autoplayPaused = false;
+    startAutoplay();
+  };
+
+  const openLightbox = (index) => {
+    setActive(index);
+    stopAutoplay();
+    lightbox.open(index);
+  };
+
+  items.forEach((item, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-cover-slide';
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'carousel-media-button';
+    button.dataset.label = item.captionText ? `${index + 1}: ${item.captionText}` : String(index + 1);
+    button.append(prepareImage(item.picture.cloneNode(true)));
+    button.addEventListener('click', (event) => {
+      if (swiped) {
+        event.preventDefault();
+        swiped = false;
+        return;
+      }
+      openLightbox(index);
+    });
+
+    slide.append(button);
+    stage.append(slide);
+    slides.push(slide);
+
+    const indicator = document.createElement('button');
+    indicator.type = 'button';
+    indicator.className = 'carousel-indicator';
+    indicator.setAttribute('aria-label', `Show photo ${index + 1} of ${items.length}`);
+    indicator.addEventListener('click', () => {
+      setActive(index);
+      startAutoplay();
+    });
+    indicators.append(indicator);
+  });
+
+  prev.addEventListener('click', () => {
+    setActive(activeIndex - 1);
+    startAutoplay();
+  });
+  next.addEventListener('click', () => {
+    setActive(activeIndex + 1);
+    startAutoplay();
+  });
+
+  stage.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      setActive(activeIndex - 1);
+      startAutoplay();
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      setActive(activeIndex + 1);
+      startAutoplay();
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      setActive(0);
+      startAutoplay();
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      setActive(items.length - 1);
+      startAutoplay();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLightbox(activeIndex);
+    }
+  });
+
+  stage.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0) return;
+    pointerStart = event.clientX;
+    swiped = false;
+  });
+
+  const finishPointer = (event) => {
+    if (pointerStart == null) return;
+    const delta = event.clientX - pointerStart;
+    pointerStart = null;
+    if (Math.abs(delta) < 48) return;
+    swiped = true;
+    setActive(activeIndex + (delta < 0 ? 1 : -1));
+    startAutoplay();
+  };
+
+  stage.addEventListener('pointerup', finishPointer);
+  stage.addEventListener('pointercancel', () => {
+    pointerStart = null;
+    swiped = false;
+  });
+
+  shell.addEventListener('mouseenter', pauseAutoplay);
+  shell.addEventListener('mouseleave', resumeAutoplay);
+  shell.addEventListener('focusin', pauseAutoplay);
+  shell.addEventListener('focusout', (event) => {
+    if (!shell.contains(event.relatedTarget)) resumeAutoplay();
+  });
+
+  lightbox.dialog.addEventListener('close', () => {
+    startAutoplay();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
+  });
+
+  setActive(0);
+  startAutoplay();
+  shell.append(nav, stage, caption, indicators);
+  block.append(shell);
 }
 
 function createCarousel(block, items, lightbox) {
@@ -259,8 +476,14 @@ function createCarousel(block, items, lightbox) {
   block.append(shell);
 }
 
+function getVariant(block) {
+  if (block.classList.contains('cover-flow')) return 'cover-flow';
+  if (block.classList.contains('collage')) return 'collage';
+  return 'carousel';
+}
+
 export default function decorate(block) {
-  const variant = block.classList.contains('collage') ? 'collage' : 'carousel';
+  const variant = getVariant(block);
   const rows = [...block.querySelectorAll(':scope > div')];
   const items = [];
 
@@ -284,6 +507,11 @@ export default function decorate(block) {
     collage.className = 'carousel-collage';
     items.forEach((item) => collage.append(item.figure));
     block.append(collage);
+    return;
+  }
+
+  if (variant === 'cover-flow') {
+    createCoverFlow(block, items, lightbox);
     return;
   }
 
