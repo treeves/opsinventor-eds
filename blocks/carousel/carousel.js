@@ -159,6 +159,7 @@ function createLightbox(items) {
   document.body.append(dialog);
 
   return {
+    dialog,
     open(index) {
       if (!items.length) return;
       render(index);
@@ -169,6 +170,7 @@ function createLightbox(items) {
 }
 
 function createCoverFlow(block, items, lightbox) {
+  const AUTO_MS = 2000;
   const shell = document.createElement('div');
   shell.className = 'carousel-shell carousel-coverflow';
 
@@ -206,11 +208,20 @@ function createCoverFlow(block, items, lightbox) {
   const slides = [];
   let activeIndex = 0;
   let pointerStart = null;
-  let dragged = false;
+  let swiped = false;
+  let autoplayTimer = null;
+  let autoplayPaused = false;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const stopAutoplay = () => {
+    if (autoplayTimer) window.clearInterval(autoplayTimer);
+    autoplayTimer = null;
+  };
 
   const setActive = (index) => {
-    const last = items.length - 1;
-    activeIndex = Math.max(0, Math.min(last, index));
+    const total = items.length;
+    if (!total) return;
+    activeIndex = ((index % total) + total) % total;
 
     slides.forEach((slide, idx) => {
       const offset = idx - activeIndex;
@@ -220,8 +231,7 @@ function createCoverFlow(block, items, lightbox) {
       const button = slide.querySelector('button');
       if (button) {
         button.tabIndex = offset === 0 ? 0 : -1;
-        const action = offset === 0 ? 'Open photo' : 'Show photo';
-        button.setAttribute('aria-label', `${action} ${button.dataset.label}`);
+        button.setAttribute('aria-label', `Open photo ${button.dataset.label}`);
       }
     });
 
@@ -230,9 +240,6 @@ function createCoverFlow(block, items, lightbox) {
       else button.removeAttribute('aria-current');
       button.disabled = idx === activeIndex;
     });
-
-    prev.disabled = activeIndex === 0;
-    next.disabled = activeIndex === last;
 
     const item = items[activeIndex];
     caption.replaceChildren();
@@ -244,6 +251,31 @@ function createCoverFlow(block, items, lightbox) {
     }
   };
 
+  const startAutoplay = () => {
+    stopAutoplay();
+    if (reduceMotion || autoplayPaused || items.length < 2) return;
+    if (lightbox.dialog?.open || document.hidden) return;
+    autoplayTimer = window.setInterval(() => {
+      setActive(activeIndex + 1);
+    }, AUTO_MS);
+  };
+
+  const pauseAutoplay = () => {
+    autoplayPaused = true;
+    stopAutoplay();
+  };
+
+  const resumeAutoplay = () => {
+    autoplayPaused = false;
+    startAutoplay();
+  };
+
+  const openLightbox = (index) => {
+    setActive(index);
+    stopAutoplay();
+    lightbox.open(index);
+  };
+
   items.forEach((item, index) => {
     const slide = document.createElement('div');
     slide.className = 'carousel-cover-slide';
@@ -253,13 +285,13 @@ function createCoverFlow(block, items, lightbox) {
     button.className = 'carousel-media-button';
     button.dataset.label = item.captionText ? `${index + 1}: ${item.captionText}` : String(index + 1);
     button.append(prepareImage(item.picture.cloneNode(true)));
-    button.addEventListener('click', () => {
-      if (dragged) {
-        dragged = false;
+    button.addEventListener('click', (event) => {
+      if (swiped) {
+        event.preventDefault();
+        swiped = false;
         return;
       }
-      if (index !== activeIndex) setActive(index);
-      else lightbox.open(index);
+      openLightbox(index);
     });
 
     slide.append(button);
@@ -270,58 +302,85 @@ function createCoverFlow(block, items, lightbox) {
     indicator.type = 'button';
     indicator.className = 'carousel-indicator';
     indicator.setAttribute('aria-label', `Show photo ${index + 1} of ${items.length}`);
-    indicator.addEventListener('click', () => setActive(index));
+    indicator.addEventListener('click', () => {
+      setActive(index);
+      startAutoplay();
+    });
     indicators.append(indicator);
   });
 
-  prev.addEventListener('click', () => setActive(activeIndex - 1));
-  next.addEventListener('click', () => setActive(activeIndex + 1));
+  prev.addEventListener('click', () => {
+    setActive(activeIndex - 1);
+    startAutoplay();
+  });
+  next.addEventListener('click', () => {
+    setActive(activeIndex + 1);
+    startAutoplay();
+  });
 
   stage.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
       setActive(activeIndex - 1);
+      startAutoplay();
     } else if (event.key === 'ArrowRight') {
       event.preventDefault();
       setActive(activeIndex + 1);
+      startAutoplay();
     } else if (event.key === 'Home') {
       event.preventDefault();
       setActive(0);
+      startAutoplay();
     } else if (event.key === 'End') {
       event.preventDefault();
       setActive(items.length - 1);
+      startAutoplay();
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLightbox(activeIndex);
     }
   });
 
   stage.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
     pointerStart = event.clientX;
-    dragged = false;
-    stage.setPointerCapture(event.pointerId);
-  });
-
-  stage.addEventListener('pointermove', (event) => {
-    if (pointerStart == null) return;
-    if (Math.abs(event.clientX - pointerStart) > 12) dragged = true;
+    swiped = false;
   });
 
   const finishPointer = (event) => {
     if (pointerStart == null) return;
     const delta = event.clientX - pointerStart;
     pointerStart = null;
-    if (Math.abs(delta) >= 48) setActive(activeIndex + (delta < 0 ? 1 : -1));
-    window.setTimeout(() => {
-      dragged = false;
-    }, 0);
+    if (Math.abs(delta) < 48) return;
+    swiped = true;
+    setActive(activeIndex + (delta < 0 ? 1 : -1));
+    startAutoplay();
   };
 
   stage.addEventListener('pointerup', finishPointer);
   stage.addEventListener('pointercancel', () => {
     pointerStart = null;
-    dragged = false;
+    swiped = false;
+  });
+
+  shell.addEventListener('mouseenter', pauseAutoplay);
+  shell.addEventListener('mouseleave', resumeAutoplay);
+  shell.addEventListener('focusin', pauseAutoplay);
+  shell.addEventListener('focusout', (event) => {
+    if (!shell.contains(event.relatedTarget)) resumeAutoplay();
+  });
+
+  lightbox.dialog.addEventListener('close', () => {
+    startAutoplay();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopAutoplay();
+    else startAutoplay();
   });
 
   setActive(0);
+  startAutoplay();
   shell.append(nav, stage, caption, indicators);
   block.append(shell);
 }
