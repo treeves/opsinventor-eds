@@ -168,6 +168,164 @@ function createLightbox(items) {
   };
 }
 
+function createCoverFlow(block, items, lightbox) {
+  const shell = document.createElement('div');
+  shell.className = 'carousel-shell carousel-coverflow';
+
+  const stage = document.createElement('div');
+  stage.className = 'carousel-coverflow-stage';
+  stage.tabIndex = 0;
+  stage.setAttribute('role', 'region');
+  stage.setAttribute('aria-roledescription', 'carousel');
+  stage.setAttribute('aria-label', 'Cover flow');
+
+  const caption = document.createElement('div');
+  caption.className = 'carousel-coverflow-caption';
+  caption.setAttribute('aria-live', 'polite');
+
+  const indicators = document.createElement('div');
+  indicators.className = 'carousel-indicators';
+
+  const nav = document.createElement('div');
+  nav.className = 'carousel-nav';
+
+  const prev = document.createElement('button');
+  prev.type = 'button';
+  prev.className = 'carousel-nav-button carousel-nav-button-prev';
+  prev.setAttribute('aria-label', 'Previous photo');
+  prev.textContent = 'Previous';
+
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'carousel-nav-button carousel-nav-button-next';
+  next.setAttribute('aria-label', 'Next photo');
+  next.textContent = 'Next';
+
+  nav.append(prev, next);
+
+  const slides = [];
+  let activeIndex = 0;
+  let pointerStart = null;
+  let dragged = false;
+
+  const setActive = (index) => {
+    const last = items.length - 1;
+    activeIndex = Math.max(0, Math.min(last, index));
+
+    slides.forEach((slide, idx) => {
+      const offset = idx - activeIndex;
+      slide.style.setProperty('--offset', String(offset));
+      slide.classList.toggle('is-active', offset === 0);
+      slide.hidden = Math.abs(offset) > 5;
+      const button = slide.querySelector('button');
+      if (button) {
+        button.tabIndex = offset === 0 ? 0 : -1;
+        const action = offset === 0 ? 'Open photo' : 'Show photo';
+        button.setAttribute('aria-label', `${action} ${button.dataset.label}`);
+      }
+    });
+
+    [...indicators.children].forEach((button, idx) => {
+      if (idx === activeIndex) button.setAttribute('aria-current', 'true');
+      else button.removeAttribute('aria-current');
+      button.disabled = idx === activeIndex;
+    });
+
+    prev.disabled = activeIndex === 0;
+    next.disabled = activeIndex === last;
+
+    const item = items[activeIndex];
+    caption.replaceChildren();
+    if (item.captionText && item.captionNode) {
+      caption.innerHTML = item.captionNode.innerHTML;
+      caption.hidden = false;
+    } else {
+      caption.hidden = true;
+    }
+  };
+
+  items.forEach((item, index) => {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-cover-slide';
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'carousel-media-button';
+    button.dataset.label = item.captionText ? `${index + 1}: ${item.captionText}` : String(index + 1);
+    button.append(prepareImage(item.picture.cloneNode(true)));
+    button.addEventListener('click', () => {
+      if (dragged) {
+        dragged = false;
+        return;
+      }
+      if (index !== activeIndex) setActive(index);
+      else lightbox.open(index);
+    });
+
+    slide.append(button);
+    stage.append(slide);
+    slides.push(slide);
+
+    const indicator = document.createElement('button');
+    indicator.type = 'button';
+    indicator.className = 'carousel-indicator';
+    indicator.setAttribute('aria-label', `Show photo ${index + 1} of ${items.length}`);
+    indicator.addEventListener('click', () => setActive(index));
+    indicators.append(indicator);
+  });
+
+  prev.addEventListener('click', () => setActive(activeIndex - 1));
+  next.addEventListener('click', () => setActive(activeIndex + 1));
+
+  stage.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      setActive(activeIndex - 1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      setActive(activeIndex + 1);
+    } else if (event.key === 'Home') {
+      event.preventDefault();
+      setActive(0);
+    } else if (event.key === 'End') {
+      event.preventDefault();
+      setActive(items.length - 1);
+    }
+  });
+
+  stage.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0) return;
+    pointerStart = event.clientX;
+    dragged = false;
+    stage.setPointerCapture(event.pointerId);
+  });
+
+  stage.addEventListener('pointermove', (event) => {
+    if (pointerStart == null) return;
+    if (Math.abs(event.clientX - pointerStart) > 12) dragged = true;
+  });
+
+  const finishPointer = (event) => {
+    if (pointerStart == null) return;
+    const delta = event.clientX - pointerStart;
+    pointerStart = null;
+    if (Math.abs(delta) >= 48) setActive(activeIndex + (delta < 0 ? 1 : -1));
+    window.setTimeout(() => {
+      dragged = false;
+    }, 0);
+  };
+
+  stage.addEventListener('pointerup', finishPointer);
+  stage.addEventListener('pointercancel', () => {
+    pointerStart = null;
+    dragged = false;
+  });
+
+  setActive(0);
+  shell.append(nav, stage, caption, indicators);
+  block.append(shell);
+}
+
 function createCarousel(block, items, lightbox) {
   const shell = document.createElement('div');
   shell.className = 'carousel-shell';
@@ -259,8 +417,14 @@ function createCarousel(block, items, lightbox) {
   block.append(shell);
 }
 
+function getVariant(block) {
+  if (block.classList.contains('cover-flow')) return 'cover-flow';
+  if (block.classList.contains('collage')) return 'collage';
+  return 'carousel';
+}
+
 export default function decorate(block) {
-  const variant = block.classList.contains('collage') ? 'collage' : 'carousel';
+  const variant = getVariant(block);
   const rows = [...block.querySelectorAll(':scope > div')];
   const items = [];
 
@@ -284,6 +448,11 @@ export default function decorate(block) {
     collage.className = 'carousel-collage';
     items.forEach((item) => collage.append(item.figure));
     block.append(collage);
+    return;
+  }
+
+  if (variant === 'cover-flow') {
+    createCoverFlow(block, items, lightbox);
     return;
   }
 
