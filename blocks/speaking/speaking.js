@@ -1,9 +1,20 @@
-/* Speaking — YouTube card grid. Each authored row is one card:
+/* Speaking — YouTube card grid fed by a DA sheet (preferred) or authored rows.
+
+   Sheet columns: event | title | date | url | category | tag
+   Block config (when using a sheet):
+   | source   | /en/speaking-engagements.json |
+   | category | Speaking                     |  (optional filter)
+
+   Sheet rows are sorted newest-first by `date` (yyyy-mm-dd).
+
+   Legacy authored rows are still supported:
    | event label | title | youtube url |
 
    The site has a `youtube` auto-linkBlock that swaps youtube anchors for
    `<div class="video">` BEFORE this decorator runs, so we resolve the URL
    from either the original anchor (when present) or the auto-block's data-src. */
+
+import { dateValue, formatDate } from '../../scripts/utils/date.js';
 
 function videoId(url) {
   try {
@@ -86,6 +97,7 @@ function resolveFeedCandidates(source) {
     }
   }
 
+  push('/en/speaking-engagements.json');
   push('/speaking.json');
   return candidates;
 }
@@ -110,18 +122,20 @@ async function fetchFeedData(source) {
   throw lastError || new Error('Unable to fetch speaking feed');
 }
 
-function buildCard(event, title, url, thumb) {
+function buildCard(event, title, url, thumb, date = '') {
   const card = document.createElement('a');
   card.className = 'speaking-card';
   card.href = url;
   card.target = '_blank';
   card.rel = 'noopener';
+  const displayDate = date ? formatDate(date) : '';
   card.innerHTML = `
     <div class="speaking-thumb">
       ${thumb ? `<img src="${thumb}" alt="" loading="lazy">` : ''}
     </div>
     <div class="speaking-body">
       <div class="speaking-event">${event}</div>
+      ${displayDate ? `<time class="speaking-date" datetime="${date}">${displayDate}</time>` : ''}
       <div class="speaking-title">${title}</div>
       <span class="speaking-link">Watch on YouTube →</span>
     </div>
@@ -139,20 +153,24 @@ export default async function decorate(block) {
   if (source) {
     try {
       const json = await fetchFeedData(source);
-      const data = (json.data || []).filter((item) => {
-        if (!category) return true;
-        return (item.category || '').trim().toLowerCase() === category.trim().toLowerCase();
-      });
+      const data = (json.data || [])
+        .filter((item) => {
+          if (!category) return true;
+          return (item.category || '').trim().toLowerCase() === category.trim().toLowerCase();
+        })
+        .sort((a, b) => dateValue(b.date) - dateValue(a.date));
 
       const cards = await Promise.all(data.map(async (item) => {
         const url = (item.url || '').trim();
         if (!url) return null;
         const thumb = await fetchOgImage(url);
-        const event = (item.tag || item.category || 'Speaking').replace(/-/g, ' ');
+        const event = (item.event || item.tag || item.category || 'Speaking')
+          .toString()
+          .replace(/-/g, ' ')
+          .trim();
         const title = (item.title || item.description || '').trim();
-        const description = (item.description || '').trim();
-        const cardTitle = description ? `${title} - ${description}` : title;
-        return buildCard(event, cardTitle, url, thumb);
+        const date = (item.date || '').toString().trim();
+        return buildCard(event, title, url, thumb, date);
       }));
 
       cards.filter(Boolean).forEach((card) => grid.append(card));
